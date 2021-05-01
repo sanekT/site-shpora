@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+<!--        <link rel="stylesheet" href="css/tren.css">-->
+		<title>Задача на делегирование</title>
+		<style>
+			.wrapper{
+				width: 557px;
+				height: 550px;
+				margin: 50px auto;
+				border: 1px solid grey;
+			}
+			.lg{
+				padding: 3px;
+				margin-bottom: 15px;
+			}
+			.small{
+				margin-left: 6px;
+			}
+			.wrapper .small img{
+				border: 1px solid grey;
+				padding: 2px;
+			}
+			.wrapper .small img:hover{
+				cursor: pointer;
+				border: 1px solid orange;
+			}
+		</style>
+    </head>
+    <body>
+       <div class="wrapper">
+           <div class="lg">
+               <img src="img/img1-lg.jpg">
+           </div>
+           <div class="small">
+               <img src="img/img1.jpg" data-num="1">
+               <img src="img/img2.jpg" data-num="2">
+               <img src="img/img3.jpg" data-num="3">
+               <img src="img/img4.jpg" data-num="4">
+               <img src="img/img5.jpg" data-num="5">
+           </div>
+       </div>
+        
+		
+        <script>
+			"use strict";
+
+			let small = document.querySelector('.small');
+			let lg = document.querySelector('.lg');
+			small.addEventListener('click', handler);
+
+			function handler(e){
+				let img = e.target;
+				if(img.tagName != 'IMG') return;
+				
+				let num = img.dataset.num;
+				
+				
+				let str = `img/img${num}-lg.jpg`;
+				let pic = lg.querySelector('img');
+				pic.src = str;
+			}
+		</script>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление комментариев</title>
+    <style>
+        .wrapper{
+            border: 1px solid green;
+            padding: 5px;
+        }
+        .container-coments{
+            border: 1px solid blue;
+            padding: 5px;
+        }
+        .container-write-coments{
+            border: 1px solid black;
+            padding: 5px;
+        }
+
+        .d{
+            display: flex;
+        }
+        p{
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+           <div class="container-coments"></div>
+           <div class="container-write-coments">
+               <p>Напишите тут ваш комментарий:</p>
+               <p>Ваш ник: <input type="text" class="nikname"></p>
+               <p>Коментарий:</p>
+               <textarea cols="75" rows="8" class="comment"></textarea><br><br>
+               <button class="add-comment">Добавить</button>
+           </div>
+       </div>
+       
+       <script src="jQuery/jQuery.js"></script>
+        <script>
+            'use strict';
+
+            let containerComents = document.querySelector('.container-coments');
+            let nikname = document.querySelector('.nikname');
+            let comment = document.querySelector('.comment');
+            let btnAddComment = document.querySelector('.add-comment');
+
+
+            btnAddComment.addEventListener('click', handler);
+
+            function handler(){
+                let divCom = document.createElement('div');
+                let img = document.createElement('img');
+                let div = document.createElement('div');
+                let div2 = document.createElement('div');
+                let p = document.createElement('p');
+                let nik = document.createElement('p');
+
+                divCom.className = 'd';
+                img.src = 'img/ava.jpg';
+                p.innerHTML = comment.value;
+                nik.innerHTML = nikname.value;
+
+                div2.append(img, nik);
+                div.append(p);
+                divCom.append(div2, div);
+                containerComents.append(divCom);
+            }
+        </script>
+</body>
+</html>

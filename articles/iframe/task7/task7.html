@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/tren2.css">
+        <style>
+            body{
+                background-color: aliceblue;
+            }
+            ul li>span:hover{
+                cursor: pointer;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <ul>
+                <li>Животные
+                    <ul>
+                        <li>Млекопитающие
+                            <ul>
+                                <li>Коровы</li>
+                                <li>Ослы</li>
+                                <li>Собаки</li>
+                                <li>Тигры</li>
+                            </ul>
+                        </li>
+                        <li>Другие
+                            <ul>
+                                <li>Змеи</li>
+                                <li>Птицы</li>
+                                <li>Ящерицы</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Рыбы
+                    <ul>
+                        <li>Аквариумные
+                            <ul>
+                                <li>Гуппи</li>
+                                <li>Скалярии</li>
+                            </ul>
+                        </li>
+                        <li>Морские
+                            <ul>
+                                <li>Морская форель</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <script>
+            'use sctrict';
+
+            let wrap = document.querySelector('.wrapper');
+            let lies = document.querySelectorAll('li');
+
+            for(let val of lies){
+                let elem = val.firstChild;
+                let str = `<span>${elem.nodeValue}</span>`;
+                elem.remove();
+                val.insertAdjacentHTML('afterbegin', str);
+            }
+
+            wrap.addEventListener('click', handler);
+
+            function handler(e){
+                let target = e.target;
+
+                if(target.tagName != 'SPAN') return;
+
+                let elem = target.nextElementSibling;
+                elem.hidden = !elem.hidden;
+
+            }
+        </script>
+    </body>
+</html>
