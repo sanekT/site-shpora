@@ -1,0 +1,1069 @@
+<div class="wrap">
+   
+   <ul class="list">
+       <li><a href="#1">Доступ к canvas и рисование прямоугольников</a></li>
+       <li><a href="#2">Настройка рисования</a></li>
+       <li><a href="#3">Фоновые изображения</a></li>
+       <li><a href="#4">Создание градиента</a></li>
+       <li><a href="#5">Рисование текста</a></li>
+       <li><a href="#6">Рисование фигур</a></li>
+       <li><a href="#7">Изображения на canvas</a></li>
+       <li><a href="#8">Добавление теней</a></li>
+       <li><a href="#9">Редактирование пикселей</a></li>
+       <li><a href="#10">Трансформации</a></li>
+       <li><a href="#11">Рисование мышью</a></li>
+   </ul>
+   
+    <h2 class="header-style" id="1">Доступ к canvas и рисование прямоугольников</h2>
+    
+    <p>Одним из нововведений HTML5 стал элемент Canvas и продвинутые возможности по работе и манипуляции графикой. С помощью canvas можно рисовать как простейшие графические примитивы - линии, фигуры, текст, так и создавать сложные графические игры. В дополнение canvas позволяет манипулировать изображениями и даже видео.</p>
+    <div class="code-style">
+    <pre>
+    < body>
+        < canvas id="myCanvas" width="300" height="200">
+        < /canvas>
+    < /body>
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Получение контекста рисования</h3>
+    
+    <p>Все рисование на canvas производится с помощью кода JavaScript. Чтобы начать рисовать на canvas, нам надо получить его контекст:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Рисование прямоугольников</h3>
+    <p>Для рисования простейших фигур - прямоугольников нам могут понадобиться три метода:</p>
+    <ul class="list">
+        <li><b>clearRect(x, y, w, h)</b>: очищает определенную прямоугольную область, верхний левый угол которой имеет координаты x и y, ширина равна w, а высота равна h</li>
+        <li><b>fillRect(x, y, w, h)</b>: заливает цветом прямоугольник, верхний левый угол которого имеет координаты x и y, ширина равна w, а высота равна h</li>
+        <li><b>strokeRect(x, y, w, h)</b>: рисует контур прямоугольника без заливки его каким-то определенным цветом</li>
+    </ul>
+    <p>Теперь используем эти методы:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+        
+    context.strokeRect(50, 40, 100, 100);
+    context.fillRect(200, 40, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/2.png" alt="" class="screen">
+    <p>В отличие от strokeRect и fillRect метод clearRect очищает определенную область.</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+        
+    context.fillRect(50, 40, 100, 100);
+    context.clearRect(50, 40, 40, 40);
+    </pre>
+    </div>
+    <img src="../img/3.png" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="2">Настройка рисования</h2>
+    <p>Контекст элемента canvas предоставляет ряд свойств, с помощью которых можно настроить отрисовку на canvas. К подобным свойствам относятся следующие:</p>
+    <ul class="list">
+        <li><b>strokeStyle</b>: устанавливает цвет линий или цвет контура. По умолчанию установлен черный цвет</li>
+        <li><b>fillStyle</b>: устанавливает цвет заполнения фигур. По умолчанию установлен черный цвет</li>
+        <li><b>lineWidth</b>: устанавливает толщину линий. По умолчанию равно 1.0</li>
+        <li><b>lineJoin</b>: устанавливает стиль соединения линий</li>
+        <li><b>globalAlpha</b>: устанавливает прозрачность отрисовки на canvas</li>
+        <li><b>setLineDash</b>: создает линию из коротких черточек</li>
+    </ul>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.strokeStyle = "red";
+    context.fillStyle = "blue";
+
+    context.strokeRect(50, 40, 100, 100);
+    context.fillRect(200, 40, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/4.png" alt="" class="screen">
+    <p>В качестве значения свойства strokeStyle и fillStyle получают название цвета в виде строки, либо в виде шестнадцатиричного значения цвета (например, "#00FFFF"), либо в виде значений rgb ("rgb(0, 0, 255)") и rgba ("rgba(0, 0, 255, 0.5)").</p>
+    
+    
+    <h3 class="header-style2">setLineDash</h3>
+    <p>Метод setLineDash() в качестве параметра принимает массив чисел, которые устанавливают расстояния между линиями. Например:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.strokeStyle = "red";
+
+    context.setLineDash([15,5]);
+    context.strokeRect(40, 40, 100, 100);
+
+    context.strokeStyle = "blue";
+    context.setLineDash([2,5,6]);
+    context.strokeRect(180, 40, 100, 100);
+
+    context.strokeStyle = "green";
+    context.setLineDash([2]);
+    context.strokeRect(320, 40, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/5.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Тип соединения линий</h3>
+    <p>Свойство <b>lineJoin</b> отвечает за тип соединения линий в фигуре. Оно может принимать следующие значения:</p>
+    <ul class="list">
+        <li><b>miter</b>: прямые соединения, которые образуют прямые углы. Это значение по умолчанию</li>
+        <li><b>round</b>: закругленные соединения</li>
+        <li><b>bevel</b>: конические соединения</li>
+    </ul>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.strokeStyle = "red";
+    context.fillStyle = "blue";
+
+    context.lineWidth = 15;
+    context.lineJoin = "miter";
+    context.strokeRect(40, 40, 100, 100);
+    context.lineJoin = "bevel";
+    context.strokeRect(180, 40, 100, 100);
+    context.lineJoin = "round";
+    context.strokeRect(310, 40, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/6.png" alt="" class="screen">
+    
+    
+    <h3 class="header-style2">Прозрачность</h3>
+    <p>Свойство globalAlpha задает прозрачность отрисовки. Оно может принимать в качестве значения число от 0 (полностью прозрачный) до 1.0 (не прозрачный):</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.fillStyle = "blue";
+    context.fillRect(50, 50, 100, 100);
+
+    context.globalAlpha = 0.5;
+    context.fillStyle = "red";
+    context.fillRect(100, 100, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/7.png" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="3">Фоновые изображения</h2>
+    <p>Вместо конкретного цвета для заливки фигур, например, прямоугольников, мы можем использовать изображения. Для этого у кконтекста canvas имеется функция <b>createPattern()</b>, которая принимает два параметра: изображение, которое будет использоваться в качестве фона, и принцип повторения изображения. Последний параметр играет роль в том случае, если размер изображения у нас меньше, чем размер фигуры на canvas. Этот параметр может принимать следующие значения:</p>
+    <ul class="list">
+        <li><b>repeat</b>: изображение повторяется для заполнения всего пространства фигуры</li>
+        <li><b>repeat-x</b>: изображение повторяется только по горизонтали</li>
+        <li><b>repeat-y</b>: изображение повторяется только по вертикали</li>
+        <li><b>no-repeat</b>: изображение не повторяется</li>
+    </ul>
+    <p>Нарисуем прямоугольник и выведем в нем изображение:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    var img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+
+        var pattern = context.createPattern(img, "repeat");
+        context.fillStyle = pattern;
+        context.fillRect(10, 10, 150, 150);
+        context.strokeRect(10, 10, 150, 150);
+    };
+    </pre>
+    </div>
+    <img src="../img/8.png" alt="" class="screen">
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="4">Создание градиента</h2>
+    <p>Элемент Canvas позволяет использовать градиент в качестве фона. Для этого применяется объект <b>CanvasGradient</b>, который можно создать либо с помощью метода <b>createLinearGradient()</b> (линейный градиент), либо с помощью метода <b>createRadialGradient()</b> (радиальный градиент).</p>
+    <h3 class="header-style2">Линейный градиент</h3>
+    <p>Линейный градиент создается помощью метода <b>createLinearGradient(x0, y0, x1, y1)</b>, где x0 и y0 - это начальные координаты градиента относительно верхнего левого угла canvas, а x1 и y1 - координаты конечной точки градиента. Также для создания градиента необходимо задать опорчные точки, которые определяют цвет. Для этого у объекта CanvasGradient применяется метод <b>addColorStop(offset, color)</b>, где offset - это смещение точки градиента, а color - ее цвет. Смещение представляет значение в диапазоне от 0 до 1. Смещение 0 представляет начало градиента, а 1 - его конец. Цвет задается либо в виде строки, либо в виде шестнадцатиричного значения, либо в виде значения rgb/rgba.</p>
+    <p>Применим градиент:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d"),
+        gradient = context.createLinearGradient(50, 30, 150, 150);
+    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(1, "white");
+    context.fillStyle = gradient;
+    context.fillRect(50, 30, 150, 150);
+    context.strokeRect(50, 30, 150, 150);
+    </pre>
+    </div>
+    <img src="../img/9.png" alt="" class="screen">
+    <p>Совпадение x-координат начальной и конечной точек создает <b>вертикальный</b> градиент:</p>
+    <div class="code-style">
+    <pre>
+    gradient = context.createLinearGradient(50, 30, 50, 150);
+    </pre>
+    </div>
+    <p>А совпадение y-координат начальной и конечной точек создает <b>горизонтальный</b> градиент:</p>
+    <div class="code-style">
+    <pre>
+    gradient = context.createLinearGradient(50, 30, 150, 30);
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Радиальный градиент</h3>
+    <p>Радиальный градиент создается с помощью метода <b>createRadialGradient(x0, y0, r0, x1, y1, r1)</b>, который принимает следующие параметры:</p>
+    <ul class="list">
+        <li>x0 и y0: координаты центра первой окружности</li>
+        <li>r0: радиус первой окружности</li>
+        <li>x1 и y1: координаты центра второй окружности</li>
+        <li>r1: радиус второй окружности</li>
+    </ul>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d"),
+        gradient = context.createRadialGradient(120,100,100,120,100,30);
+    gradient.addColorStop(0, "blue");
+    gradient.addColorStop(1, "white");
+    context.fillStyle = gradient;
+    context.fillRect(50, 30, 150, 150);
+    context.strokeRect(50, 30, 150, 150);
+    </pre>
+    </div>
+    <img src="../img/10.png" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="5">Рисование текста</h2>
+    <p>Наряду с геометрическими фигурами и изображениями canvas позволяет выводить текст. Доля этого вначале надо установить у контекста canvas свойство font: <b>context.font = "22px Verdana";</b></p>
+    <p>Далее мы можем вывести некоторый текст с помощью метода <b>fillText(text, x, y)</b>, который принимает три параметра: выводимый текст и x и y координаты точки, с которой выводится текст:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.font = "22px Verdana";
+    context.fillText("Hello HTML5!", 20, 50);
+    </pre>
+    </div>
+    <img src="../img/11.png" alt="" class="screen">
+    <p>Для вывода текста можно также применять метод <b>strokeText(text, x, y)</b>, который создает границу для выводимых символов:</p>
+    <div class="code-style">
+    <pre>
+    context.font = "30px Verdana";
+    context.strokeStyle = "red";
+    context.strokeText("Hello HTML5!", 20, 50);
+    </pre>
+    </div>
+    <img src="../img/12.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Свойство textAlign</h3>
+    <p>Свойство <b>textAlign</b> позволяет выровнить текст относительно одной из сторон. Это свойство может принимать следующие значения:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.font = "22px Verdana";
+    context.textAlign = "right";
+    context.fillText("Right Text", 120, 30);
+    context.textAlign = "left";
+    context.fillText("Left Text", 120, 60);
+    context.textAlign = "center";
+    context.fillText("Center Text", 120, 90);
+    context.textAlign = "start";
+    context.fillText("Start Text", 120, 120);
+    context.textAlign = "end";
+    context.fillText("End Text", 120, 150);
+    </pre>
+    </div>
+    <img src="../img/13.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Свойство lineWidth</h3>
+    <p>Свойство <b>lineWidth</b> задает ширину линии текста:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.font = "30px Verdana";
+    context.strokeStyle = "red";
+
+    context.lineWidth = 2;
+    context.strokeText("Hello HTML5!", 20, 50);
+    </pre>
+    </div>
+    <img src="../img/14.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Свойство textBaseline</h3>
+    <p>Свойство <b>textBaseline</b> задает выравнивание текста по базовой линии. Оно может принимать следующие значения:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.font = "18px Verdana";
+    context.textBaseline="top";
+    context.fillText("Top",15,100);
+    context.textBaseline="bottom";
+    context.fillText("Bottom",60,100);
+    context.textBaseline="middle";
+    context.fillText("Middle",130,100);
+    context.textBaseline="alphabetic";
+    context.fillText("Alphabetic",200,100);
+    context.textBaseline="hanging";
+    context.fillText("Hanging",300,100);
+    </pre>
+    </div>
+    <img src="../img/15.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Определение ширины текста</h3>
+    <p>С помощью метода <b>measureText()</b> можно определить ширину текста на canvase:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.font = "18px Verdana";
+    var text = context.measureText("Hello HTML5");
+    alert(text.width);
+    </pre>
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="6">Рисование фигур</h2>
+    <p>Кроме прямоугольников canvas позволяет рисовать и более сложные фигуры. Для оформления сложных фигур используется концепция геометрических путей, которые представляют набор линий, окружностей, прямоугольников и других более мелких деталей, необходимых для построения сложной фигуры.</p>
+    <p>Для создания нового пути надо вызвать метод <b>beginPath()</b>, а после завершения пути вызывается метод <b>closePath()</b>. Между вызовами методов beginPath() и closePath() находятся методы, непосредственно создающие различные участки пути.</p>
+    
+    <h3 class="header-style2">Методы moveTo() и lineTo()</h3>
+    <p>Для начала рисования пути нам надо зафиксировать начальную точку этого пути. Это можно сделать с помощью метода <b>moveTo(x, y)</b>. Метод перемещает нас на точку с координатами x и y.</p>
+    <p>Метод <b>lineTo(x, y)</b> рисует линию. Метод рисует линию от текущей позиции до точки с координатами x и y.</p>
+    <p>Теперь нарисуем ряд линий, но чтобы увидеть на экране эти линии их нужно отобразить с помощью метода <b>stroke()</b></p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.beginPath();
+    context.moveTo(30, 20);
+    context.lineTo(100, 80);
+    context.lineTo(150, 30);
+    context.closePath();
+    context.strokeStyle = "red";
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/16.png" alt="" class="screen">
+    <p>Здесь мы устанавливаем начало пути в точку (30, 20), затем от нее рисуем линию до точки (100, 80) и далее рисуем еще одну линию до точки (150, 30).</p>
+    <p>Хотя мы нарисовали всего две линии, но по факту мы увидим три линии, которые оформляют треугольник. Дело в том, что вызов метода context.closePath() завершает путь, соединяя последнюю точку с первой. И в результате образуется замкнутый контур. Если нам не надо замыкание пути, то мы можем удалить вызов метода context.closePath().</p>
+    
+    <h3 class="header-style2">Метод rect()</h3>
+    <p>Метод <b>rect(x, y, width, height)</b> создает прямоугольник. Где x и y - это координаты верхнего левого угла прямоугольника относительно canvas, а width и height - соответственно ширина и высота прямоугольника. Нарисуем, к примеру, следующий прямоугольник:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.beginPath();
+    context.rect(30, 20, 100, 90);
+    context.closePath();
+    context.strokeStyle = "red";
+    context.stroke();
+    </pre>
+    </div>
+    <p>Стоит отметить, что такой же прямоугольник мы могли бы создать из линий:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.beginPath();
+    context.moveTo(30, 20);
+    context.lineTo(130, 20);
+    context.lineTo(130, 110);
+    context.lineTo(30, 110);
+    context.closePath();
+    context.strokeStyle = "red";
+    context.stroke();
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Метод fill()</h3>
+    <p>Метод <b>fill()</b> заполняет цветом все внутреннее пространство нарисованного пути:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.beginPath();
+    context.rect(30, 20, 100, 90);
+    context.closePath();
+    context.strokeStyle = "red";
+    context.fillStyle = "blue";
+    context.fill();
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/17.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Метод clip()</h3>
+    <p>Метод <b>clip()</b> позволяет вырезать из canvas определенную область, а все, что вне этой области, будет игнорироваться при последующей отрисовке. Для понимания этого метода сначала нарисуем два прямоугольника:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    // рисуем первый красный прямоугольник
+    context.beginPath();
+    context.moveTo(30, 20);
+    context.lineTo(130, 20);
+    context.lineTo(130, 110);
+    context.lineTo(30, 110);
+    context.closePath();
+    context.strokeStyle = "red";
+    context.stroke();
+
+    // рисуем второй зеленый прямоугольник
+    context.beginPath();
+    context.rect(10, 50, 180, 70);
+    context.closePath();
+    context.strokeStyle = "green";
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/18.png" alt="" class="screen">
+    <p>Теперь применим метод clip() для ограничения области рисования только первым прямоугольником:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    // рисуем первый красный прямоугольник
+    context.beginPath();
+    context.moveTo(30, 20);
+    context.lineTo(130, 20);
+    context.lineTo(130, 110);
+    context.lineTo(30, 110);
+    context.closePath();
+    context.strokeStyle = "red";
+    context.stroke();
+    
+    context.clip();
+
+    // рисуем второй зеленый прямоугольник
+    context.beginPath();
+    context.rect(10, 50, 180, 70);
+    context.closePath();
+    context.strokeStyle = "green";
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/19.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Метод arc()</h3>
+    <p>Метод <b>arc(x, y, radius, startAngle, endAngle, anticlockwise)</b> добавляет к пути участок окружности или арку. Здесь используются следующие параметры:</p>
+    <ul class="list">
+        <li>x и y: x- и y-координаты, в которых начинается арка</li>
+        <li>radius: радиус окружности, по которой создается арка</li>
+        <li>startAngle и endAngle: начальный и конечный угол, которые усекают окржность до арки. В качестве единици измерения для углов применяются радианы. Например, полная окружность - это 2π радиан. Если, к примеру, нам надо нарисовать полный круг, то для параметра endAngle можно указать значение 2π. В JavaScript эту веричину можно получить с помощью выражения Math.PI * 2.</li>
+        <li>anticlockwise: направление движения по окружности при отсечении ее части, ограниченной начальным и конечным углом. При значении true направление против часовой стрелки, а при значении false - по часовой стрелке.</li>
+    </ul>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.strokeStyle = "red";
+
+    context.beginPath();
+    context.moveTo(20, 90);
+    context.arc(20, 90, 50, 0, Math.PI/2, false);
+    context.closePath();
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(130, 90);
+    context.arc(130, 90, 50, 0, Math.PI, false);
+    context.closePath();
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(240, 90);
+    context.arc(240, 90, 50, 0, Math.PI * 3 / 2, false);
+    context.closePath();
+    context.stroke();
+
+    context.beginPath();
+    context.arc(350, 90, 50, 0, Math.PI*2, false);
+    context.closePath();
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/20.png" alt="" class="screen">
+    <p>Последний параметр anticlockwise играет важную роль, так как определяет движение по окружности, и в случае изменения true на false и наоборот, мы можем получить совершенно разные фигуры:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.strokeStyle = "red";
+
+    context.beginPath();
+    context.moveTo(80, 90);
+    context.arc(80, 90, 50, 0, Math.PI/2, false);
+    context.closePath();
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(240, 90);
+    context.arc(240, 90, 50, 0, Math.PI/2, true);
+    context.closePath();
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/21.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Метод arcTo()</h3>
+    <p>Метод <b>arcTo(x1, y1, x2, y2, radius)</b> также рисует дугу. Где x1 и y1 - координаты первой контрольной точки, x2 и y2 - координаты второй контрольной точки, а radius - радиус дуги.</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.strokeStyle = "red";
+
+    context.beginPath();
+    context.moveTo(0, 150);
+    context.arcTo(0, 0, 150, 0, 140)
+    context.closePath();
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/22.png" alt="" class="screen">
+    <p>Здесь мы перемещаемся вначале на точку (0, 150), и от этой точки до первой контрольной точки (0, 0) будет проходить первая касательная. Далее от первой контрольной точки (0, 0) до второй (150, 0) будет проходить вторая касательная. Эти две касательные оформляют дугу, а 140 служит радиусом окружности, на которой усекается дуга.</p>
+    
+    <h3 class="header-style2">Метод quadraticCurveTo()</h3>
+    <p>Метод <b>quadraticCurveTo(x1, y1, x2, y2)</b> создает квадратичную кривую. Где x1 и y1 - координаты первой опорной точки, x2 и y2 - координаты второй опорной точки.</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.strokeStyle = "red";
+
+    context.beginPath();
+    context.moveTo(20, 90);
+    context.quadraticCurveTo(130, 0, 280, 90)
+    context.closePath();
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/23.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Метод bezierCurveTo()</h3>
+    <p>Метод <b>bezierCurveTo(x1, y1, x2, y2, x3, y3)</b> рисует кривую Безье. Где x1 и y1 - координаты первой опорной точки, x2 и y2 - координаты второй опорной точки, а x3 и y3 - координаты третьей опорной точки.</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+    context.strokeStyle = "red";
+
+    context.beginPath();
+    context.moveTo(30, 100);
+    context.bezierCurveTo(110, 0, 190, 200, 270, 100);
+    context.closePath();
+    context.stroke();
+    </pre>
+    </div>
+    <img src="../img/24.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Комплексные фигуры</h3>
+    <p>Объединим несколько фигур вместе и нарисуем более сложную двухмерную сцену:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.fill();
+        ctx.fillStyle = "yellow";
+        ctx.beginPath();
+        ctx.arc(160, 130, 100, 0, 2 * Math.PI);
+        ctx.fill();
+
+        // рот
+        ctx.beginPath();
+        ctx.moveTo(100, 160);
+        ctx.quadraticCurveTo(160, 250, 220, 160);
+        ctx.closePath();
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+
+        // зубы
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(140, 160, 15, 15);
+        ctx.fillRect(170, 160, 15, 15);
+
+        //глаза
+        ctx.beginPath();
+        ctx.arc(130, 90, 20, 0, 2 * Math.PI);
+        ctx.fillStyle = "#333333";
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(190, 90, 20, 0, 2 * Math.PI);
+        ctx.fillStyle = "#333333";
+        ctx.fill();
+        ctx.closePath();
+
+      }
+    </pre>
+    </div>
+    <img src="../img/25.png" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="7">Изображения на canvas</h2>
+    <p>Ранее уже рассматривалась установка изображений в качестве фона в прямоугольниках, но мы также можем отдельно выводить изображения на canvas. Для этого применяется метод <b>drawImage(image, x, y)</b>. Здесь параметр image передает выводимое изображение, а x и y - координаты верхнего левого угла изображения. Например:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    let img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+
+        context.drawImage(img, 0, 0);
+    };
+    </pre>
+    </div>
+    <img src="../img/26.png" alt="" class="screen">
+    <p>Другая версия метода позволяет дополнительно задать ширину и высоту выводимого изображения:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    let img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+        context.drawImage(img, 20, 40, 110, 90);          
+        context.drawImage(img, 160, 40, 110, 90);
+    };
+    </pre>
+    </div>
+    <img src="../img/27.png" alt="" class="screen">
+    <p>Метод drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight) также имеет еще и третью форму:</p>
+    <p>Где параметры sx и sy представляют координаты на изображении, с которого начиется обрезка изображения, а параметры sWidth и sHeight представляют соответственно ширину и высоту выреза относительно координат sx и sy. Параметры dx и dy указывают координаты отрисовки обрезанного изображения на canvas, а dWidth и dHeight указывают соответственно на ширину и высоту изображения на canvas.</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    let img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+        context.drawImage(img, 64, 48, 128, 96, 20, 30, 256, 192);
+    };
+    </pre>
+    </div>
+    <img src="../img/28.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Захват изображений с других элементов</h3>
+    <p>Одной из замечательных функциональностей элемента canvas является возможность захвата изображения с другого элемента, например, элемента video или другого элемента canvas. Например:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    let video = document.getElementById("myVideo");
+    document.getElementById("snap").onclick = function(e) {
+        context.drawImage(video, 0, 0, 300, 200);
+    }
+    </pre>
+    </div>
+    <img src="../img/7.jpg" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="8">Добавление теней</h2>
+    <p>Элемент canvas поддерживает добавление теней к нарисованным объектам. Для создания теней применяются следующие свойства:</p>
+    <ul class="list">
+        <li><b>shadowOffsetX</b>: горизонтальное смещение в пикселях справа (или слева при отрицательном значении)</li>
+        <li><b>shadowOffsetY</b>: вертикальное смещение в пикселях снизу (или сверху при отрицательном значении)</li>
+        <li><b>shadowBlur</b>: число пикселей для установки размытия тени</li>
+        <li><b>shadowColor</b>: цвет тени</li>
+    </ul>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.font="16px Verdana";
+    context.fillStyle = "#222";
+    context.shadowOffsetX = 3;
+    context.shadowOffsetY = 3;
+    context.shadowBlur = 3;
+    context.shadowColor = "#AAA";
+    context.fillText("Тени в HTML5", 80, 30);
+
+    let img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+
+        context.shadowOffsetX = 8;
+        context.shadowOffsetY = 8;
+        context.shadowBlur = 5;
+        context.shadowColor = "#333";
+        context.drawImage(img, 80, 70, 128, 96);
+    };
+    </pre>
+    </div>
+    <img src="../img/8.jpg" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="9">Редактирование пикселей</h2>
+    <p>HTML5 предоставляет встроенную функциональность для редактирования изображения и установки значения конкретных пикселей на canvas. В частности, мы можем изменить цветовые значения пикселя, его прозрачность. Для этого предназначены такие методы, как <b>getImageData()</b>, <b>putImageData()</b> и <b>createImageData()</b>.</p>
+    <h3 class="header-style2">Метод getImageData()</h3>
+    <p>Метод <b>getImageData(sx, sy, sw, sh)</b> позволяет извлечь из canvas какую-либо часть изображеня.</p>
+    <p>Здесь sx и sy - координаты верхнего левого угла области, из которой извлекаются данные на canvas, а sw и sh - соотвественно ширина и высота этой области. Данные из определенной этими параметрами области извлекаются в виде объекта <b>ImageData</b>, который потом используется для манипуляции пикселями.</p>
+    <p>Пример использования:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    var img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+
+        context.drawImage(img, 0, 0);
+        var imageData = context.getImageData(0,0, 100, 100);
+    };
+    </pre>
+    </div>
+    <p>Все данные об изображении в объекте ImageData хранятся в массиве data. Каждый пиксель на canvas характеризуется четырьмя компонентами в формате RGBA: красной, зеленой, синей компонентой, которые устанавливают цвет, и альфа-компонентой, которая устанавливает прозрачность. Каждая компонента принимает значени от 0 до 255. И чтобы получить значения цвета для самого первого пикселя в ImageData, нам надо последовательно получить четыре значения из массива data:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    let img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+
+        context.drawImage(img, 0, 0);
+        let imageData = context.getImageData(0,0, 100, 100);
+        let red = imageData.data[0];    // компонента красного цвета
+        let green = imageData.data[1];  // компонента зеленого цвета
+        let blue = imageData.data[2];   // компонента синего цвета
+        let alpha = imageData.data[3];  // компонента прозрачности
+    };
+    </pre>
+    </div>
+    <p>В данном случае мы получаем информацию о самом первом пикселе, который находится в самом верхнем левом углу, то есть имеет координаты x=0 и y=0. Чтобы получить информацию о втором пикселе, который имеет координаты x=1 и y=0, нам надо получить следующие четыре значения из массива data:</p>
+    <div class="code-style">
+    <pre>
+    imageData.data[4];  // компонента красного цвета
+    imageData.data[5];  // компонента зеленого цвета
+    imageData.data[6];  // компонента синего цвета
+    imageData.data[7];  // компонента прозрачности
+    </pre>
+    </div>
+    <p>И так далее мы можем получить информацию обо всех пикселях.</p>
+    
+    <h3 class="header-style2">Метод putImageData()</h3>
+    <p>Метод <b>putImageData(imageData, dx, dy)</b> устанавливает на canvas новые данные</p>
+    <p>Параметры dx и dy указывают координаты верхнего левого угла условного прямоугольника imageData, в который размещается на canvas. Используем методы getImageData() и putImageData() для преобразования изображения:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    var img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+
+        context.drawImage(img, 0, 0);
+        var imageData = context.getImageData(0,0, img.width, img.height);
+        var red, green, blue, greyscale;
+
+        for (var i = 0; i &lt; imageData.data.length; i += 4) {
+            red = imageData.data[i]; // получаем компоненту красного цвета
+            green = imageData.data[i + 1];  // получаем компоненту зеленого цвета
+            blue = imageData.data[i + 2];   // получаем компоненту синего цвета
+            grayscale = red * 0.3 + green * 0.59 + blue * 0.11; // получаем серый фон
+            imageData.data[i] = grayscale;  // установка серого цвета
+            imageData.data[i + 1] = grayscale;
+            imageData.data[i + 2] = grayscale;
+        }
+
+        context.putImageData(imageData, img.width + 10, 0);
+    };
+    </pre>
+    </div>
+    <img src="../img/9.jpg" alt="" class="screen">
+    
+    <h3 class="header-style2">Метод createImageData()</h3>
+    <p>Метод <b>createImageData()</b> создает новый объект ImageData, который затем может использоваться на canvas.</p>
+    <p>Метод createImageData() имеет две формы:</p>
+    <div class="code-style">
+    <pre>
+    createImageData(width, height);
+    createImageData(imagedata);
+    </pre>
+    </div>
+    <p>Первая форма принимает параметры width и height, которые устанавливают соотвественно ширину и высоту создаваемого объекта ImageData. Вторая форма принимает в качестве параметра другой объект ImageData, по которому будет создан новый объект ImageData. Пример использования:</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    let img = new Image();
+    img.src = "dubi.png";
+    img.onload = function() {
+
+        context.drawImage(img, 0, 0);
+       let imageData = context.getImageData(0,0, img.width, img.height);
+        var newImageData = context.createImageData(imageData);
+
+        for (var i = 0; i &lt; newImageData.data.length; i++) {
+
+            newImageData.data[i] = imageData.data[i];
+            // если это альфа-компонента
+            if( (i+1)%4===0){
+
+                newImageData.data[i] = 120;
+            }
+        }
+        context.putImageData(newImageData, img.width + 10, 0);
+    };
+    </pre>
+    </div>
+    <p>В данном случае создаем новый объект newImageData, в этот объект копируем все данные из текущего imageData, который представляет изображение на canvas. При этом при копировании значения альфа-компоненты, которая отвечает за прозрачность, устанавливаем ей значение 120, то есть делаем пиксель полупрозрачным.</p>
+    <img src="../img/10.jpg" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="10">Трансформации</h2>
+    <p>Элемент canvas поддерживает трансформации - перемещение, вращение, масштабирование.</p>
+    <h3 class="header-style2">Трансформации</h3>
+    <p>Перемещение осуществляется с помощью метода <b>translate(x,y)</b>. Первый параметр указывает на смещение по оси X, а второй параметр - по оси Y.</p>
+    <div class="code-style">
+    <pre>
+    let canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.fillStyle = "blue";
+    context.fillRect(50, 50, 100, 100);
+
+    context.translate(100, 50); // смещение на 100 пикселей вправо и 50px вниз
+
+    context.globalAlpha = 0.5;
+    context.fillStyle = "red";
+    context.fillRect(50, 50, 100, 100);
+    </pre>
+    </div>
+    <p>Здесь на одной позиции отрисовываются два равных прямоугольника: синий и красный. Однако к красному прямоугольнику применяется трансформация перемещения:</p>
+    <img src="../img/29.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Вращение</h3>
+    <p>Для поворота фигур на canvase применяется метод <b>rotate(angle)</b>. В этот метод в качестве параметра передается угол поворота в радианах относительно точки с координатами (0, 0).</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.fillStyle = "blue";
+    context.fillRect(50, 50, 100, 100);
+
+    context.rotate(.52);    // поворот на 0.52 радиан или 30 градусов
+
+    context.globalAlpha = 0.5;
+    context.fillStyle = "red";
+    context.fillRect(50, 50, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/30.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Масштабирование</h3>
+    <p>Для масштабирования фигур применяется метод <b>scale(xScale, yScale)</b>. Параметр xScale указывает на масштабирование по оси X, а yScale - по оси Y.</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.fillStyle = "blue";
+    context.fillRect(30, 30, 100, 100);
+
+    context.scale(1.5, 1.3); // растяжение по ширине в 1.5 раза и сжатие по высоте в 1.3 раза
+
+    context.globalAlpha = 0.5;
+    context.fillStyle = "red";
+    context.fillRect(50, 30, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/31.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Матрица преобразований</h3>
+    <p>При необходимости мы можем применять последовательно несколько преобразований:</p>
+    <div class="code-style">
+    <pre>
+    ctx.scale(1.5, 1.3);
+    ctx.translate(100, 150);
+    ctx.rotate(0.34);
+    </pre>
+    </div>
+    <p>Но контекст элемента canvas также предоставляет метод <b>transform(a, b, c, d, e, f)</b>, который позволяет задать матрицу преобразования. Все параметры этого метода последовательно представляют элементы матрицы преобразования:</p>
+    <ul class="list">
+        <li>a: масштабирование по оси X</li>
+        <li>b: поворот вокруг оси X</li>
+        <li>c: поворот вокруг оси Y</li>
+        <li>d: масштабирование по оси Y</li>
+        <li>e: горизонтальное смещение</li>
+        <li>f: вертикальное смещение</li>
+    </ul>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+
+    context.fillStyle = "blue";
+    context.fillRect(100, 50, 100, 100);
+
+    context.transform(  
+        Math.cos(Math.PI/6), Math.sin(Math.PI/6), -1 * Math.sin(Math.PI/6), 
+        Math.cos(Math.PI/6), 0, 0);
+
+    context.globalAlpha = 0.5;
+    context.fillStyle = "red";
+    context.fillRect(100, 50, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/32.png" alt="" class="screen">
+    
+    <h3 class="header-style2">Замена трансформации</h3>
+    <p>При применении трансформаций вся последующая отрисовка фигур подвергается данным трансформациям. Но возможна ситуация, когда после одиночного применения трансформации нам больше не нужно ее применение. И для всей последующей отрисовки мы можем сбросить трансформации с помощью метода :</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d");
+                  
+    context.fillStyle = "blue";
+    context.fillRect(50, 50, 100, 100);
+             
+    context.translate(100, 50);
+    // дальше применяется трансформация
+    context.globalAlpha = 0.5;
+    context.fillStyle = "red";
+    context.fillRect(50, 50, 100, 100);
+             
+    context.resetTransform();
+    // трансформация больше не применяется
+    context.fillStyle = "green";
+    context.fillRect(0, 0, 100, 100);
+    </pre>
+    </div>
+    <img src="../img/34.png" alt="" class="screen">
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style" id="1">Рисование мышью</h2>
+    <p>Ранее мы рассматривали в основном статическую графику на canvas. Но мы также можем создавать фигуры динамически, просто рисуя указателем мыши. Для этого определим следующую страницу:</p>
+    <div class="code-style">
+    <pre>
+    var canvas = document.getElementById("myCanvas"), 
+        context = canvas.getContext("2d"),
+        w = canvas.width,
+        h=canvas.height;
+
+    var mouse = { x:0, y:0};
+    var draw = false;
+
+    canvas.addEventListener("mousedown", function(e){
+
+        mouse.x = e.pageX - this.offsetLeft;
+        mouse.y = e.pageY - this.offsetTop;
+        draw = true;
+        context.beginPath();
+        context.moveTo(mouse.x, mouse.y);
+    });
+    canvas.addEventListener("mousemove", function(e){
+
+        if(draw==true){
+
+            mouse.x = e.pageX - this.offsetLeft;
+            mouse.y = e.pageY - this.offsetTop;
+            context.lineTo(mouse.x, mouse.y);
+            context.stroke();
+        }
+    });
+    canvas.addEventListener("mouseup", function(e){
+
+        mouse.x = e.pageX - this.offsetLeft;
+        mouse.y = e.pageY - this.offsetTop;
+        context.lineTo(mouse.x, mouse.y);
+        context.stroke();
+        context.closePath();
+        draw = false;
+    });
+    </pre>
+    </div>
+    <p>Для обработки движения мыши для элемента canvas определены три обработчика - нажатия мыши, перемещения и отпускания мыши. При нажатии мыши мы устанавливаем переменную draw равным true. То есть идет рисование. Также при нажатии мы фиксируем точку, с которой будет идти рисование.</p>
+    <p>При перемещении мыши получаем точку, на которую переместился указатель, и рисуем линию. При отпускании указателя закрываем графический путь методом context.closePath() и сбрасываем переменную draw в false.</p>
+</div>

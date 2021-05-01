@@ -1,0 +1,102 @@
+<div class="wrap">
+    <h2 class="header-style">Центрирование элемента внутри блока-родителя</h2>
+    <p>Возьмём блок и внутрь поместим картинку, чтобы картинку центрировать внутри этого блока есть 4 способа:</p>
+    <ul class="list">
+        <li>Первый:
+        <div class="code-style">
+            <pre>
+                .block-parent{
+                    width: 300px;
+                    height: 300px;
+                    
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                    
+                    position: relative;
+                }
+                .img-child{
+                    max-width: 50%;//эти размеры для того, чтобы картинка не вылезала за родителя, если она вдруг больше размером, чем родитель
+                    max-height: 50%;
+                   
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 1;
+                    margin: auto;
+                }
+            </pre>
+        </div>
+        </li>
+        <li>Второй:
+        <div class="code-style">
+            <pre>
+                .block-parent{
+                    width: 300px;
+                    height: 300px;
+                    
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                    
+                    position: relative;
+                }
+                .img-child{
+                    max-width: 50%;//эти размеры для того, чтобы картинка не вылезала за родителя, если она вдруг больше размером, чем родитель
+                    max-height: 50%;
+                   
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    z-index: 1;
+                    
+                    transform: translate(-50%, -50%)
+                    //также можно и отрицательным margin отодвинуть на половину элемента
+                }
+            </pre>
+        </div>
+        </li>
+        <li>Третий - с помощью флексов, более современный способ:
+        <div class="code-style">
+            <pre>
+                .block-parent{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 300px;
+                    height: 300px;
+                    
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                }
+                .img-child{
+                    max-width: 50%;//эти размеры для того, чтобы картинка не вылезала за родителя, если она вдруг больше размером, чем родитель
+                    max-height: 50%;
+                }
+            </pre>
+        </div>
+        </li>
+        <li>Четвёртый:
+        <div class="code-style">
+            <pre>
+                .block-parent{
+                    display: flex;
+                    width: 300px;
+                    height: 300px;
+                    
+                    border: 1px solid #ccc;
+                    border-radius: 50%;
+                }
+                .img-child{
+                    max-width: 50%;//эти размеры для того, чтобы картинка не вылезала за родителя, если она вдруг больше размером, чем родитель
+                    max-height: 50%;
+                    
+                    margin: auto;
+                }
+            </pre>
+        </div>
+        </li>
+        <h3 class="header-style2">Другие способы вырявнять вертикально элементы</h3>
+        <p class="note">Вертикально отцентрировать одну строку в эелементе с известной высотой можно указав эту высоту в свойстве line-height.</p>
+    </ul>
+</div>

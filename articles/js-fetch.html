@@ -1,0 +1,73 @@
+<div class="wrap">
+    <h3 class="header-style2">Fetch</h3>
+    <p>Базовый синтаксис:</p>
+    <div class="code-style">
+        <pre>
+            let promise = fetch(url, [options])
+        </pre>
+    </div>
+    <p>Без options это простой GET-запрос, скачивающий содержимое по адресу url.</p>
+    <p>Браузер сразу же начинает запрос и возвращает промис, который внешний код использует для получения результата. Процесс получения ответа обычно происходит <b>в два этапа</b>.</p>
+    <p><b>Во-первых, promise выполняется с объектом встроенного класса Response в качестве результата, как только сервер пришлёт заголовки ответа.</b> На этом этапе мы можем проверить статус HTTP-запроса и определить, выполнился ли он успешно, а также посмотреть заголовки, но пока без тела ответа.</p>
+    <p>Мы можем увидеть HTTP-статус в свойствах ответа:</p>
+    <ul class="list">
+        <li><b>status</b> – код статуса HTTP-запроса, например 200.</li>
+        <li><b>ok</b> – логическое значение: будет true, если код HTTP-статуса в диапазоне 200-299.</li>
+    </ul>
+    <div class="code-style">
+        <pre>
+            async function request(url, data){
+                let response = await fetch('адрес', {
+                    method: 'POST',
+                    body: data
+                });
+                
+                if(response.<b>ok</b>){
+                    //что то делаем с ответом от сервера, например
+                    let text = await response.text();
+                    или
+                    let json = await response.json();
+                }else{
+                    alert("Ошибка HTTP: " + response.<b>status</b>);
+                }
+            }
+            
+            //чтобы с сервера послать ошибку в файле php можно послать такой заголвок
+            header("HTTP/1.1 404 Not Found");
+        </pre>
+    </div>
+    <p><b>Во-вторых, для получения тела ответа нам нужно использовать дополнительный вызов метода.</b> Response предоставляет несколько методов, основанных на промисах, для доступа к телу ответа в различных форматах:</p>
+    <ul class="list">
+        <li><b>response.text()</b> – читает ответ и возвращает как обычный текст,</li>
+        <li><b>response.json()</b> – декодирует ответ в формате JSON,</li>
+        <li><b>response.formData()</b> – возвращает ответ как объект FormData</li>
+        <li><b>response.blob()</b> – возвращает объект как Blob (бинарные данные с типом),</li>
+        <li><b>response.arrayBuffer()</b> – возвращает ответ как ArrayBuffer (низкоуровневое представление бинарных данных),</li>
+        <li>помимо этого, <b>response.body</b> – это объект ReadableStream, с помощью которого можно считывать тело запроса по частям.</li>
+    </ul>
+    <p>Вот небольшой пример как я отправляю запрос из формы на сервер:</p>
+    <div class="code-style">
+        <pre>
+            async function postData(url, data, div){
+                div.innerHTML = message.loading;
+                let response = await fetch(url, {
+                    method: 'POST',
+                    body: data
+                })
+                if (response.ok) {
+                        let text = await response.text();
+                        div.innerHTML = message.success;
+                        console.log(text);
+                    } else {
+                        console.log("Ошибка HTTP: " + response.status);
+                        div.innerHTML = message.error;
+                }
+            }
+            
+            //url это адрес куда мы обращаемся
+            //data это данные из формы, собранные например вот так: let formData = new FormData(form);
+            //div это просто html элемент в который мы записываем текст загрузки, успеха или ошибки
+        </pre>
+    </div>
+    
+</div>
