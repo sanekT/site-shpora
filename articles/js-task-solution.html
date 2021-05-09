@@ -1,0 +1,409 @@
+<div class="wrap">
+   
+   <ul class="list">
+       <li><a href="#com1">Добавить коментарий1</a></li>
+       <li><a href="#com2">Добавить коментарий2</a></li>
+       <li>Задачи на делегирование
+           <ul class="list">
+               <li><a href="#2">Задача 1</a></li>
+               <li><a href="#3">Задача 2</a></li>
+               <li><a href="#4">Задача 3</a></li>
+               <li><a href="#5">Задача 4</a></li>
+               <li><a href="#ul">Задача 5</a></li>
+           </ul>
+       </li>
+       <li><a href="#6">Математический тренажёр</a></li>
+       <li></li>
+       <li></li>
+       <li></li>
+   </ul>
+   
+   
+   
+   
+    <h2 class="header-style">Различные решения</h2>
+    
+    
+    
+    <h3 class="header-style2" id="com1">Добавить коментарий1</h3>
+    <p><b>Файл в iframe взят из папки articles/iframe/task1/task1.html</b></p>
+    <p>Простенький пример того, как добавить комментарий с помощью js. Первый пример написан на чистом js:</p>
+    
+    <p>HTML структура:</p>
+    
+    <div class="code-style">
+    <pre>
+    < body>
+       < div class="wrapper">
+           < div class="container-coments">< /div>
+           < div class="container-write-coments">
+               < p>Напишите тут ваш комментарий:< /p>
+               < p>Ваш ник: < input type="text" class="nikname">< /p>
+               < p>Коментарий:< /p>
+               < textarea cols="90" rows="8" class="comment">< /textarea>< br>< br>
+               < button class="add-comment">Добавить< /button>
+           < /div>
+       < /div>
+    < /body>
+    </pre>
+    </div>
+    
+    <p>JS:</p>
+    
+    <div class="code-style">
+    <pre>
+    'use strict';
+
+    let containerComents = document.querySelector('.container-coments');
+    let nikname = document.querySelector('.nikname');
+    let comment = document.querySelector('.comment');
+    let btnAddComment = document.querySelector('.add-comment');
+
+
+    btnAddComment.addEventListener('click', handler);
+
+    function handler(){
+        let divCom = document.createElement('div');
+        let img = document.createElement('img');
+        let div = document.createElement('div');
+        let div2 = document.createElement('div');
+        let p = document.createElement('p');
+        let nik = document.createElement('p');
+
+        divCom.className = 'd';
+        img.src = 'img/ava.jpg';
+        p.innerHTML = comment.value;
+        nik.innerHTML = nikname.value;
+
+        div2.append(img, nik);
+        div.append(p);
+        divCom.append(div2, div);
+        containerComents.append(divCom);
+    }
+    </pre>
+    </div>
+    
+    <p>Тут надо будет написать этот же пример, но уже на jQuery:</p>
+    
+    <div class="code-style">
+    <pre>
+    
+    </pre>
+    </div>
+    
+    <p>Работающий пример, находится в iframe:</p>
+    <iframe src="articles/iframe/task1/task1.html" frameborder="1" width="600" height="300"></iframe>
+    
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="com2">Добавить коментарий2</h3>
+    <p>Код этого примера можно посметреть в файле articles/iframe/task8/task8.html</p>
+    <iframe src="articles/iframe/task8/task8.html" frameborder="1" width="600" height="300"></iframe>
+    
+    
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style">Задачи на делегирование</h2>
+    <h3 class="header-style2" id="2">Задача 1</h3>
+    
+    <p>Файл с кодом и стилями находится по пути articles/iframe/task2/task2.html</p>
+    <p>Нужно по клику на маленькой картинке показать её большую копию.</p>
+    <p>HTML:</p>
+    <div class="code-style">
+    <pre>
+        < div class="wrapper">
+           < div class="lg">
+               < img src="img/img1-lg.jpg">
+           < /div>
+           < div class="small">
+               < img src="img/img1.jpg" data-num="1">
+               < img src="img/img2.jpg" data-num="2">
+               < img src="img/img3.jpg" data-num="3">
+               < img src="img/img4.jpg" data-num="4">
+               < img src="img/img5.jpg" data-num="5">
+           < /div>
+       < /div>
+    </pre>
+    </div>
+    <p>JS:</p>
+    <div class="code-style">
+    <pre>
+    'use strict';
+
+    let small = document.querySelector('.small');
+    let lg = document.querySelector('.lg');
+    small.addEventListener('click', handler);
+
+    function handler(e){
+        let img = e.target;
+        if(img.tagName != 'IMG') return;
+
+        let num = img.dataset.num;
+
+
+        let str = `img/img${num}-lg.jpg`;
+        let pic = lg.querySelector('img');
+        pic.src = str;
+    }
+    </pre>
+    </div>
+    
+    <p>jQuery:</p>
+    <div class="code-style">
+    <pre>
+    $('.small').on('click', function(e){
+        let img = e.target;
+        if(img.tagName != 'IMG') return;
+
+        let num = $(img).data('num');
+
+        let str = `img/img${num}-lg.jpg`;
+        $('.lg img').attr('src', str);
+    })
+    </pre>
+    </div>
+    <iframe src="articles/iframe/task2/task2.html" frameborder="1" width="600" height="580"></iframe>
+    
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="3">Задача 2</h3>
+    <p>Файл с кодом и стилями находится по пути articles/iframe/task3/task3.html</p>
+    <p>Создать список, в котором можно выделять мышкой пункты, плюс чтобы можно было выбирать несколько пунктов с зажатым Ctrl.</p>
+    <p>JS:</p>
+    <div class="code-style">
+    <pre>
+    "use strict";
+
+    let wrap = document.querySelector('.wrapper');
+
+    wrap.onmousedown = () => false;
+
+    wrap.addEventListener('click', handler);
+
+    function handler(e){
+        let target = e.target;
+        if(target.tagName != 'LI') return;
+        
+        if(target.classList.contains('color')){
+            target.classList.remove('color');
+            return;
+        }
+
+        if(e.ctrlKey || e.metaKey){
+            target.classList.add('color');
+        }else{
+            for(let val of list.children){
+                val.classList.remove('color');
+            }
+            target.classList.add('color');
+        }
+    }
+    </pre>
+    </div>
+    <p>jQuery:</p>
+    <div class="code-style">
+    <pre>
+    $('.wrapper').on('mousedown', function(){return false;})
+    $('.wrapper').on('click', function(e){
+        let target = e.target;
+        if(target.tagName != 'LI') return;
+
+        if($(target).hasClass('color')){
+            $(target).removeClass('color');
+            return;
+        }
+
+        if(e.ctrlKey || e.metaKey){
+            $(target).addClass('color');
+        }else{
+            for(let val of list.children){
+                val.classList.remove('color');
+            }
+            $(target).addClass('color');
+        }
+    })
+    </pre>
+    </div>
+    <iframe src="articles/iframe/task3/task3.html" frameborder="1" width="600" height="180"></iframe>
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="4">Задача 3</h3>
+    <p>Файл с кодом и стилями находится по пути articles/iframe/task4/task4.html</p>
+    <p>Задача аналогичная задаче выше, но добавляется веделение промедутка между лишками при зажатом Shift.</p>
+    <p>HTML:</p>
+    <div class="code-style">
+    <pre>
+        < ul class="list" onmousedown="return false">
+            < li data-list="0">Текст< /li>
+            < li data-list="1">Текст< /li>
+            < li data-list="2">Текст< /li>
+            < li data-list="3">Текст< /li>
+            < li data-list="4">Текст< /li>
+            < li data-list="5">Текст< /li>
+            < li data-list="6">Текст< /li>
+            < li data-list="7">Текст< /li>
+            < li data-list="8">Текст< /li>
+            < li data-list="9">Текст< /li>
+        < /ul>
+    </pre>
+    </div>
+    <p>JS:</p>
+    <div class="code-style">
+    <pre>
+    let list = document.querySelector('.list');
+    let lis = document.querySelectorAll('.list li');
+
+
+    list.onclick = function (event){
+        let target = event.target;
+        if(target.tagName != 'LI') return;
+
+        if(event.shiftKey == false){//если shift не нажат выполняется этот блок кода
+
+            if(target.classList.contains('color')){
+                target.classList.remove('color');
+                return;
+            }
+
+            if(event.ctrlKey || event.metaKey){
+                target.classList.add('color');
+            }else{
+                for(let val of list.children){
+                    val.classList.remove('color');
+                }
+                target.classList.add('color');
+            }
+        }else{// а если shift нажат, то выполняется этот блок
+            let res = startCheck();
+
+            let number = target.dataset.list;
+            if(number > res){//этот блок закрашивает в фон сверху вниз
+                for(let i = res[0]; i &lt;= number; i++){
+                    lis[i].classList.add('color');
+                }
+            }else{
+                for(let i = number; i &lt;= res[res.length - 1]; i++){// а этот блок закрашивает снизу вверх
+                    lis[i].classList.add('color');
+                }
+            }		
+        }
+    }
+
+    function startCheck (){//проверочная функция, которая в массив добавляет индексы закрашенных элементов li
+        let mas = [];
+        for (let i = 0; i &lt; lis.length; i++) {
+            if(lis[i].classList.contains('color')){
+                mas.push(i);
+            }
+        }
+        return mas;
+    }
+    </pre>
+    </div>
+    <iframe src="articles/iframe/task4/task4.html" frameborder="1" width="600" height="180"></iframe>
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="5">Задача 4</h3>
+    <p>Файл с кодом и стилями находится по пути articles/iframe/task5/task5.html</p>
+    <p>При наведении мыши на элемент-кнопку с атрибутом data-tooltip, над ним должна показываться подсказка и скрываться при переходе на другой элемент. Подсказка не должна вылезать за края окна, если она вылезает вверх, то нужно вывести ниже, если вылезает влево, то дальше левой границы тоже не должна вылезать.</p>
+    <p>HTML:</p>
+    <div class="code-style">
+    <pre>
+        < button data-tooltip="Это очень длинная подсказка">Кнопка1< /button>
+        < button data-tooltip="HTML< br>подсказка">Кнопка2< /button>
+    </pre>
+    </div>
+    <p>JS:</p>
+    <div class="code-style">
+    <pre>
+        document.addEventListener('mouseover', handler);
+        document.addEventListener('mouseout', handler2);
+
+        function handler(e){
+            let target = e.target;
+            if(target.tagName != 'BUTTON') return;
+
+            let text = target.dataset.tooltip;
+            let btnCoords = target.getBoundingClientRect();
+
+            let tooltip = createTooltip(text);
+            document.body.append(tooltip);
+
+            let t = btnCoords.top  - tooltip.offsetHeight - 8;
+            let l = btnCoords.left + (target.offsetWidth / 2) - (tooltip.offsetWidth / 2);
+            if(t &lt; 0){
+                tooltip.style.top = target.offsetHeight + btnCoords.top + 8 + 'px';
+            }else{
+                tooltip.style.top = t + 'px';
+            }
+            if(l &lt; 0){
+                tooltip.style.left = 2 + 'px';
+            }else{
+                tooltip.style.left = l + 'px';
+            }
+        }
+
+        function createTooltip(text){
+            let elem = document.createElement('span');
+            elem.classList.add('tooltip');
+            let msg = document.createTextNode(text);
+            elem.insertAdjacentHTML('afterbegin', msg.nodeValue);
+            return elem;
+        }
+
+        function handler2(){
+            let elem = document.querySelector('.tooltip');
+            if(elem){
+                elem.remove();
+            }
+        }
+    </pre>
+    </div>
+    <iframe src="articles/iframe/task5/task5.html" frameborder="1" width="600" height="180"></iframe>
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="ul">Задача 5</h3>
+    <p>Файл с кодом и стилями находится по пути articles/iframe/task7/task7.html</p>
+    <p>Создайте дерево, которое по клику на заголовок скрывает-показывает потомков.</p>
+    <iframe src="articles/iframe/task7/task7.html" frameborder="1" width="600" height="320"></iframe>
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="6">Математический тренажёр</h3>
+    <p>Это математический тренажёр. Он есть уже написанный на Vue, а эта версия написана на чистом js.</p>
+    <p>Смотреть код в файле articles/iframe/task6/task6.html</p>
+    <iframe src="articles/iframe/task6/task6.html" frameborder="1" width="730" height="400"></iframe>
+    
+</div>

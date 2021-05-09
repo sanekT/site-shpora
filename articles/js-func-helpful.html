@@ -1,0 +1,394 @@
+<div class="wrap">
+    <h2 class="header-style">JS > Полезные функции</h2>
+    <p>Файл articles/js-func-helpful.html</p>
+    <h3 class="header-style2">Функция ищет случайное число</h3>
+    <div class="code-style">
+    <pre>
+    function mtRand(min, max){
+        let num = Math.floor(Math.random() * (max - min + 1)) + min;
+        return num;
+    }
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Тасовка букв в слове</h3>
+    <div class="code-style">
+    <pre>
+    function shufle(str) {
+        let a = str.split(""),
+            n = a.length;
+
+        for(let i = n - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+        }
+        return a.join("");
+    }
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Тасует массив</h3>
+    <div class="code-style">
+    <pre>
+    //1 вариант
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    
+    //2 вариант, но что то он у меня не работает, а у Лаврика работает
+    arr.sort(function(){
+        return Math.random() > 0.5;
+    })
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Получение последнего дня месяца</h3>
+    <div class="code-style">
+    <pre>
+    function getLastDayOfMonth(year, month){
+        var date = new Date(year, month + 1, 0);
+        console.log(date.getDate());	
+    }
+    getLastDayOfMonth(2020, 0);
+    getLastDayOfMonth(2020, 1);
+    getLastDayOfMonth(2020, 2);
+    </pre>
+    </div>
+    
+    
+    
+    <h3 class="header-style2">Подсчёт дней в  месяце</h3>
+    <p>Месяц задаётся во втором параметре new Date() начиная с 0</p>
+    <div class="code-style">
+    <pre>
+    function getCountDay(obj){
+        return 32 - new Date(obj.getFullYear(), obj.getMonth(), 32).getDate();
+    }
+
+    let d = new Date(2020, 4);
+    console.log(getCountDay(d));
+    </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Переводит дату в формат 12 Oct 2020 11:22:33</h3>
+    <p>Месяц задаётся во втором параметре new Date() начиная с 0</p>
+    <div class="code-style">
+    <pre>
+    function timeConvertor(miliseconds){
+        let a = new Date(miliseconds);
+        let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        let year = a.getFullYear();
+        let month = months[a.getMonth()];
+        let date = a.getDate();
+        let hour = a.getHours();
+        let min = a.getMinutes();
+        let sec = a.getSeconds();
+        let time = `${date} ${month} ${year} ${hour}:${min}:${sec}`;
+        return time;
+    }
+
+    console.log(timeConvertor(new Date()));
+    </pre>
+    </div>
+    
+    
+    
+    <h3 class="header-style2">Определяем сколько прошло секунд за сегодня</h3>
+    <div class="code-style">
+    <pre>
+    function getSecondsToday(){
+        var date = new Date();
+        var seconds = (date.getHours() * 3600) + (date.getMinutes() * 60) + date.getSeconds();
+        console.log(seconds);
+    }
+
+    getSecondsToday();
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Вычитает из даты заданное кол-во дней, не меняя сам объект даты</h3>
+    <div class="code-style">
+    <pre>
+    var date = new Date(2015, 0, 2);
+
+    function getDateAgo(date, days){
+        var dateCopy = new Date(date);
+        var day = dateCopy.getDate() - days;
+        dateCopy.setDate(day);
+        alert(dateCopy);
+    }
+
+    getDateAgo(date, 3);
+    getDateAgo(date, 2);
+    getDateAgo(date, 5);
+    </pre>
+    </div>
+    
+    <h3 class="header-style2">Переводим первые буквы строки в верхний регистр</h3>
+    <div class="code-style">
+    <pre>
+    function toUpperCase(str){
+        let str2 = '';
+        for(let i = 0; i &lt; str.length; i++){
+                if(str[i-1] == ' '){
+                    str2 += str[i].toUpperCase();
+                }else if(str[i] != ' ' &amp;&amp; i == 0){
+                    str2 += str[i].toUpperCase();
+                }else{
+                str2 += str[i];
+            }
+        }
+      return str2;
+    }
+
+
+    console.log(toUpperCase('hello, world'));
+    
+    
+    
+    //ещё один вариант
+    var ucFirst = function (str) {
+        var arr = str.split(' ');
+        for (var i = 0; i &lt; arr.length; i++) {
+            arr[i] = arr[i][0].toUpperCase() + arr[i].slice(1);
+        }
+        var string = arr.join(' ');
+        return string;
+    };
+    var str = 'Сегодня мы будем есть кашу';
+    alert(ucFirst(str));//'Сегодня Мы Будем Есть Кашу'
+    </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Выбираем из массива числа, которые повторяются</h3>
+    <div class="code-style">
+    <pre>
+    //<span class="vue-g">вариант1</span>
+    let arr = [1, 2, 0, 6, 1, 0, 0]; //наш массив
+    let temp = {}; //создаём пустой объект
+    arr.filter(function(item, index, array) {
+        let count = 0;
+        for(let i = 0; i &lt; array.length; i++){
+            if(item == array[i]){
+                count++;
+            }
+        }
+        if(count > 1){
+            temp[item] = true;
+            return true;
+        }
+    })
+    let mas = Object.keys(temp);
+    
+    
+    
+    //<span class="vue-g">вариант2</span>
+    let arr = [1, 2, 0, 6, 1, 0, 0]; //наш массив
+    let temp = {}; //создаём пустой объект 
+    temp = arr.filter(function(a) {
+        return temp[a] || !(temp[a]=!0)
+    })
+    console.log(temp);
+    
+    
+    
+    //<span class="vue-g">вариант3</span>
+    let arr = [1, 2, 0, 6, 1, 0, 0]; //наш массив
+    let temp = {}; //создаём пустой объект 
+    for (let e of arr) {
+        temp[e] = (temp.hasOwnProperty(e)) ? true : false;
+    }
+    temp = Object.keys(temp).filter(e => temp[e]);
+    console.log(temp); // temp = [0, 1]
+    </pre>
+    </div>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Определяем является ли число простым</h3>
+    <p>Простое число — целое положительное число, имеющее ровно два различных натуральных делителя — единицу и самого себя. Например, 7 — простое число, потому что делится без остатка только на 1 и на себя. 2017 — другое простое число.</p>
+    <div class="code-style">
+    <pre>
+    function isPrime(x){
+      let count = 0;
+      for(let i = 1; i &lt;= x; i++){
+        if (x % i  == 0){
+          count += 1;//если счётчик равен 2, то число простое, так как делится на себя и 1, а если больше двух, то делится ещё на какое то число
+        }
+      }
+      if(count == 2){
+        return console.log(true);//простое число
+      }else{
+        return console.log(false);//не простое число
+      }
+    }
+    isPrime(7);//true
+    isPrime(6);//false
+    </pre>
+    </div>
+    
+    
+    <h3 class="header-style2">Сортировка массива в которм лежат объекты с датами</h3>
+    
+    <div class="code-style">
+    <pre>
+    var arr = [{date: '10.01.2017'}, {date: '05.11.2016'}, {date: '21.13.2002'}];
+
+    arr.forEach(function(item) {
+        var arrDate = item.date.split('.'),
+          date = new Date(Number(arrDate[2]), Number(arrDate[1]), Number(arrDate[0]));
+          item.time = date.getTime();
+    });
+
+    arr.sort(function (a, b) {
+      if (a.time - b.time &lt; 0) {
+            return false;
+          } else {
+            return true;
+          }
+    });
+
+    var res = arr.map(function (item) {
+      return {date: item.date};
+    });
+
+    console.log(res);
+    </pre>
+    </div>
+    
+    
+    <h3 class="header-style2">Переворот строки</h3>
+    <div class="code-style">
+    <pre>
+    1 вариант
+    const reverse = str => {
+      let str2 = '';
+      let i = 0;
+      while(i &lt; str.length){
+        str2 = str2 + str[str.length - (i + 1)];
+        i++;
+      }
+      return str2; 
+    }
+
+
+    2 вариант
+    const reverse = (str) => {
+      let i = str.length - 1;
+      let result = '';
+
+      while (i >= 0) {
+        result = result + str[i];
+        i = i - 1;
+      }
+
+      return result;
+    };
+    </pre>
+    </div>
+    
+    
+    <h3 class="header-style2">Ищем наибольшее свойство</h3>
+    <div class="code-style">
+    <pre>
+    Есть объект salaries с зарплатами. Напишите код, который выведет имя сотрудника, у которого самая большая зарплата.
+
+    Если объект пустой, то пусть он выводит «нет сотрудников».
+
+    Например:
+
+    "use strict";
+
+    var salaries = {
+      "Вася": 100,
+      "Петя": 300,
+      "Даша": 250
+    };
+
+    // ... ваш код выведет "Петя"
+
+    Решение
+    "use strict";
+
+    var salaries = {
+      "Вася": 100,
+      "Петя": 300,
+      "Даша": 250
+    };
+
+    var max = 0;
+    var maxName = "";
+    for (var name in salaries) {
+      if (max &lt; salaries[name]) {
+        max = salaries[name];
+        maxName = name;
+      }
+    }
+
+    alert( maxName || "нет сотрудников" );
+    </pre>
+    </div>
+    
+    
+    <h3 class="header-style2">Генерируем окончания слов при подсчёте ворон</h3>
+    <div class="code-style">
+    <pre>
+    let num = +prompt("Введите число");
+    let x = "";
+    if(num % 100 &lt; 11 || num % 100 >14){
+        switch(num % 10){
+            case "1": x = "а"; break;
+            case "2": x = "ы"; break;
+            case "3": x = "ы"; break;
+            case "4": x = "ы"; break;
+        }
+    }
+    let str = "На ветке сидит " . num . " ворон" . x;
+    console.log(str);
+    </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Функция делает из '1200000' -> '1 200 000'</h3>
+    <div class="code-style">
+    <pre>
+    function abc(str){
+        return str.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
+    }
+    
+    
+    //второй вариант мой, только максимальный тут миилион, но можно сделать и больше
+    function abc(str) {
+		let num1 = str + '';
+		if(num1.length == 7){
+			num1 = num1.slice(0, 1) + ' ' + num1.slice(1, 4) + ' ' + num1.slice(4);
+		}else if(num1.length == 6){
+			num1 = num1.slice(0, 3) + ' ' + num1.slice(3);
+		}else if(num1.length == 5){
+			num1 = num1.slice(0, 2) + ' ' + num1.slice(2);
+		}else  if(num1.length == 4){
+			num1 = num1.slice(0, 1) + ' ' + num1.slice(1);
+		}else{
+			num1 = num1;
+		}
+		return num1;
+	}
+    </pre>
+    </div>
+</div>
