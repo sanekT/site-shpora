@@ -1,0 +1,160 @@
+<div class="wrap">
+    <h2 class="header-style">Основы PHP</h2>
+    
+    
+    <h3 class="header-style2">Типы данных и функции с ними связанные</h3>
+    <ul class="list">
+        <li><b>integer</b> - целочисленный тип данных, функция, которая может показать тип данных - var_dump()</li>
+        <li><b>float, double</b> - числа с плавающей запятой</li>
+        <li><b>string</b> - переменные содержащие текст</li>
+        <li><b>boolean</b> - true или false</li>
+        <li><b>null</b> - пустота в переменной, $a = null;</li>
+        <li><b>array</b> - массив. Примеры: $arr = array(1,2,3);(немерованный) или $arr = ['name' => 'Jhon', 'age' => 34]; с именнованными ключами(ассоциативный).</li>
+        <li><b>object</b> - объект. Пример: $obj = new Class(); $a-> = 'word'</li>
+        <li><b>resource</b> - ссылка на некие внешние данные. В примере при подключении к базе данных, возвращается некий дескриптор этого подключения, это и есть ресурс.</li>
+    </ul>
+    <p><b>Функции связанные с типами данных:</b></p>
+    <ul class="list">
+        <li><b>gettype($x)</b> - вернёт тип переменной в строковом виде.</li>
+        <li><b>is_string($str)</b> - вернёт лог. тип, если в переменной строка</li>
+        <li><b>is_integer($int)</b> - вернёт лог. тип, если в переменной число</li>
+        <li><b>is_boolean($bool)</b> - вернёт лог. тип, если в переменной булев тип</li>
+        <li><b>is_null($x)</b> - вернёт лог. тип, если в переменной null</li>
+    </ul>
+    <p><b>Насильно приводим к другому типу:</b></p>
+    <ul class="list">
+        <li><b>(int)val</b></li>
+        <li><b>(bool)val</b></li>
+        <li><b>(string)val</b></li>
+    </ul>
+    <p>Проверка <b>isset()</b>, устанавливает лежит ли в переменной хоть что то кроме null. Эта функция вернёт false только тогда когда переменной нет и когда в ней null.</p>
+    <p>Проверка на пустоту - <b>empty()</b>.
+    <img src="../img/39.png" alt="" width="700px">
+    
+    
+    
+    <h3 class="header-style2">Заметка</h3>
+    <p class="note">PHP в отличии от JS может самостоятельно привести сроку '3word' при сравнении к числу, а в JS нужно сначала parseInt('3word') сделать.</p>
+    
+    
+    
+    <h3 class="header-style2">Заметка</h3>
+    <p class="note">Также заметил что в php при вычислении 3 &amp;&amp; 4 вернётся логическое значение true, а в js вернётся 4</p>
+    
+    
+    
+    <h3 class="header-style2">Разница ' ' и " "  в PHP</h3>
+    <p>В отличии от js в php есть разница между этими кавычками. Двойные кавычки видят внутри себя переменную, а одинарные нет. В двойных кавычках если подставляем переменную, то лучше тогда её подставлять в {}:</p>
+    <div class="code-style">
+        <pre>
+            $lang = 'php';
+            $str = 'Я изучаю $lang'; // 'Я изучаю '
+            $str = "Я изучаю $lang"; // 'Я изучаю php'
+            $str = "Я изучаю {$lang}"; // 'Я изучаю php'(правельней всего)
+        </pre>
+    </div>
+    <p>Есть такая дериктива как HEREDOC, в неё можно записывать строки с разными кавычками и он всё поймёт:</p>
+    <div class="code-style">
+        <pre>
+            $lang['language'] = 'php';
+            $str = &lt;&lt;&lt;HEREDOC
+            "Я изучаю {$lang['language']}"
+            HEREDOC;
+        </pre>
+    </div>
+    
+    
+    
+    <h3 class="header-style2">Работа со строками</h3>
+    <p>В отличии от js в php работа в строках идёт не с символами, а с байтами.</p>
+    <p>Получение символа строки, длина строки:</p>
+    <div class="code-style">
+        <pre>
+            $str = 'word';
+            $str2 = 'слово';
+            echo $str{2}; // r
+            echo $str2{0}; // ??, не понимает
+            echo strlen($str); // 4
+            echo strlen($str2); // 10, потому что русские символы 
+            echo mb_strlen($str2); // 5, теперь нормально
+            echo $str{strlen($str) - 1}; // d
+        </pre>
+    </div>
+    <p>Склеивать строки можно 2мя спсобами:</p>
+    <div class="code-style">
+        <pre>
+            $str = 'word';
+            $str2 = 'of';
+            $str3 = 'tanks';
+            echo $str . ' ' . $str2 . ' ' . $str3; //word of tanks
+            echo "{$str $str2 $str3}";// word of tanks
+        </pre>
+    </div>
+    
+    
+    
+    <h3 class="header-style2">Приведение типов</h3>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/fnN0rZsuf7k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>При явном преобразрвании строки в число вот так - $str = (int)'word', получим 0, если в начале строки не будет цифр.</p>
+    
+    
+    
+    
+    <h3 class="header-style2">Заметка</h3>
+    <p class="note">Через файл .htaccess можно настраивать PHP. Например можно отключить директиву коротких кавычек, пишем такую строку php_flag short_open_tag off. Перезапустим сайт и посмотрим на инфу через функцию phpinfo(). На сайте увидим в столбце Local Value, что короткие кавычки теперь отключены. Если же изменить напрямую в файле php.ini эту настройку, то уже глобально отключится эта директива. Об этом говорится в видео специалиста Уровень 1, Урок 1 из 3, на 01:03:30. Эти видео у меня на компе в разделе php от специалиста.</p>
+    
+    
+    
+    
+    <h3 class="header-style2">Служебные функции</h3>
+    <ul class="list">
+        <li><b>phpinfo();</b> - выводит целую страницу разной информации о версии php, о сервере, о подключенных расширениях php, о заголовках http, о директивах включенных и нет php.ini и т.д.</li>
+        <li><b>echo</b> - выводит информацию на экран, может выводить через запятую: echo 'один', 'два';. Приводит к строке выводимую инфу.</li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    
+    
+    <h3 class="header-style2">Заметка</h3>
+    <p class="note">При echo true; выведится '1'. При echo false; выведится пустая строка ''. false при приведении к числу даст 0. true к числу даст 1</p>
+    
+    
+    <h3 class="header-style2">Функции связанные с датой</h3>
+    <ul class="list">
+        <li><b>strftime()</b> - возвращает строку с датой по переданным ей аргументам: 
+        <div class="code-style">
+            <pre>
+                echo strftime('Сегодня %d-%m-%Y');//Сегодня 23-03-2021
+                echo strftime('Сегодня %d-%B-%Y');//Сегодня 23-March-2021
+                //Чтобы месяц был по русски, пишем так:
+                setlocale(LC_ALL, "russian");
+                $day = strftime('%d');
+                $mon = strftime('%B');
+                $mon = iconv('windows-1251', 'utf-8', $mon);
+                $year = strftime('%Y');
+                echo $mon; // Март
+            </pre>
+        </div>
+         </li>
+    </ul>
+    
+    
+    
+    <h3 class="header-style2">Функции для работы с переменными</h3>
+    <ul class="list">
+        <li><b>unset($x)</b> - удаляет переменную x</li>
+    </ul>
+    
+    
+    
+    <h3 class="header-style2">Ошибки в PHP</h3>
+    <ul class="list">
+        <li>Уровни ошибок - 1. E_PARSE, 2. E_ERROR, 3. E_WARNING, 4. E_NOTICE, 5. E_DEPRECATED</li>
+        <li>В файде php.ini за вывод ошибок отвечают след. директивы: <b>display_errors = on  и error_reporting = E_ALL AND ~E_NOTICE</b></li>
+        <li>Есть функция в php, которой можно сказать, чтобы она включила все ошибки: <b>error_reporting(E_ALL)</b></li>
+        <li>А так мы говорим чтобы выключила все ошибки: <b>error_reporting(0)</b></li>
+    </ul>
+    
+    
+</div>
