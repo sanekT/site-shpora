@@ -190,7 +190,10 @@ figcaption {
   text-align: center;
   background-color: rgb(161, 162, 162);
 }
-
+iframe{
+    width: 100%;
+    height: auto;
+}
 
 
 /*для списка .list*/
