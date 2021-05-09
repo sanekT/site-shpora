@@ -42,7 +42,7 @@ ul.onclick = function(e){
         let arc = target.dataset.arc;
         
         //тут для получения url можно было использовать location.href, который вернул бы http://site-shpargalka
-        let url = `http://site-shpargalka/articles/${tech}-${arc}.html`;
+        let url = `https://sanekt.github.io/site-shpora/articles/${tech}-${arc}.html`;
         let request = new XMLHttpRequest();
         request.open('GET', url, false);
         request.send(null);
