@@ -1,0 +1,260 @@
+*{
+    margin: 0;
+    padding: 0; 
+}
+body{
+    background-image: url('../img/5.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+/*    font-family: 'Philosopher', sans-serif;*/
+    font-family: 'Ubuntu', sans-serif;
+    box-sizing: border-box;
+}
+
+#container{
+    max-width: 1100px;
+    min-height: 880px;
+    margin: 0 auto;
+    padding: 1%;
+    background-color: rgba(255,255,255, 0.3);
+/*    box-shadow: 0px 23px 14px 6px #c0c7f3;*/
+}
+
+/*TOTAL CSS*/
+.total-block{
+    border: 1px solid grey;
+    border-radius: 6px;
+    background-color: rgba(222, 232, 251, 0.9);
+}
+.header-style{
+    font-family: 'Ubuntu', cursive;
+    color: sienna;
+    text-align: center;
+    margin-top: 20px;
+}
+.header-style2{
+    margin-top: 20px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: "Ubuntu", sans-serif;
+}
+.tag-style{
+    font-family: 'Ubuntu', sans-serif;
+    color: #2973b7;
+    font-size: 19px;
+}
+.tag-style2{
+    padding-left: 40px;
+}
+.vue-b{
+    color: #2973b7;
+}
+.vue-r{
+    color: red;
+}
+.vue-g{
+    color: forestgreen;
+}
+.code-style{
+    width: 96%;
+    background-color: aliceblue;
+    font-family: monospace;
+    padding: 20px 10px 10px 0;
+    border-radius: 6px;
+    overflow: scroll;
+    margin: 15px 0;
+}
+
+
+
+
+/*HEADER*/
+.head{
+    height: 130px;
+}
+.head h1{
+    text-transform: uppercase;
+    margin-top: 35px;
+}
+
+
+/*MAIN*/
+#main{
+    display: flex;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    min-height: 700px;
+}
+.sidebar{
+    width: 30%;
+}
+.sidebar__list{
+    list-style: none;
+    margin-top: 10px;
+}
+.sidebar__list li{
+    margin-bottom: 4px;
+    padding-left: 30px;
+    position: relative;
+}
+.sidebar__list li .v-aligne{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+    margin-left: 20px
+}
+.sidebar__list li:hover{
+    cursor: pointer;
+    background-color: #b0c8ff;
+}
+.sidebar__list2{
+    width: 250px;
+    list-style-type: none;
+    background-color: rgba(222, 232, 251, 0.9);
+    border-radius: 4px;
+    position: absolute;
+    left: 330px;
+    top: -8px;
+    padding: 5px 0;
+    display: none;
+}
+.sidebar__list2 li{
+    margin-bottom: 0px;
+    display: block;
+    padding: 5px 30px;
+    border-bottom: 2px solid #97ceee;
+}
+.sidebar__folder-close{
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+    background-image: url('../img/folder1__36x36.png');
+}
+.sidebar__folder-open{
+    width: 36px;
+    height: 36px;
+    display: inline-block;
+    background-image: url('../img/folder2__36x36.png');
+}
+.mainbar{
+    width: 68%;
+    margin-left: 2%;
+    padding: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    color: #304455;
+    
+}
+.mainbar p {
+    margin: 10px 0 0 10px;
+    line-height: 1.7;
+}
+.mainbar .list {
+    line-height: 1.7;
+}
+
+.mainbar h2{
+    margin-bottom: 20px; 
+}
+.mainbar a{
+    text-decoration: none;
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #b0c8ff;
+    color: black;
+    border-radius: 4px;
+    margin: 5px;
+}
+.mainbar a:hover{
+    background-color: #6a96fa;
+}
+
+
+
+
+/*стили для тега figure и figcaption*/
+figure {
+  margin: 25px 0px 25px 37px;
+}
+
+figure img {
+  vertical-align: middle;
+  border: 8px solid rgb(161, 162, 162);
+}
+
+figcaption {
+  width: 502px;
+  padding-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  font-style: italic;
+  text-align: center;
+  background-color: rgb(161, 162, 162);
+}
+
+
+
+/*для списка .list*/
+.list{
+    margin-left: 45px;
+    font-family: "Ubuntu", sans-serif;
+}
+
+
+
+/*для скриншотов*/
+.screen{
+    display: block;
+    margin: 15px auto;
+    border: 7px solid grey;
+    border-radius: 5px;
+}
+
+
+
+/*для встраивания видео*/
+.video{
+    display: inline-block;
+    margin: 30px 0 30px 80px;
+    border: 7px solid #6653d9;
+    border-radius: 5px;
+}
+
+
+
+/*для заметок*/
+.note{
+    background-color: #CCFFCC;
+    border-left:10px solid #339966;
+    padding: 10px 0 10px 20px;
+}
+
+
+/*для кнопки вверх*/
+.up{
+    display: block;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #755cff;
+    color: aliceblue;
+    border-radius: 5px;
+    position: fixed;
+    bottom:50px;
+    right: 50px;
+}
+
+/*для таблиц*/
+.center{
+    width: 300px;
+    margin: 0 auto;
+}
+.tab1{
+    border: 1px solid black;
+}
+
+
+
+/*FOOTER*/
+.foot{
+    height: 50px;
+}
