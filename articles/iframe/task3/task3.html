@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+<!--        <link rel="stylesheet" href="css/tren.css">-->
+		<title>Выделение пунктов</title>
+		<style>
+            body{
+                background-color: azure;
+            }
+			.color{
+				background-color: aqua;
+			}
+            ul li:hover{
+                cursor: pointer;
+            }
+		</style>
+    </head>
+    <body>
+       <div class="wrapper">
+           <p>Кликни на элемент списка, чтобы выделить его</p>
+           <ul id="list">
+               <li>item1</li>
+               <li>item2</li>
+               <li>item3</li>
+               <li>item4</li>
+               <li>item5</li>
+               <li>item6</li>
+           </ul>
+       </div>
+        
+        <script>
+			"use strict";
+
+			let wrap = document.querySelector('.wrapper');
+
+			wrap.onmousedown = () => false;
+
+			wrap.addEventListener('click', handler);
+
+			function handler(e){
+				let target = e.target;
+				if(target.tagName != 'LI') return;
+                
+                if(target.classList.contains('color')){
+                    target.classList.remove('color');
+                    return;
+                }
+				
+				if(e.ctrlKey || e.metaKey){
+					target.classList.add('color');
+				}else{
+					for(let val of list.children){
+						val.classList.remove('color');
+					}
+					target.classList.add('color');
+				}
+			}
+		</script>
+    </body>
+</html>

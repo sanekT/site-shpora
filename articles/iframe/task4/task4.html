@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+<!--        <link rel="stylesheet" href="css/tren.css">-->
+		<title>Выделение пунктов</title>
+		<style>
+            body{
+                background-color: azure;
+            }
+            .color{
+                background-color: aqua;
+            }
+            ul li:hover{
+                cursor: pointer;
+            }
+		</style>
+    </head>
+    <body>
+       <div class="wrapper">
+           <p>Кликни на элемент списка, чтобы выделить его</p>
+           <ul class="list" onmousedown="return false">
+               <li data-list="0">item1</li>
+               <li data-list="1">item2</li>
+               <li data-list="2">item3</li>
+               <li data-list="3">item4</li>
+               <li data-list="4">item5</li>
+               <li data-list="5">item6</li>
+           </ul>
+       </div>
+        
+        <script>
+			"use strict";
+
+            let list = document.querySelector('.list');
+            let lis = document.querySelectorAll('.list li');
+
+
+            list.onclick = function (event){
+                let target = event.target;
+                if(target.tagName != 'LI') return;
+                
+                if(event.shiftKey == false){//если shift не нажат выполняется этот блок кода
+                    
+                    if(target.classList.contains('color')){
+                        target.classList.remove('color');
+                        return;
+                    }
+                    
+                    if(event.ctrlKey || event.metaKey){
+                        target.classList.add('color');
+                    }else{
+                        for(let val of list.children){
+                            val.classList.remove('color');
+                        }
+                        target.classList.add('color');
+                    }
+                }else{// а если shift нажат, то выполняется этот блок
+                    let res = startCheck();//в переменную присваеваем резултат функции startCheck() в виде массива, которая проверяет все лишки на наличие фона
+
+                    let number = target.dataset.list;//получаем значение атрибута data-* нажатой лишки
+                    console.log(number);
+                    if(number > res){//этот блок закрашивает в фон сверху вниз
+                        for(let i = res[0]; i <= number; i++){
+                            lis[i].classList.add('color');
+                        }
+                    }else{
+                        for(let i = number; i <= res[res.length - 1]; i++){// а этот блок закрашивает снизу вверх
+                            lis[i].classList.add('color');
+                        }
+                    }		
+                }
+            }
+
+            function startCheck (){//проверочная функция, которая в массив добавляет индексы закрашенных элементов li
+                let mas = [];
+                for (let i = 0; i < lis.length; i++) {
+                    if(lis[i].classList.contains('color')){
+                        mas.push(i);
+                    }
+                }
+                return mas;
+            }
+		</script>
+    </body>
+</html>
