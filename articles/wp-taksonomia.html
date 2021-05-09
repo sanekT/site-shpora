@@ -1,0 +1,143 @@
+<div class="wrap">
+    <h3 class="header-style2">Таксономии</h3>
+    
+    <p>Таксономия это структурирование постов. По умолчанию в ВП есть рубрики и метки это встроенные таксономии. Но мы можем добавить и свои пользовательские таксономии. Я сделал во 2й тренировочной теме пользовательские записи Машины, вот к ним и буду добавлять пользовательские таксономии.</p>
+    <p>По этому видео мне что то трудновато понять для чего нужны таксономии.</p>
+    
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/7GNaMaRQkT0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    <p>Попробую по вот этому видео описать тут.</p>
+    
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/Cp7oFcY9mvE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    <p>Есть понятие "Рубрика" или "Метка" это называется таксономией, а вот уже созданная рубрика - "Цвет" или "Спорт" это уже понятие term(термин). Встроенные id таксономии, которые уже заняты это caregory(Рубрика), post_tag(Метки), link_category, post_format. </p>
+    <p>Так что же такое таксономия? Представим, что нам нужна фильтрация наших машин по марке, году производства, цвету. Добавим таксономию, сама функция описана <a href="https://wp-kama.ru/function/register_taxonomy">тут</a>. Первым параметром указываем название таксономии, пусть это будет 'snb_year' - год выпуска машины(snb это префикс, который мы сами придумываем, ВП рекомендует на всё устанавливать один префикс, чтобы не было конфликтов имён с другими плагинами). Второй параметр это для какого типа записи мы добавляем таксономию, указываем 'car'. Ну и 3м параметром указываем остальные настройки. Итак добавим 1ю таксономию "Год":</p>
+    <div class="code-style">
+        <pre>
+        register_taxonomy( 'snb_year', [ 'car' ], [ 
+            'label'                 => '', // определяется параметром $labels->name
+            'labels'                => [
+                'name'              => 'Год',
+                'singular_name'     => 'Год',
+                'search_items'      => 'Поиск по годам',
+                'all_items'         => 'Все года',
+                'view_item '        => 'Посмотреть года',
+                'parent_item'       => 'Parent Genre',
+                'parent_item_colon' => 'Parent Genre:',
+                'edit_item'         => 'Изменить год',
+                'update_item'       => 'Обновить год',
+                'add_new_item'      => 'Добавить новый год',
+                'new_item_name'     => 'New Genre Name',
+                'menu_name'         => 'Год',
+            ],
+
+            'rewrite'               => ['slug' => 'year'],//когда наведём на ссылку термина таксономии, то в url отобразится этот слаг, например http://wordpress.local-tren/www/year/2000/
+            'hierarchical'          => true,//если таксономия будет категорией, то true, если метками, то false
+        ] );  
+        </pre>
+    </div>
+    <p>Далее напишем ешё раз эту функцию для добавления таксономии "Цвет":</p>
+    <div class="code-style">
+        <pre>
+        register_taxonomy( 'snb_color', [ 'car' ], [ 
+            'label'                 => '', // определяется параметром $labels->name
+            'labels'                => [
+                'name'              => 'Цвет',
+                'singular_name'     => 'Цвет',
+                'search_items'      => 'Поиск по цветам',
+                'all_items'         => 'Все цвета',
+                'view_item '        => 'Посмотреть цвета',
+                'parent_item'       => 'Parent Genre',
+                'parent_item_colon' => 'Parent Genre:',
+                'edit_item'         => 'Изменить цвет',
+                'update_item'       => 'Обновить цвет',
+                'add_new_item'      => 'Добавить новый цвет',
+                'new_item_name'     => 'New Genre Name',
+                'menu_name'         => 'Цвет',
+            ],
+
+            'rewrite'               => ['slug' => 'year'],
+            'hierarchical'          => true,//если таксономия будет категорией, то true, если метками, то false
+        ] );  
+        </pre>
+    </div>
+    <p>Затем добавим таксономию "Марка":</p>
+    <div class="code-style">
+        <pre>
+        register_taxonomy( 'snb_type', [ 'car' ], [ 
+            'label'                 => '', // определяется параметром $labels->name
+            'labels'                => [
+                'name'              => 'Марка',
+                'singular_name'     => 'Марка',
+                'search_items'      => 'Поиск по маркам',
+                'all_items'         => 'Все марки',
+                'view_item '        => 'Посмотреть марку',
+                'parent_item'       => 'Parent Genre',
+                'parent_item_colon' => 'Parent Genre:',
+                'edit_item'         => 'Изменить марку',
+                'update_item'       => 'Обновить марку',
+                'add_new_item'      => 'Добавить новый марка',
+                'new_item_name'     => 'New Genre Name',
+                'menu_name'         => 'Марка',
+            ],
+
+            'rewrite'               => ['slug' => 'type'],
+            'hierarchical'          => true,//если таксономия будет категорией, то true, если метками, то false
+        ] );  
+        </pre>
+    </div>
+    <p>И закончим добавлением таксономии - "Достоинства", эта таксономия будет представлена в виде меток.</p>
+    <div class="code-style">
+        <pre>
+        register_taxonomy( 'snb_features', [ 'car' ], [ 
+            'label'                 => '', // определяется параметром $labels->name
+            'labels'                => [
+                'name'              => 'Достоинства',
+                'singular_name'     => 'Достоинства',
+                'search_items'      => 'Поиск по достоенствам',
+                'all_items'         => 'Все достоинства',
+                'view_item '        => 'Посмотреть достоинство',
+                'parent_item'       => 'Parent Genre',
+                'parent_item_colon' => 'Parent Genre:',
+                'edit_item'         => 'Изменить достоинство',
+                'update_item'       => 'Обновить достоинство',
+                'add_new_item'      => 'Добавить новое достоинство',
+                'new_item_name'     => 'New Genre Name',
+                'menu_name'         => 'Достоинства',
+            ],
+
+            'rewrite'               => ['slug' => 'features'],
+            'hierarchical'          => false,//если таксономия будет категорией, то true, если метками, то false
+        ] );  
+        </pre>
+    </div>
+    
+    <p>Посмотрим в админке в записях Машины и увидим 4 новых таксономии, 3 категории и одна метка. Если нажать Добавить новую машину, то справа уидим 3 блока для года, марки, и цвета и 1 для выбора достоинств.</p> 
+    <p class="note">Если редактор Гутунберга, то нужно в functions.php в функциях регистрации пользовательских таксономий нужно поставить свойство 'show_in_rest' в значение true.</p>
+    <p>У меня уже есть 5 записей с машинами, идём в редактор и каждой записи укажем термены. Кто какого года, цвета и т.д.</p>
+    <p>Пока на этом остановлюсь, что то так запутанно с этими таксономиями, разберусь, допишу</p>
+    <div class="code-style">
+        <pre>
+        $terms = get_terms( [//получаем массив терминов указанной таксономии, но они будут без ссылки
+            'taxonomy' => 'snb_year',
+            'hide_empty' => false,
+        ] );
+        $output = '';
+        foreach($terms as $term){
+            $output .= $term->name .'<br>';
+        }
+        echo $output;
+        </pre>
+    </div>
+    <p>Ещё одна функция вывода терминов:</p>
+    <div class="code-style">
+        <pre>
+        the_terms( get_the_ID(), 'name_taxonomy', '', ' / ', '' ); 
+        </pre>
+    </div>
+    
+    
+    <p class="note">Ещё одно замечание по поводу того, что при клике по термину(категории или метки) на странице, мы должны перейти на страницу taxonomy-{ярлык таксономии}.php, где выведутся все записи связанные с этим термином, но они не выводятся, проблему можно решить указав в свойстве 'exclude_from_search' функции добавления произвольной записи значение false.</p>
+    
+    
+</div>

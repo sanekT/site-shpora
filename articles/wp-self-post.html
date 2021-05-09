@@ -1,0 +1,95 @@
+<div class="wrap">
+    <h3 class="header-style2">Свои типы записей</h3>
+    <p>Функция для регистрации своих типов записей - <a href="https://wp-kama.ru/function/register_post_type">тут</a>.</p>
+    
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/02qdcuttj3c" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/O9j-R-GwCt4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    <p class="note">Важно! После того как создадим свои записи и всё сделаем могут не работать ссылки, для этого надо зайти в Настройки->Постоянные ссылки и нажать Сохранить изменения.</p>
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Как зарегистрировать свой тип записи. Это законспектировано из видео Лаврика</h3>
+    <p>Это пример записей вопрос-ответ.</p>
+    <div class="code-style">
+        <pre>
+        файл function.php---------
+
+        add_action( 'init', 'register_post_types' );//Вешаем нашу функцию на хук-событие init
+
+
+        function register_post_types(){
+            register_post_type( 'faq', [      //вот эта функция регистрирует записи в админке с этими настройками
+                'label'  => null,
+                'labels' => [
+                    'name'               => 'Вопрос-ответ',
+                    'singular_name'      => 'Вопрос', 
+                    'add_new'            => 'Добавить ответ',
+                    'add_new_item'       => 'Добавление ответа',
+                    'edit_item'          => 'Редактирование ответа',
+                    'new_item'           => 'Новое ответ',
+                    'view_item'          => 'Смотреть ответ',
+                    'search_items'       => 'Искать ответ',
+                    'not_found'          => 'Не найдено',
+                    'not_found_in_trash' => 'Не найдено в корзине',
+                    'menu_name'          => 'ЧАВО',
+                ],
+                //'description'         => '',
+                'public'              => false,
+                // 'publicly_queryable'  => null,
+                // 'exclude_from_search' => null,
+                'show_ui'             => true,
+                // 'show_in_nav_menus'   => null,
+                //'show_in_menu'        => null,
+                // 'show_in_admin_bar'   => null,
+                //'show_in_rest'        => null,
+                //'rest_base'           => null,
+                //'menu_position'       => null,
+                'menu_icon'           => 'dashicons-sticky',
+                //'hierarchical'        => false,
+                'supports'            => [ 'title', 'editor' ],
+                //'taxonomies'          => [],
+                //'has_archive'         => false,
+                //'rewrite'             => true,
+            ] );
+        }
+        </pre>
+    </div>
+    <p>Далее в админке уже появится раздел с названием ЧАВО, в котором мы можем добавлять новые записи, ну а чтобы мы увидели новые записи в вёрстке есть такая функция get_posts($args). Эта функция возвращает массив объектов-записей, вот данные из этих объектов и нужно выводить в вёрстке. Не будем в вёрстке писать всю логику, для этого в файле function.php напишем свою функцию:</p>
+    <div class="code-style">
+        <pre>
+        function get_faq(){
+            $posts = get_posts( array(
+                'orderby'     => 'date',
+                'order'       => 'ASC',
+                'post_type'   => 'faq',
+            ) );
+
+            return $posts;
+        }    
+        </pre>
+    </div>
+    <p>Можно посмотреть что находится в переменной с помощью var_dump()</p>
+    <p>Теперь переменная $posts содержит массив объектов-записей, идём в вёрстку и там их выводим через цикл:</p>
+    <div class="code-style">
+        <pre>
+        < div class="container">
+            &lt;?php foreach(get_faq() as $post): ?&gt;
+            < article>
+                < div class="post-title">
+                    < p>&lt;?php echo $post->post_title; ?&gt;< /p>
+                < /div>
+                < div class="post-content">
+                    < p>&lt;?php echo $post->post_content; ?&gt;< /p>
+                < /div>
+            < /article>
+            &lt;? php endforeach; ?&gt;
+        < /div>
+        </pre>
+    </div>
+    </div>
+</div>
