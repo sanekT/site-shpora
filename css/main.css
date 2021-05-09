@@ -289,6 +289,9 @@ iframe{
         margin-left: 0;
         width: 452px;
     }
+    figure{
+        margin-left: 0;
+    }
 }
 @media (max-width: 483px) {
     .mainbar{
