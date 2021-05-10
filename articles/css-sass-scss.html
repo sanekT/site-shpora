@@ -1,0 +1,21 @@
+<div class="wrap">
+    <h2 class="header-style">sass/scss</h2>
+    
+    <p><b>Миксины</b></p>
+    <div class="code-style">
+        <pre>
+            //в файле scss или sass пишем миксин
+            @mixin reg{
+                font-family: 'Montserat', sans-serif;
+                font-weight: 400
+            }
+            
+            
+            //и далее в коде подключаем этот миксин
+            .class{
+                color: #fff;
+                @include reg
+            }
+        </pre>
+    </div>
+</div>
