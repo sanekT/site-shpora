@@ -1,0 +1,22 @@
+<div class="wrap">
+    <h2 class="header-style">Затенение SVG-фигур</h2>
+    
+    <h3 class="header-style2">Тень рамномерно вокруг фигуры</h3>
+    <div class="code-style">
+        <pre>
+            &lt;svg&gt; style="width: 400px; height: 200px; background-color: white;"
+                &lt;filter id="shadow" class="shadow" width="30" height="30" x="-6" y="-6"&gt;
+                    &lt;feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#4AF6CD" /&gt;
+                &lt;/filter&gt;
+                &lt;circle class="havai-beach" r="60" cx="20" cy="54%" fill="#4AF6CD" filter="url(#shadow)"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <filter id="shadow" class="shadow" width="30" height="30" x="-6" y="-6">
+            <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#4AF6CD" />
+        </filter>
+        <circle class="havai-beach" r="60" cx="120" cy="54%" fill="#4AF6CD" filter="url(#shadow)"/>
+    </svg>
+    <p class="note">На самом деле фильтров много и разные, это просто тот вариант который я уже делал и решил записать как он делается. Атрибут <b>stdDeviation</b> отвечает за размытость тени, атрибуты <b>dx, dy</b> смещают тень. У самого тега <b>filter</b> есть размеры и координаты смещения, они нужны чтобы фигура была по центру фильтра и тень не обрезалась.</p>
+</div>

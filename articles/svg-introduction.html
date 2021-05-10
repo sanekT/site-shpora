@@ -1,0 +1,274 @@
+<div class="wrap">
+    <h2 class="header-style">Знакомство с SVG</h2>
+    
+    
+    <p>SVG — это формат векторной графики. В отличие от растровой графики — PNG, GIF, JPEG — SVG может растягиваться и сжиматься без потери качества. Также SVG-элементы можно оформить с помощью CSS и добавить им интерактивности с помощью JavaScrip. Вот простой пример кода:</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+              &lt;circle r="50" cx="50%" cy="50%" fill="yellowgreen"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    
+    <svg style="width: 400px; height: 200px; background-color: white;">
+      <circle r="50" cx="50%" cy="50%" fill="yellowgreen"/>
+    </svg>
+    
+    <p>SVG-элемент вставляется с помощью тега svg, внутри которого уже находится остальное содержимое: фигуры, картинки или текст. SVG можно встраивать несколькими разными способами, мы рассмотрим их позже, а сейчас будем вставлять его непосредственно в код страницы.</p>
+    
+    
+    
+    <h3 class="header-style2">Рисуем прямоугольник</h3>
+    <p>В SVG есть несколько способов нарисовать фигуру, для простых фигур есть свои теги. Например, прямоугольник рисуется с помощью тега <b>rect</b>. Код простого прямоугольника выглядит так:</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;rect width="150" height="100" fill="orange"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <p>Обратите внимание: все теги в SVG должны быть закрыты, то есть должно быть так: &lt;rect .../&gt; или так: &lt;rect...&gt;&lt;/rect&gt;. Мы будем использовать первый способ.</p>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+      <rect width="150" height="100" fill="orange"/>
+    </svg>
+    <p>Атрибуты width и height управляют, соответственно, шириной и высотой фигуры. Значения можно задавать и в пикселях, и в процентах. Для значений в пикселях после значения не нужно писать px, потому что пиксели — единица измерения, используемая в SVG по умолчанию. Проценты рассчитываются относительно размеров всего SVG-изображения: горизонтальные значения относительно ширины, вертикальные — относительно высоты. В современных браузерах размерами и положением фигур нельзя управлять через CSS, но эта возможность появится в будущем.</p>
+    <p><b>Координаты прямоугольника</b></p>
+    <p>Чтобы задать координаты прямоугольника, используются атрибуты x и y:</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;rect width="50%" height="100" fill="orange" x="20%" y="50" /&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+      <rect width="50%" height="100" x="20%" y="50" fill="orange" />
+    </svg>
+    <p>Координаты определяют положение верхнего левого угла фигуры.</p>
+    <p><b>Скругление углов</b></p>
+    <p>Скруглением углов прямоугольника управляют параметры rx и ry. Атрибут rx задаёт скругление по горизонтали, а ry — по вертикали. Если атрибут ry не задан, он будет равен rx.</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;rect width="50%" height="100" fill="orange" x="20%" y="50" rx="50" ry="20" /&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+      <rect width="50%" height="100" x="20%" y="50" fill="orange"  rx="50" ry="20" />
+    </svg>
+    
+    
+    
+    <h3 class="header-style2">Многоугольники</h3>
+    <p>В SVG можно рисовать не только четырёхугольники, но и многоугольники, это делается с помощью тега <b>polygon</b>. Вершины отмечаются так: "x,y x,y x,y" Пример кода:</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;polygon points="70,5 90,41 136,48 103,80 111,126 70,105 29,126 36,80 5,48 48,41"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <polygon points="70,5 90,41 136,48 103,80 111,126 70,105 29,126 36,80 5,48 48,41" fill="orange"/>
+    </svg>
+    <p>В атрибуте points задаются координаты вершин фигуры. Каждая координата задаётся по x и y. Координаты в points нельзя задавать в процентах.</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;polygon points="5,135 115,5 225,135" fill="violet"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <p><b>Рисунок</b></p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 540px; height: 290px; background-color: white;"&gt;
+                &lt;rect width="540" height="190" x="0" y="0" fill="skyblue"/&gt;
+                &lt;rect width="540" height="100" x="0" y="190" fill="yellow"/&gt;
+                &lt;polygon points="170,100 290,220 50,220" fill="goldenrod"/&gt;
+                &lt;polygon points="270,140 340,240 200,240" fill="darkgoldenrod"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 540px; height: 290px;">
+        <rect width="540" height="190" x="0" y="0" fill="skyblue"/>
+        <rect width="540" height="100" x="0" y="190" fill="yellow"/>
+        <polygon points="170,100 290,220 50,220" fill="goldenrod"/>
+        <polygon points="270,140 340,240 200,240" fill="darkgoldenrod"/>
+    </svg>
+    
+    
+    <h3 class="header-style2">Рисуем окружность</h3>
+    <p>Окружность рисуется с помощью тега <b>circle</b>. Пример кода:</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;circle r="50" fill="blue"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <circle r="50" fill="blue"/>
+    </svg>
+    <p>Атрибут <b>r</b> это радиус окружности. В отличии от других фигур, положение окружности определяется координатами цетра фигуры: атрибут <b>cx</b> задаёт положение по горизонтальной оси, <b>cy</b> - по вертикальной. По умолчанию координаты центра окружности равны 0,0, поэтому она находится в левом верхнем углу. Подвигаем фигуру:</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;circle r="50" cx="100" cy="50%" fill="blue"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <circle r="50" cx="100" cy="50%" fill="blue"/>
+    </svg>
+    <p><b>Рисунок</b></p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;circle r="10" cx="50" cy="50%" fill="crimson"/&gt;
+                &lt;circle r="30" cx="105" cy="50%" fill="orange"/&gt;
+                &lt;circle r="50" cx="200" cy="50%" fill="gold"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <circle r="10" cx="50" cy="50%" fill="crimson"/>
+        <circle r="30" cx="105" cy="50%" fill="orange"/>
+        <circle r="50" cx="200" cy="50%" fill="gold"/>
+    </svg>
+    <p><b>Рисунок</b></p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 300px; height: 300px;"&gt;
+                &lt;rect width="300" height="60%" x="0" y="0" fill="skyblue" /&gt;
+                &lt;rect width="300" height="40%" x="0" y="165" fill="yellowgreen" /&gt;
+                &lt;rect width="10" height="40" x="90" y="220" rx="5" fill="black" /&gt;
+                &lt;rect width="10" height="40" x="200" y="220" rx="5"  fill="black" /&gt;
+                &lt;circle r="100" cx="50%" cy="50%" fill="crimson"/&gt;
+                &lt;circle r="80" cx="50%" cy="50%" fill="white"/&gt;
+                &lt;circle r="60" cx="50%" cy="50%" fill="crimson"/&gt;
+                &lt;circle r="40" cx="50%" cy="50%" fill="white"/&gt;
+                &lt;circle r="20" cx="50%" cy="50%" fill="crimson"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 300px; height: 300px;">
+        <rect width="300" height="60%" x="0" y="0" fill="skyblue" />
+        <rect width="300" height="40%" x="0" y="165" fill="yellowgreen" />
+        <rect width="10" height="40" x="90" y="220" rx="5" fill="black" />
+        <rect width="10" height="40" x="200" y="220" rx="5"  fill="black" />
+        <circle r="100" cx="50%" cy="50%" fill="crimson"/>
+        <circle r="80" cx="50%" cy="50%" fill="white"/>
+        <circle r="60" cx="50%" cy="50%" fill="crimson"/>
+        <circle r="40" cx="50%" cy="50%" fill="white"/>
+        <circle r="20" cx="50%" cy="50%" fill="crimson"/>
+    </svg>
+    
+    
+    
+    <h3 class="header-style2">Рисуем эллипс</h3>
+    <p>Эллипс рисуется почти также как и круг, но у него 2 радиуса: по горизонтальной оси - <b>rx</b> и по вертикальной - <b>ry</b>.</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;ellipse rx="30" ry="40%" fill="crimson"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <ellipse rx="30" ry="40%" fill="crimson"/>
+    </svg>
+    <p>Расположение эллипса так же как и для circle задаётся с помощью <b>cx</b> и <b>cy</b>.</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;ellipse rx="30" ry="40%" cx="50%" cy="50%" fill="crimson"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <ellipse rx="30" ry="40%" cx="50%" cy="50%" fill="crimson"/>
+    </svg>
+    <p>Рисунок</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;ellipse rx="80" ry="6%" cx="50%" cy="94%" fill="lightgray"/&gt;
+                &lt;circle r="120" cx="50%" cy="55%" fill="gold"/&gt;
+                &lt;circle r="50" cx="34%" cy="40%" fill="white"/&gt;
+                &lt;circle r="50" cx="60%" cy="40%" fill="white"/&gt;
+                &lt;circle r="10" cx="34%" cy="40%" fill="black"/&gt;
+                &lt;circle r="10" cx="60%" cy="40%" fill="black"/&gt;
+                &lt;ellipse rx="10" ry="20" cx="48%" cy="74%" fill="crimson"/&gt;
+            &lt;/svg&gt;
+        </pre>
+    </div>
+    <svg style="width: 300px; height: 300px; background-color: white;" >
+        <ellipse rx="80" ry="6%" cx="50%" cy="94%" fill="lightgray"/>
+		<circle r="120" cx="50%" cy="55%" fill="gold"/>
+		<circle r="50" cx="34%" cy="40%" fill="white"/>
+		<circle r="50" cx="60%" cy="40%" fill="white"/>
+		<circle r="10" cx="34%" cy="40%" fill="black"/>
+		<circle r="10" cx="60%" cy="40%" fill="black"/>
+		<ellipse rx="10" ry="20" cx="48%" cy="74%" fill="crimson"/>
+    </svg>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Рисуем линии</h3>
+    <p>Линии рисуются с помощью тега <b>line</b>. Координаты начала линии задаются атрибутами x1 и y1, координаты конца  - атрибутами x2 и y2. Координаты можно задавать в процентах.</p>
+    <p>Так как линия не образует фигуру с внутреним контуром, для отображения ей нужно задать не заливку, а обводку. Обводкой управляют два атрибута: <b>stroke(цвет)</b> и <b>stroke-width(толщина)</b>.</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;line x1="220" y1="20" x2="20" y2="90" stroke="violet" stroke-width="5"/&gt;
+            &lt;/svg&gt; 
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <line x1="220" y1="20" x2="20" y2="90" stroke="violet" stroke-width="5"/>
+    </svg>
+    <p>Можно задать только цвет, тогда толщина будет равна 1px.</p>
+    
+    
+    
+    
+    <h3 class="header-style2">Рисуем ломаные линии</h3>
+    <p>Ломаные линии рисуются с помощью тега <b>polyline</b>. Координаты точек на линии задаются в атрибуте points, как и для polygon.</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;polyline points="10,135 100,10 55,135 10,10" fill="none" stroke="crimson"/&gt;
+            &lt;/svg&gt; 
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <polyline points="10,135 100,10 55,135 10,10" fill="none" stroke="crimson"/>
+    </svg>
+    <p>Разница между polygon и polyline заключается в поведении обводки: у многоугольника обводка сама по себе замыкается, а у ломаной линии остаётся незамкнутой.</p>
+    <div class="code-style">
+        <pre>
+            &lt;svg style="width: 400px; height: 200px; background-color: white;"&gt;
+                &lt;polyline points="50,180 100,20 150,180 20,80 180,80 50,180 100,20" fill="none" stroke="crimson"/&gt;
+            &lt;/svg&gt; 
+        </pre>
+    </div>
+    <svg style="width: 400px; height: 200px; background-color: white;">
+        <polyline points="50,180 100,20 150,180 20,80 180,80 50,180 100,20" fill="none" stroke="crimson"/>
+    </svg>
+    <p>Рисунок</p>
+    <svg style="width: 360px; height: 500px; background-color: white;">
+        <rect width="320" height="460" x="20" y="20" rx="20" ry="20" fill="lemonchiffon"/>
+        <circle r="80" cx="140" cy="40%" fill="crimson"/>
+        <ellipse rx="30" ry="60" cx="60%" cy="50%" fill="gold"/>
+        <polygon points="140,270 150,290 130,290" fill="crimson"/>
+        <polygon points="215,305 225,325 205,325" fill="gold"/>
+        <polyline points="140,290 120,330 160,390 120,430" fill="none" stroke="black"/>
+        <polyline points="215,325 195,365 235,425 195,465" fill="none" stroke="black"/>
+    </svg>
+    
+</div>

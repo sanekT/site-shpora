@@ -1,0 +1,83 @@
+<div class="wrap">
+   
+    <h2 class="header-style">Модуль рабрты с файловой системой</h2>
+    <h3 class="header-style2">Читаем файл</h3>
+    <p>Для работы с файловой системой нужно подключить модуль <b>fs</b>. Затем пишем такую функцию:</p>
+    <div class="code-style">
+        <pre>
+            const fs = required('fs');
+            
+            fs.readFile('text.txt', (err, data) => {
+                if(err) throw err;
+                console.log(data.toString());
+            })
+        </pre>
+    </div>
+    <p>Этот код говорит, что у нас есть файл js, в котором написан этот код и в этой же папке лежит текстовый файл text.txt. Функция читает этот файл и в переменную data записывает объект с кодами каждой буквы. Если вывести этот объект в консоль, то увидим только буфер кодов символом, для этого и пишем toString(), он преобразует их в нормальные символы. Также можно указать в параметрах функции кодировку utf-8 и всё тоже заработает.</p>
+    <div class="code-style">
+        <pre>
+            const fs = required('fs');
+            
+            fs.readFile('text.txt', 'utf-8', (err, data) => {
+                if(err) throw err;
+                console.log(data);
+            })
+        </pre>
+    </div>
+    
+    
+    <h3 class="header-style2">Читаем json файл</h3>
+    <p>Создадим рядом json файл с 2мя полями: { "name": "Jhon", "age": 22 }. Чтобы его преобразовать в объект пишем так:</p>
+    <div class="code-style">
+        <pre>
+            const fs = required('fs');
+            
+            fs.readFile('user.json', 'utf-8', (err, data) => {
+                if(err) throw err;
+                console.log(JSON.parse(data).name); // Jhon
+            })
+        </pre>
+    </div>
+    
+    
+    <h3 class="header-style2">Читаем файл по строчно</h3>
+    <p>Чтобы разбить файл по строкам можно написать так:</p>
+    <div class="code-style">
+        <pre>
+            const fs = required('fs');
+            
+            fs.readFile('text.txt', 'utf-8', (err, data) => {
+                if(err) throw err;
+                ler arr = data.split('\r\n');
+            })
+        </pre>
+    </div>
+    <p>Теперь в массиве arr лежат строки текстового файла, разбитые по переносу.</p>
+    
+    
+    <h3 class="header-style2">Синхронное и асинхронное чтение файла</h3>
+    <p>Выше я использовал асинхронную функцию. Если бы ниже асинхронной функции чтения файла был код, то он не дожидался бы выполнения этой функции и пошёл бы дальше. Бывает что код ниже зависит от результата этой функции и поэтому нужно дождаться выполнения чтения. Есть 2 способа выполнить функцию синхронно, это использовать функцию <b>fs.readFileSync(path[, option])</b>, ну или использовать промис:</p>
+    <div class="code-style">
+        <pre>
+            const fs = required('fs');
+            
+            //вариант с промисом
+            let arr = [];
+            let promise = new Promise(function(resolve, reject){
+               fs.readFile('text.txt', 'utf-8', (err, data) => {
+                    if(err) throw err;
+                    arr = data.split('\r\n');
+                    console.log(arr.length);
+                    resolve();
+                })
+            })
+            promise.then(function(){ console.log(arr.length) })
+            
+            
+            //вариант без промиса
+            let data = [];
+            data = fs.readFileSync('text.txt', 'utf-8');
+            console.log(data.length);
+        </pre>
+    </div>
+</div>

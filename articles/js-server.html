@@ -1,0 +1,22 @@
+<div class="wrap">
+    <h3 class="header-style2">Это примерный файл сервер, на который можно отправялять запросы, например через fetch из JS</h3>
+    <p>Файл будет отдавать POST данные пришедшие из формы</p>
+    <div class="code-style">
+        <pre>
+            &lt;?php
+                //чтобы с сервера послать ошибку, в файле php можно послать такой заголвок
+                header("HTTP/1.1 404 Not Found");
+                //или ответитть возвратом POST данных
+                echo var_dump($_POST);
+                //также можно задержать ответ  по типу setTimeout()
+                sleep(4);
+                
+                //итоговый скрипт
+                
+                //header("HTTP/1.1 404 Not Found");
+                sleep(4);
+                echo var_dump($_POST);
+            ?&gt;
+        </pre>
+    </div>
+</div>

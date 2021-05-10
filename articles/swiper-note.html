@@ -1,0 +1,54 @@
+<div class="wrap">
+    <h2 class="header-style">Заметки о swiper</h2>
+    
+    
+    
+    <h3 class="header-style2">Подключение</h3>
+    <p>Чтобы подключить и начать работать со слайдером нужно на этой <a href="https://swiperjs.com/get-started">странице</a> посмотреть это делается.</p>
+    
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/OjVK055CTNI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    
+    <h3 class="header-style2">Опции</h3>
+    <p><span class="tag-style">direction: 'vertical'</span> -  слайдер перематывается вертикально, по умолчанию горизонтально.</p>
+    <p><span class="tag-style">slidesPerView: 1</span> -  отображает кол-во слайдов. По умолчанию 1, также есть значение auto. С 00:27:45 рассказывает про разную ширину слайдов и значение auto у этой опции.</p>
+    <p><span class="tag-style">spaceBetween: 0</span> -  задаёт margin-right для слайда.</p>
+    <p><span class="tag-style">slidesPerGroup: 1</span> -  задаёт сколько будут слайдов прокручиваться за один клик. По умолчанию прокручивается по одному слайду</p>
+    <p>Чтобы запретить перелистывать слайды с помощью мыши, нужно к контейнеру слайдера с классом .swiper-container добавить ещё один класс .swiper-no-swiping</p>
+    <p><span class="tag-style">slidetoCklickedSlide: true</span> -  кликая по слайду можно перелистывать до него, не работает если стоит класс swiper-no-swiping</p>
+    <p><span class="tag-style">centeredSlides: true</span> -  активным теперь становится центральный слайд вместо левого по умолчанию. </p>
+    
+    <p><b>Пагинация</b></p>
+    <p>В видео выше с 00:08:05 коротенько рассказывает как обращаться и стилизовать точечки внизу слайдера</p>
+    <p><span class="tag-style">clickable: true</span> -  по умолчанию при клике по пагинации мы не можем переключать слайды, а с этой опцией можно. Добавляетс в раздел пагинации.</p>
+    <p>Чтобы вынести пагинацию ниже слайдов смотрим видео с 00:21:00. Если коротко то надо просто swiper-container задать padding-bottom например 30 или 40px</p>
+    <p>С 00:22:35 рассказывает как сделать цифры вместо точек в пагинации. Надо просто в секции пагинации в фалйе js поставить опции type значение fraction.</p>
+    
+    <p><b>Выносим кнопки за пределы слайдера</b></p>
+    <p>В видео начинается с 00:18:00</p>
+    
+    <p><b>Autoplay</b></p>
+    <p>С 00:24:13</p>
+    
+    <p><b>Адаптивность</b></p>
+    <p>С 00:25:13</p>
+    
+    <p><b>Как увеличить центральный слайд</b></p>
+    <p>С 00:29:48. В своей недавней вёрстке мне нужен был такой функционал, и я посмотрев видео просто добавил такие клаcсы слайдеру</p>
+    <div class="code-style">
+        <pre>
+            .swiper-slide{
+                transition: 0.5s;
+            }
+            .swiper-slide-active{
+                transition: 0.5s;
+                transform: scale(1.16);
+                z-index: 1;
+                box-shadow: 3px 3px 14px $baseColor;
+            }
+        </pre>
+    </div>
+    <p>А дальше просто подгоняем всякие мелочи.</p>
+    
+    <p><b>Пока остановил просмотр видео на 00:31:39 потому что нашёл что нужно было.</b></p>
+</div>

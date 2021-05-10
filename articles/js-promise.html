@@ -1,0 +1,152 @@
+<div class="wrap">
+    <h3 class="header-style2">Всё о Promise</h3>
+    <p>Синтаксис создания Promise:</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise(function(resolve, reject) {
+              // функция-исполнитель (executor)
+            });
+        </pre>
+    </div>
+    <p>Функция, переданная в конструкцию new Promise, называется исполнитель (executor). Когда Promise создаётся, она запускается автоматически. Она должна содержать «создающий» код, который когда-нибудь создаст результат.</p>
+    <p>Её аргументы resolve и reject – это колбэки, которые предоставляет сам JavaScript. Наш код – только внутри исполнителя. Когда наш код внутри исполнителя выполнится, сейчас или позже – не важно, то мы должны вызвать один из этих колбэков:</p>
+    <ul class="list">
+        <li>resolve(value) — если работа завершилась успешно, с результатом value.</li>
+        <li>reject(error) — если произошла ошибка, error – объект ошибки.</li>
+    </ul>
+    <p>Итак, исполнитель запускается автоматически, он должен выполнить работу, а затем вызвать resolve или reject.</p>
+    <p>У объекта promise, возвращаемого конструктором new Promise, есть внутренние свойства:</p>
+    <ul class="list">
+        <li>state («состояние») — вначале "pending" («ожидание»), потом меняется на "fulfilled" («выполнено успешно») при вызове resolve или на "rejected" («выполнено с ошибкой») при вызове reject.</li>
+        <li>result («результат») — вначале undefined, далее изменяется на value при вызове resolve(value) или на error при вызове reject(error).</li>
+    </ul>
+    <p>Так что исполнитель по итогу переводит promise в одно из двух состояний:</p>
+    <img src="../img/42.png" alt="" class="screen">
+    <p>Ниже пример конструктора Promise и простого исполнителя с кодом, дающим результат с задержкой (через setTimeout):</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise(function(resolve, reject) {
+              // эта функция выполнится автоматически, при вызове new Promise
+
+              // через 1 секунду сигнализировать, что задача выполнена с результатом "done"
+              setTimeout(() => resolve("done"), 1000);
+            });
+        </pre>
+    </div>
+    <img src="../img/43.png" alt="" class="screen">
+    <p>А теперь пример, в котором исполнитель сообщит, что задача выполнена с ошибкой:</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise(function(resolve, reject) {
+              // спустя одну секунду будет сообщено, что задача выполнена с ошибкой
+              setTimeout(() => reject(new Error("Error!")), 1000);
+            });
+        </pre>
+    </div>
+    <img src="../img/44.png" alt="" class="screen">
+    <p>Подведём промежуточные итоги: исполнитель выполняет задачу (что-то, что обычно требует времени), затем вызывает resolve или reject, чтобы изменить состояние соответствующего Promise.</p>
+    <p class="note">Исполнитель должен вызвать что-то одно: resolve или reject. Состояние промиса может быть изменено только один раз.</p>
+    <p class="note">Также заметим, что функция resolve/reject ожидает только один аргумент (или ни одного). Все дополнительные аргументы будут проигнорированы.</p>
+    <p class="note">Вызывайте reject с объектом Error</p>
+    <p class="note">Свойства state и result – это внутренние свойства объекта Promise и мы не имеем к ним прямого доступа. Для обработки результата следует использовать методы .then/.catch/.finally</p>
+    <p><b>.then</b></p>
+    <div class="code-style">
+        <pre>
+            promise.then(
+              function(result) { /* обработает успешное выполнение */ },
+              function(error) { /* обработает ошибку */ }
+            );
+        </pre>
+    </div>
+    <p>Первый аргумент метода .then – функция, которая выполняется, когда промис переходит в состояние «выполнен успешно», и получает результат. Второй аргумент .then – функция, которая выполняется, когда промис переходит в состояние «выполнен с ошибкой», и получает ошибку.</p>
+    <p>Например, вот реакция на успешно выполненный промис:</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise(function(resolve, reject) {
+                  setTimeout(() => resolve("done!"), 1000);
+            });
+
+            // resolve запустит первую функцию, переданную в .then
+            promise.then(
+                  <span class="vue-g">result => alert(result), // выведет "done!" через одну секунду</span>
+                  error => alert(error) // не будет запущена
+            );
+        </pre>
+    </div>
+    <p>А в случае ошибки в промисе – выполнится вторая:</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise(function(resolve, reject) {
+                  setTimeout(() => reject(new Error("Whoops!")), 1000);
+            });
+
+            // reject запустит вторую функцию, переданную в .then
+            promise.then(
+                  result => alert(result), // не будет запущена
+                  <span class="vue-g">error => alert(error) // выведет "Error: Whoops!" спустя одну секунду</span>
+            );
+        </pre>
+    </div>
+    <p>Если мы заинтересованы только в результате успешного выполнения задачи, то в then можно передать только одну функцию:</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise(resolve => {
+                  setTimeout(() => resolve("done!"), 1000);
+            });
+
+            promise.then(result => alert(result)); // выведет "done!" спустя одну секунду
+        </pre>
+    </div>
+    <p><b>.catch</b></p>
+    <p>Если мы хотели бы только обработать ошибку, то можно использовать null в качестве первого аргумента:</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise(resolve => {
+                  setTimeout(() => reject(new Error("Error")), 1000);
+            });
+
+            promise.then(
+                null,
+                error => alert(error)
+            );
+        </pre>
+    </div>
+    <p>Или можно воспользоваться методом .catch(errorHandlingFunction), который сделает тоже самое:</p>
+    <div class="code-style">
+        <pre>
+            let promise = new Promise((resolve, reject) => {
+                  setTimeout(() => reject(new Error("Ошибка!")), 1000);
+            });
+
+            // .catch(f) это тоже самое, что promise.then(null, f)
+            promise.catch(alert); // выведет "Error: Ошибка!" спустя одну секунду
+        </pre>
+    </div>
+    <p><b>finally</b></p>
+    <p>finally хорошо подходит для очистки, например остановки индикатора загрузки, его ведь нужно остановить вне зависимости от результата.</p>
+    <ul class="list">
+        <li>Обработчик, вызываемый из finally, не имеет аргументов. В finally мы не знаем, как был завершён промис. И это нормально, потому что обычно наша задача – выполнить «общие» завершающие процедуры.</li>
+        <li>Обработчик finally «пропускает» результат или ошибку дальше, к последующим обработчикам. Например, здесь результат проходит через finally к then:
+        <div class="code-style">
+            <pre>
+                new Promise((resolve, reject) => {
+                  setTimeout(() => resolve("result"), 2000)
+                })
+                  .finally(() => alert("Промис завершён"))
+                  .then(result => alert(result)); // &lt;-- .then обработает результат
+            </pre>
+        </div>
+        А здесь ошибка из промиса проходит через finally к catch:
+        <div class="code-style">
+            <pre>
+                new Promise((resolve, reject) => {
+                  throw new Error("error");
+                })
+                  .finally(() => alert("Промис завершён"))
+                  .catch(err => alert(err));  // &lt;-- .catch обработает объект ошибки
+            </pre>
+        </div>
+        Это очень удобно, потому что finally не предназначен для обработки результата промиса. Так что он просто пропускает его через себя дальше.
+        </li>
+    </ul>
+</div>
