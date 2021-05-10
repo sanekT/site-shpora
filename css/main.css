@@ -236,6 +236,12 @@ iframe{
     padding: 10px 0 10px 20px;
 }
 
+/*для битрикс функций*/
+.bitrix-func{
+    color: #0ea9e8;
+    
+}
+
 
 /*для кнопки вверх*/
 .up{
