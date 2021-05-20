@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сайт шпаргалка</title>
+    <title>Главная</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Philosopher:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="css/main.css">
+<!--    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">-->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
 </head>
 <body>
-
-   <div id="container">
-
+   <div id="container" class="">
+   
+   
 <!--      HEADER-->
        <header id="head">
             <div class="head total-block">
@@ -93,6 +97,7 @@
                            <li data-arc="info">Базовые моменты из JS</li>
                            <li data-arc="string">Строки</li>
                            <li data-arc="obj-methods">Методы объектов</li>
+                           <li data-arc="diff-of-cicles">Различия в циклах for...in, for...of и др.</li>
                             <li data-arc="arr-methods">Методы массивов</li>
                             <li data-arc="cicles">Цыклы</li>
                             <li data-arc="obj-to-primitive">Преобразование объектов в примитивы</li>
@@ -273,11 +278,14 @@
             
 <!--            MAINBAR-->
             <section class="mainbar total-block">
+              
                <p class="note">Meta теги, которые учитывает Яндекс - <a href="https://yandex.ru/support/webmaster/controlling-robot/html.html">тут</a>.</p>
                
                <p class="note">Meta теги, которые учитывает Google - <a href="https://developers.google.com/search/docs/advanced/crawling/special-tags?visit_id=637462475475641367-4005245714&rd=1">тут</a></p>
                <p class="note">У slick слайдера есть событие afterChange, вот тут его <a href="https://github.com/kenwheeler/slick#events">описание</a>. Без разницы как прокручивается слайдер, по клику на стрелки или перетаскиванием мыши, обработчик этого события предоставляет нам переменные текущего слайда, следущего слайда, варианты разные. Записываю это, потому что нужно было чтобы при прокрутке сладера, получить информацию из текущего элемента и дальше уже использовать эту информацию в своих целях.</p>
                <p class="note">Посмотреть и разобраться со слайдером swiper на чистом js. <a href="https://swiperjs.com/">Тут</a></p>
+               <p class="note">Чтобы подключить шрифты гугл по cdn, то вот <a href="https://fonts.google.com/">тут</a>(google fonts). Чтобы скачать шрифты в проект то <a href="https://google-webfonts-helper.herokuapp.com/fonts">тут</a>(google fonts helper).</p>
+               <p class="note">Когда я пытался сделать для мобильного меню плавное заезжание и выезжание, т.е. плавное изменение высоты списка ul, то высота менялась у списка а пункты меню не скрывались. Надо просто когда меняю высоту у списка, задать этому списку <b>overflow: hidden</b></p>
             </section>
             <a href="#up"  class="up">Вверх</a> 
         </main>
