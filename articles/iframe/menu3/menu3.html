@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Красивое меню</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+		.header{
+			width: 100%;
+			background-image: url(img/escheresque_ste.png);
+			text-align: center;
+			height: 200px;
+			padding-top: 100px;
+			
+		}
+		.menu-bg{
+			width: 100px;
+			height: 200px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 0;
+		}
+		.menu-bg-stroke{
+			display: inline-block;
+			border: 2px solid #8277d4;
+			height: 50px;
+			background: linear-gradient(360deg, #DF5950 11.19%, #451046 93.72%);
+			margin-left: 2px;
+			transform: translateY(-50px);
+		}
+		.menu-bg-inner{
+			width: 100px;
+			height: 100px;
+			margin-top: 54px;
+			overflow: hidden;
+		}
+		.menu__list{
+			display: flex;
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		.menu__list li{
+			margin-left: 36px;
+		}
+		.menu__list li{
+			position: relative;
+			top: 0;
+			left: 0;
+		}
+		.menu__list li a{
+			color: #fff;
+			text-decoration: none;
+			position: relative;
+			top: 0;
+			left: 0;
+			z-index: 1;
+			transition: 0.4s;
+		}
+		.menu__list li a:hover{
+			color: #a89ef7;
+		}
+
+		@keyframes moveStroke{
+			0%{
+				transform: translateY(-50px);
+			}
+			100%{
+				transform: translateY(25px);
+			}
+		}
+		@keyframes moveStrokeEnd{
+			0%{
+				transform: translateY(25px);
+			}
+			100%{
+				transform: translateY(100px);
+			}
+		}
+	</style>
+</head>
+<body>
+    
+    <header class="header">
+		<nav class="menu">
+			<ul class="menu__list">
+				<li>
+					<a href="#">Главная</a>
+					<div class="menu-bg">
+						<div class="menu-bg-inner">
+							<div class="menu-bg-stroke menu-bg-stroke-one"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-two"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-three"></div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href="#">Курсы</a>
+					<div class="menu-bg">
+						<div class="menu-bg-inner">
+							<div class="menu-bg-stroke menu-bg-stroke-one"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-two"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-three"></div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href="#">Расписание</a>
+					<div class="menu-bg">
+						<div class="menu-bg-inner">
+							<div class="menu-bg-stroke menu-bg-stroke-one"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-two"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-three"></div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href="#">Преподаватели</a>
+					<div class="menu-bg">
+						<div class="menu-bg-inner">
+							<div class="menu-bg-stroke menu-bg-stroke-one"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-two"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-three"></div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href="#">Рассылка</a>
+					<div class="menu-bg">
+						<div class="menu-bg-inner">
+							<div class="menu-bg-stroke menu-bg-stroke-one"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-two"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-three"></div>
+						</div>
+					</div>
+				</li>
+				<li>
+					<a href="#">Контакты</a>
+					<div class="menu-bg">
+						<div class="menu-bg-inner">
+							<div class="menu-bg-stroke menu-bg-stroke-one"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-two"></div>
+							<div class="menu-bg-stroke menu-bg-stroke-three"></div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</nav>
+	</header>
+                    
+
+    <script>
+		'use strict';
+		
+		function menuHover(){
+			if(document.querySelector('.header .menu')){
+				let a = document.querySelectorAll('.header .menu li a');
+			
+				for(let key of a){
+					key.addEventListener('mouseover', function(e){
+						if(e.target.tagName == 'A'){
+							let li = e.target.closest('li');
+							let strokeOne = li.querySelector('.menu-bg-stroke-one');
+							let strokeTwo = li.querySelector('.menu-bg-stroke-two');
+							let strokeThree = li.querySelector('.menu-bg-stroke-three');
+
+							strokeOne.removeEventListener('animationend', handler2);
+							strokeOne.addEventListener('animationend', handler);
+
+							strokeTwo.removeEventListener('animationend', handler2);
+							strokeTwo.addEventListener('animationend', handler);
+
+							strokeThree.removeEventListener('animationend', handler2);
+							strokeThree.addEventListener('animationend', handler);
+
+							strokeOne.style.animation = 'moveStroke 0.3s linear forwards';
+							strokeTwo.style.animation = 'moveStroke 0.3s linear forwards';
+							strokeTwo.style.animationDelay = '0.1s';
+							strokeThree.style.animation = 'moveStroke 0.3s linear forwards';
+							strokeThree.style.animationDelay = '0.2s';
+
+							
+							
+							this.addEventListener('mouseout', function(){
+								strokeOne.removeEventListener('animationend', handler);
+								strokeOne.addEventListener('animationend', handler2);
+								strokeTwo.removeEventListener('animationend', handler);
+								strokeTwo.addEventListener('animationend', handler2);
+								strokeThree.removeEventListener('animationend', handler);
+								strokeThree.addEventListener('animationend', handler2);
+								strokeOne.style.animation = 'moveStrokeEnd 0.3s linear';
+								strokeOne.style.animationDelay = '0.2s';
+								strokeTwo.style.animation = 'moveStrokeEnd 0.3s linear';
+								strokeTwo.style.animationDelay = '0.1s';
+								strokeThree.style.animation = 'moveStrokeEnd 0.3s linear';
+							});
+						}
+					});
+				}
+			}
+		}
+
+		function handler(){
+			this.style.transform = 'translateY(25px)';
+		}
+		function handler2(){
+			this.style.transform = 'translateY(-50px)';
+		}
+		
+		menuHover();
+	</script>
+</body>
+</html>
