@@ -406,4 +406,168 @@
     <p>Смотреть код в файле articles/iframe/task6/task6.html</p>
     <iframe src="articles/iframe/task6/task6.html" frameborder="1" width="730" height="400"></iframe>
     
+    
+    
+    
+    <h3 class="header-style2" id="7">Задача из собеседования</h3>
+    <p>Человек путешествовал по городам, странам и после всех его перелётов у него осталась пачка билетов. Нужно разобраться и построить маршрут по которму он летал по городам, странам.</p>
+    <div class="code-style">
+        <pre>
+            //моё решение////////////////////////////////////
+            'use strict';
+		
+            let countries = [
+                ['MNL', 'TAG'],
+                ['CEB', 'TAC'],
+                ['TAG', 'CEB'],
+                ['TAC', 'BOR']
+            ];
+
+            let cities = [
+                ['Chicago', 'Winnipeg'],
+                ['Halifax', 'Montreal'],
+                ['Montreal', 'Toronto'],
+                ['Toronto', 'Chicago'],
+                ['Winnipeg', 'Seattle'],
+            ];
+
+            let countries2 = [
+                ['JPN', 'PHL'],
+                ['BRA', 'UAE'],
+                ['UAE', 'JPN'],
+                ['USA', 'BRA'],
+            ];
+
+            function remember(arr){
+                let path = '';
+                let citysStart = [];
+                let citysEnd = [];
+                for(let key of arr){//делаем 2 массива, в одном в одном страны и города из которых вылетал, в другом куда прилетал 
+                    citysStart.push(key[0]);
+                    citysEnd.push(key[1]);
+                }
+
+
+                for(let keyStart of citysStart){//тут ищем город или страну стартовую из котрой вылетел и начал свой маршрут
+                    let flag = true;
+                    for(let keyEnd of citysEnd){
+                        if(keyStart ==  keyEnd){
+                            flag = false;
+                            break;
+                        }else(
+                            flag = true
+                        )
+                    }
+                    if(flag){
+                        path += keyStart + ' ';//нашли этот стартовый город и добавили в маршрут
+                        for(let a of arr){
+                            if(a.includes(keyStart)){//если нашли массив со стартовым городом, то в путь добавляем и город прибытия из этого массива
+                                path += a[1] + ' ';
+                            }
+                        }
+                        break;
+                    }
+                }
+                let mas = path.split(' ');
+                let lastCity = mas[mas.length - 2];
+                for(let j = 0; j &lt; arr.length; j++){
+                    for(let i = 0; i &lt; arr.length; i++){
+                        if(lastCity !== arr[i][0]) continue;
+                        path += arr[i][1] + ' ';
+                        mas = path.split(' ');
+                        lastCity = mas[mas.length - 2];
+                    }
+                }
+                return path;
+            }
+            console.log(remember(countries2));
+            
+            
+            
+            //решение человека из интернета//////////////////////
+            'use strict';
+
+            const routes = [
+                ['Chicago', 'Winnipeg'],
+                ['Halifax', 'Montreal'],
+                ['Montreal', 'Toronto'],
+                ['Toronto', 'Chicago'],
+                ['Winnipeg', 'Seattle'],
+            ];
+            const first = routes
+              .map((x) => x[0])
+              .map((x) => routes.flat().filter((y) => y === x).length)
+              .findIndex((x) => x === 1);
+
+            let current = [...routes[first]].reverse();
+
+            for (let i = 0; i &lt; routes.length - 1; i++) {
+              current.unshift(
+                routes[routes.map((x) => x[0]).findIndex((x) => x === current[0])][1]
+              );
+            }
+
+            console.log(current.reverse());
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="7">Задача "Шахматная доска"</h3>
+    <p>Нарисовать программой шахматную доску, но так чтобы можно было задать любой size.</p>
+    <div class="code-style">
+        <pre>
+            'use strict';
+		
+            let size = 8;
+            let str = '';
+            let flag = true;
+            for (let i = 0; i &lt; size; i++){
+                flag = true;
+                for(let j = 0; j &lt; size; j++){
+                    if(i % 2 == 0){
+                        if(j == size - 1){
+                            if(flag){
+                                str += ' \n';
+                                flag = !flag;
+                            }else{
+                                str += '#\n';
+                                flag = !flag;
+                            }
+                        }else{
+                            if(flag){
+                                str += ' ';
+                                flag = !flag;
+                            }else{
+                                str += '#';
+                                flag = !flag;
+                            }
+                        }
+                    }else{
+                        if(j == size - 1){
+                            if(flag){
+                                str += '#\n';
+                                flag = !flag;
+                            }else{
+                                str += ' \n';
+                                flag = !flag;
+                            }
+                        }else{
+                            if(flag){
+                                str += '#';
+                                flag = !flag;
+                            }else{
+                                str += ' ';
+                                flag = !flag;
+                            }
+                        }
+                    }
+                }
+            }
+            console.log(str);
+        </pre>
+    </div>
 </div>
