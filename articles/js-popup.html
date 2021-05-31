@@ -1,0 +1,120 @@
+<div class="wrap">
+   
+    <h2 class="header-style">Шаблоны модальных окон</h2>
+    
+    <p>Вариант 1:</p>
+    <p>CSS:</p>
+    <div class="code-style">
+        <pre>
+            body{
+              font-family: sans-serif;
+            }
+            .container{
+              max-width: 1100px;
+              margin: 0 auto;
+            }
+
+            .modal.open .modal__window,
+            .modal.open .modal__overlay{
+              opacity: 1;
+              z-index: 1000;
+              transform: translateY(0);
+            }
+
+            .modal__window, .modal__overlay{
+              opacity: 0;
+              z-index: -1;
+            }
+
+            .modal__overlay{
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background-color: rgba(0,0,0, 0.5);
+              transition: 0.4s;
+            }
+            .modal__window{
+              width: 400px;
+              border-radius: 5px;
+              background: #fff;
+              margin: 100px auto;
+              padding: 20px;
+              transition: 0.4s;
+              transform: translateY(-200px);
+            }
+            .modal__header{
+              padding: 5px 10px;
+              display: flex;
+              justify-content: space-between;
+              border-bottom: 1px solid #eee;
+            }
+            .modal__title{
+              font-size: 1.5rem;
+            }
+            .modal__close{
+              cursor: pointer;
+            }
+            .modal__body{
+              margin: 0 0 5px 10px;
+            }
+            .modal__footer{
+              padding: 15px 10px;
+              border-top: 1px solid #eee;
+            }
+        </pre>
+    </div>
+    <p>HTML:</p>
+    <div class="code-style">
+        <pre>
+            &lt;div class="container">
+                &lt;h1>Заголовок&lt;/h1>
+                &lt;p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempora molestias temporibus unde optio sequi earum dignissimos commodi error nemo. Voluptas recusandae natus possimus voluptatem quisquam quod unde magnam omnis quas repudiandae, error dolore a reprehenderit corrupti, amet earum ipsa ex expedita! Expedita dolores aliquid ipsam illum reiciendis, asperiores adipisci quibusdam.&lt;/p>
+                &lt;button class="open">Открыть окно&lt;/button>
+            &lt;/div>
+
+            &lt;div class="modal">
+                &lt;div class="modal__overlay">
+                    &lt;div class="modal__window">
+                        &lt;div class="modal__header">
+                            &lt;span class="modal__title">Заголовок&lt;/span>
+                            &lt;span class="modal__close">&times;&lt;/span>
+                        &lt;/div>
+                        &lt;div class="modal__body">
+                            &lt;p>Lorem, ipsum dolor sit.&lt;/p>
+                            &lt;p>Lorem, ipsum dolor sit.&lt;/p>
+                        &lt;/div>
+                        &lt;div class="modal__footer">
+                            &lt;button>Прочитал&lt;/button>
+                        &lt;div>
+                    &lt;/div>
+                &lt;/div>
+            &lt;/div>
+        </pre>
+    </div>
+    <p>JS:</p>
+    <div class="code-style">
+        <pre>
+            let openBtn = document.querySelector('.open');
+            let modal = document.querySelector('.modal');
+            let modalClose = document.querySelector('.modal__close');
+
+            openBtn.addEventListener('click', function(){
+                modal.classList.add('open');
+            });
+
+            modalClose.addEventListener('click', function(){
+                modal.classList.remove('open');
+            });
+
+            document.addEventListener('click', function(e){
+                let target = e.target;
+                if(target.className == 'modal__overlay'){
+                    modal.classList.remove('open');
+                }
+            });
+        </pre>
+    </div>
+    
+</div>
