@@ -102,16 +102,19 @@
 
             openBtn.addEventListener('click', function(){
                 modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
             });
 
             modalClose.addEventListener('click', function(){
                 modal.classList.remove('open');
+                document.body.style.overflow = '';
             });
 
             document.addEventListener('click', function(e){
                 let target = e.target;
                 if(target.className == 'modal__overlay'){
                     modal.classList.remove('open');
+                    document.body.style.overflow = '';
                 }
             });
         </pre>
