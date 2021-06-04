@@ -1,19 +1,205 @@
 <div class="wrap">
     <h2 class="header-style">Шпаргалка по DOM</h2>
     
-    <p><span class="tag-style">document.links</span>  -  коллекция ссылок на странице.</p>
     
+    <h3 class="header-style2">Типы псевдомасивов в DOM и их различия</h3>
+    <p><b>NodeList</b></p>
+    <p>Чтобы получить такой псевдомассив используется document.querySelectorAll(selector) вот такой метод у документа</p>
+    <p><b>HTMLCollection</b></p>
+    <p>Чтобы получить такой псевдомассив используется document.getElements...() подобные методы у документа</p>
+    <p><b>Различия</b></p>
+    <p>Если мы получили в переменную массив HTMLCollection каких нибудь элементом, а потом в программе где то поменялось количество этих элементов, то при обращении к этой коллекции там уже всё обновится и будет хранится актуальное количество элементов. А вот NodeList  так не умеет.</p>
+    <p>Второе различие, которое я знаю это то что псевдомассив HTMLCollection не может использовать метод массива forEach(), а NodeList может.</p>
+    
+    
+    <p><span class="tag-style">document.links</span>  -  коллекция ссылок на странице.</p>
     <p><span class="tag-style">document.images</span>  -  коллекция картинок на странице.</p>
+    
+    
+    
+    <h3 class="header-style2">Размеры окна и документа</h3>
+    <p><b>Размеры окна</b></p>
+    <p><span class="tag-style">document.documentElement.clientWidth/.clientHeight</span> - ширина и высота окна НЕ включая полосу прокрутки. Также надо обращать внимание на то - включено ли увеличение или уменьшение окна с помощью Ctrl + левая кнопка мыши, иначе размер окна будет один при его  изменении, а эти свой ства будут показывать другое. Так что надо сбросить до 100% размер окна браузера.</p>
+    <p><span class="tag-style">window.innerWidth/.innerHeight</span> - ширина и высота окна включая полосу прокрутки.</p>
+    <p><b>Размеры документа</b></p>
+    <p>Чтобы надёжно получить полную высоту документа, нам следует взять максимальное из этих свойств:</p>
+    <div class="code-style">
+        <pre>
+            let scrollHeight = Math.max(
+              document.body.scrollHeight, document.documentElement.scrollHeight,
+              document.body.offsetHeight, document.documentElement.offsetHeight,
+              document.body.clientHeight, document.documentElement.clientHeight
+            );
+        </pre>
+    </div>
+    <p><span class="tag-style"></span> - </p>
+    <p><b>Получение текущей прокрутки:</b></p>
+    <p><span class="tag-style">elem.scrollLeft/scrollTop</span> - текущее состояние прокрутки элемента elem</p>
+    <p><span class="tag-style">window.pageXOffset/pageYOffset</span> - новый кроссбраузерный вариант текущего состояния прокрутки документа. Старые варианты - documentElement.scrollLeft/Top, document.body.scrollLeft/Top.</p>
+    
+    
     
     
     <h3 class="header-style2">Работа с формой</h3>
     <p><span class="tag-style">document.forms</span>  -  коллекция форм на странице.</p>
-    <p class="note">Обращение к элементу form - &lt;form name="search"&gt;&lt;/form&gt;</p>
+    <p>Обращение к элементу &lt;form name="search"&gt;&lt;/form&gt;:</p>
     <p><span class="tag-style">document.forms[0];</span></p>
     <p><span class="tag-style">document.forms['search'];</span></p>
     <p><span class="tag-style">document.forms.search;</span></p>
     <p><span class="tag-style">document.search;</span></p>
+    <p><span class="tag-style">form.sabmit();</span>  - посылаем форму</p>
+    <p><span class="tag-style">form.reset();</span> - очищаем форму</p>
+    <p><span class="tag-style">form.length;</span> - вернёт количество элементов форме.</p>
+    <p><span class="tag-style">form.elements;</span> - вернёт элементы в форме(инпуты, текстэрии, батоны)</p>
+    <p>Обращение к элементу &lt;input type="text" name="q"&gt;:</p>
+    <p><span class="tag-style">form.elements[0];</span></p>
+    <p><span class="tag-style">form.elements["q"];</span></p>
+    <p><span class="tag-style">form.elements.q;</span></p>
+    <p><span class="tag-style">form.elements.q.type;</span> - вернёт "text"</p>
+    <p><span class="tag-style">form.elements.q.value;</span> - вернёт значение выбранного инпута</p>
+    <p><span class="tag-style">form.elements.q.defaulValue;</span> - вернёт значение инпута то что стоит изначально по умолчанию</p>
+    <p><span class="tag-style">form.elements.q.focus();</span> - поставится курсор в выбранный инпут</p>
+    <p><span class="tag-style">form.elements.q.blur();</span> - спадёт фокус с выбранного инпута</p>
+    <p><span class="tag-style">form.elements.q.select();</span> - выделяет текст у выбранного инпута</p>
+    <p>Имитируем нажатие кнопки у формы &lt;button class="btn"&gt;&lt;/button&gt;:</p>
+    <p><span class="tag-style">form.elements[0].click;</span></p>
     
-    <p><span class="tag-style"></span>  -  коллекция форм на странице.</p>
     
+    
+    <h3 class="header-style2">Элемент Select</h3>
+    <div class="code-style">
+        <pre>
+            < form name="f" action="">
+                < select name="book">
+                    < option value="1">JavaScript< /option>
+                    < option value="2">PHP< /option>
+                    < option value="3">HTML< /option>
+                    < option value="4">AJAX< /option>
+                < /select>
+            < /form>
+        </pre>
+    </div>
+    <p><span class="tag-style">let select = document.forms.f.book;</span>// выбираем список</p>
+    <p><span class="tag-style">console.log(select.type);</span>// select-one</p>
+    <p><span class="tag-style">select.multiple = 'multiple';</span></p>
+    <p><span class="tag-style">console.log(select.type);</span>// select-multiple</p>
+    <p><span class="tag-style">console.log(select.length);</span>// 4</p>
+    <p><span class="tag-style">let options = select.options;</span>// выбираем опции select</p>
+    <p><span class="tag-style">console.log(select.value);</span>// значение атрибута value выбранного в данный момент option</p>
+    <p><span class="tag-style">console.log(select.length == options.length);</span>// true</p>
+    <p><span class="tag-style">options[3].defaultSelected = true;</span></p>
+    <p><span class="tag-style">options[2].selected = true;</span></p>
+    <p><span class="tag-style">console.log(select.selectIndex);</span>// 2</p>
+    <p><span class="tag-style">console.log(select.selectIndex.text);</span>// HTML</p>
+    <p><span class="tag-style">console.log(select.selectIndex.value);</span>// 3</p>
+    <p><span class="tag-style">select.form.submit();</span>// посылаем форму</p>
+    
+    
+    
+    
+    <h3 class="header-style2">Исключения</h3>
+    <p><span class="tag-style">element.style.htmlFor</span>  - для html-атрибута for</p>
+    <p><span class="tag-style">element.style.cssFloat</span>  - для css свойства float</p>
+    <p><span class="tag-style">element.style.className</span>  - для html-атрибута class</p>
+    
+    
+    
+    
+    <h3 class="header-style2">Типы событий</h3>
+    <ul class="list">
+        <li>Срабатывает на большинстве объектов
+            <ul class="list">
+                <li><span class="tag-style">onclick</span></li>
+                <li><span class="tag-style">onmousedown</span></li>
+                <li><span class="tag-style">onmouseup</span></li>
+                <li><span class="tag-style">onmousemove</span></li>
+                <li><span class="tag-style">onmouseover</span></li>
+                <li><span class="tag-style">onmouseout</span></li>
+            </ul>
+        </li>
+        <li>document, body, input, textarea
+            <ul class="list">
+                <li><span class="tag-style">onkeydown</span></li>
+                <li><span class="tag-style">onkeypress</span></li>
+                <li><span class="tag-style">onkeyup</span></li>
+            </ul>
+        </li>
+        <li>window, body, a, button, input, label, select, textarea
+            <ul class="list">
+                <li><span class="tag-style">onfocus</span></li>
+                <li><span class="tag-style">onblur</span></li>
+            </ul>
+        </li>
+        <li>window, body, iframe, img, object
+            <ul class="list">
+                <li><span class="tag-style">onload</span></li>
+            </ul>
+        </li>
+        <li>window, body
+            <ul class="list">
+                <li><span class="tag-style">onunload</span></li>
+            </ul>
+        </li>
+        <li>window, body, img, object
+            <ul class="list">
+                <li><span class="tag-style">onerror</span></li>
+            </ul>
+        </li>
+        <li>window, body, iframe
+            <ul class="list">
+                <li><span class="tag-style">onresize</span></li>
+            </ul>
+        </li>
+        <li>form
+            <ul class="list">
+                <li><span class="tag-style">onsubmit</span></li>
+                <li><span class="tag-style">onreset</span></li>
+            </ul>
+        </li>
+        <li>input, textarea
+            <ul class="list">
+                <li><span class="tag-style">onselect</span></li>
+            </ul>
+        </li>
+        <li>input, textarea, select
+            <ul class="list">
+                <li><span class="tag-style">onchange</span></li>
+            </ul>
+        </li>
+        <li>window, body, элементы с прокруткой
+            <ul class="list">
+                <li><span class="tag-style">onscroll</span></li>
+            </ul>
+        </li>
+    </ul>
+    
+    
+    
+    
+    <h3 class="header-style2">Объект событий и его свойства</h3>
+    <p><span class="tag-style">event.type</span>  - типо события</p>
+    <p><span class="tag-style">event.target</span>  - ссылка на элемент, на котором зарегестрированно событие</p>
+    <p><span class="tag-style">event.currentTarget</span>  - ссылка на элемент, на котором произошло событие, this === currentTarget</p>
+    <hr>
+    <p>Мышиные события</p>
+    <p><span class="tag-style">event.button</span>  - какая кнопка мыши нажата? 0 - основная</p>
+    <p>Свойства события клавиатуры</p>
+    <p><span class="tag-style">event.keyCode</span>  - какая клавиша нажата?</p>
+    <p><span class="tag-style">event.altKey</span>  - </p>
+    <p><span class="tag-style">event.ctrlKey</span>  - </p>
+    <p><span class="tag-style">event.shiftKey</span>  - эти 3 свойства возвращают true или false если нажата или нет клавиши alt, ctrl, shift</p>
+    <p>Координаты точки нажатия относительно окна браузера</p>
+    <p><span class="tag-style">event.clientX</span></p>
+    <p><span class="tag-style">event.clientY</span></p>
+    <p>Координаты точки нажатия относительно монитора</p>
+    <p><span class="tag-style">event.screenX</span></p>
+    <p><span class="tag-style">event.screenY</span></p>
+    <hr>
+    <p><span class="tag-style">event.prevenrDefault()</span>  - отмена действий по умолчанию</p>
+    
+    
+    
+    
+    <h3 class="header-style2">Типы узлов</h3>
+    <img src="../img/65.jpg" alt="" class="screen">
 </div>
