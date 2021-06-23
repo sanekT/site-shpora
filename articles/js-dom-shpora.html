@@ -2,6 +2,26 @@
     <h2 class="header-style">Шпаргалка по DOM</h2>
     
     
+    <h3 class="header-style2">DOM дерево</h3>
+    <img src="../img/50.png" alt="" class="screen">
+    
+    
+    
+    <h3 class="header-style2">Типы узлов</h3>
+    <img src="../img/65.jpg" alt="" class="screen">
+    
+    
+    
+    <h3 class="header-style2">Навигация по всем узлам DOM дерева</h3>
+    <img src="../img/51.png" alt="" class="screen">
+    
+    
+    
+    <h3 class="header-style2">Навигацияя только по элементам DOM дерева</h3>
+    <img src="../img/52.png" alt="" class="screen">
+    
+    
+    
     <h3 class="header-style2">Типы псевдомасивов в DOM и их различия</h3>
     <p><b>NodeList</b></p>
     <p>Чтобы получить такой псевдомассив используется document.querySelectorAll(selector) вот такой метод у документа</p>
@@ -14,6 +34,7 @@
     
     <p><span class="tag-style">document.links</span>  -  коллекция ссылок на странице(HTMLCollection).</p>
     <p><span class="tag-style">document.images</span>  -  коллекция картинок на странице(HTMLCollection).</p>
+    <p><span class="tag-style">document.forms</span>  -  коллекция форм на странице(HTMLCollection).</p>
     
     
     
@@ -47,22 +68,25 @@
     <p><span class="tag-style">document.forms['search'];</span></p>
     <p><span class="tag-style">document.forms.search;</span></p>
     <p><span class="tag-style">document.search;</span></p>
+    <p><span class="tag-style">form.method = "get";</span>  - устанавливаем способ послания данных</p>
+    <p><span class="tag-style">form.action = '';</span>  - можно задать файл обработчик формы</p>
     <p><span class="tag-style">form.sabmit();</span>  - посылаем форму</p>
     <p><span class="tag-style">form.reset();</span> - очищаем форму</p>
-    <p><span class="tag-style">form.length;</span> - вернёт количество элементов форме.</p>
-    <p><span class="tag-style">form.elements;</span> - вернёт элементы в форме(инпуты, текстэрии, батоны)</p>
+    <p><span class="tag-style">form.length;</span> - вернёт количество дочерних элементов в форме.</p>
+    <p><span class="tag-style">form.elements.length;</span> - вернёт количество элементов массива elements(то же что и form.length).</p>
+    <p><span class="tag-style">form.elements;</span> - вернёт массив элементов в форме(инпуты, текстэрии, батоны)</p>
     <p>Обращение к элементу &lt;input type="text" name="q"&gt;:</p>
     <p><span class="tag-style">form.elements[0];</span></p>
     <p><span class="tag-style">form.elements["q"];</span></p>
     <p><span class="tag-style">form.elements.q;</span></p>
-    <p><span class="tag-style">form.elements.q.type;</span> - вернёт "text"</p>
+    <p><span class="tag-style">form.elements.q.type;</span> - возвращает тип инпута, вернёт "text"</p>
     <p><span class="tag-style">form.elements.q.value;</span> - вернёт значение выбранного инпута</p>
     <p><span class="tag-style">form.elements.q.defaulValue;</span> - вернёт значение инпута то что стоит изначально по умолчанию</p>
     <p><span class="tag-style">form.elements.q.focus();</span> - поставится курсор в выбранный инпут</p>
     <p><span class="tag-style">form.elements.q.blur();</span> - спадёт фокус с выбранного инпута</p>
     <p><span class="tag-style">form.elements.q.select();</span> - выделяет текст у выбранного инпута</p>
     <p>Имитируем нажатие кнопки у формы &lt;button class="btn"&gt;&lt;/button&gt;:</p>
-    <p><span class="tag-style">form.elements[0].click;</span></p>
+    <p><span class="tag-style">btn.click();</span></p>
     
     
     
@@ -106,21 +130,22 @@
     
     
     <h3 class="header-style2">Типы событий</h3>
+    <p>Красным отмечены те события, которые можно отменить.</p>
     <ul class="list">
         <li>Срабатывает на большинстве объектов
             <ul class="list">
-                <li><span class="tag-style">onclick</span></li>
+                <li><span class="tag-style vue-r">onclick</span></li>
                 <li><span class="tag-style">onmousedown</span></li>
                 <li><span class="tag-style">onmouseup</span></li>
                 <li><span class="tag-style">onmousemove</span></li>
-                <li><span class="tag-style">onmouseover</span></li>
-                <li><span class="tag-style">onmouseout</span></li>
+                <li><span class="tag-style vue-r">onmouseover</span></li>
+                <li><span class="tag-style vue-r">onmouseout</span></li>
             </ul>
         </li>
         <li>document, body, input, textarea
             <ul class="list">
-                <li><span class="tag-style">onkeydown</span></li>
-                <li><span class="tag-style">onkeypress</span></li>
+                <li><span class="tag-style vue-r">onkeydown</span></li>
+                <li><span class="tag-style vue-r">onkeypress</span></li>
                 <li><span class="tag-style">onkeyup</span></li>
             </ul>
         </li>
@@ -177,9 +202,11 @@
     
     
     <h3 class="header-style2">Объект событий и его свойства</h3>
-    <p><span class="tag-style">event.type</span>  - типо события</p>
-    <p><span class="tag-style">event.target</span>  - ссылка на элемент, на котором зарегестрированно событие</p>
-    <p><span class="tag-style">event.currentTarget</span>  - ссылка на элемент, на котором произошло событие, this === currentTarget</p>
+    <p><span class="tag-style">event.type</span>  - тип события</p>
+    <p><span class="tag-style">event.target</span>  - ссылка на элемент, на котором зарегестрированно событие, т.е. это тот элемент в html, на который кликнули или навели мышкой</p>
+    <p><span class="tag-style">event.currentTarget</span>  - ссылка на элемент, на котором произошло событие, this === currentTarget, это тот эелемент, на котором висит обработчик события и этот обработчик сработал, когда кликнули по нему или его дочернему элементу.</p>
+    <p><span class="tag-style">event.target.className</span>  - вернёт классы, которые висят на данном элементе</p>
+    <p><span class="tag-style">event.target.tagName</span>  - вернёт имя данного элемента</p>
     <hr>
     <p>Мышиные события</p>
     <p><span class="tag-style">event.button</span>  - какая кнопка мыши нажата? 0 - основная</p>
@@ -197,9 +224,4 @@
     <hr>
     <p><span class="tag-style">event.prevenrDefault()</span>  - отмена действий по умолчанию</p>
     
-    
-    
-    
-    <h3 class="header-style2">Типы узлов</h3>
-    <img src="../img/65.jpg" alt="" class="screen">
 </div>
