@@ -1,6 +1,6 @@
 <div class="wrap">
     <h3 class="header-style2">Разное о вёрстке</h3>
-    <img src="../img/41.png" alt="">
+    <img src="../img/41.png" alt="" class="screen">
     <hr>
     <p>Иконки:</p>
     <ul class="list">
@@ -23,4 +23,45 @@
     <p>второе видео на эту тему</p>
     <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/Yn1NafVnfpA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <hr>
+    <p><b>Напоминалки:</b></p>
+    <ul class="list">
+        <li>Чтобы в секциях заголовки и отступы для мобильной адаптации не подгонять каждую отдельно, и у всех был одинаковый отступ или размер шрифта, надо наверное задать html один размер корневой, а размеры шрифтов заголовков и отступов задавать в rem, но не для всех элементов задавать rem, а только для однотипных, а для остальных можно пикселы.</li>
+        <li>Также можно задать в общем файле global.scss внутренние отступы сразу для всех секций.</li>
+        <li>Чтобы правильно задать ширины блоков, которые стоят рядом по действию свойства display: flex, для этого надо  узнать его ширину в макете и в свойство flex записать как формулу - 
+        flex: 0 0 494/1240*100%; &nbsp;&nbsp;&nbsp;494 это ширина блока в макете и мы вычисляем сколько процентов занимают эти 494px от 1240px.</li>
+        <li>Точно также можно задавать  и line-height: 29/24*100%;(29 это размер высоты строки в px из макета, 24 это размер шрифта), если задавать это свойство в пикселях, то при адаптиве надо постоянно будет его править, а если по формуле задать в пикселях, то оно само будет подстраиваться под размер шрифта</li>
+        <li>Картинки на сайте для продакшина нужно сжимать. Хорошим форматом для Google page speed считается .webp, но можно сжимать и в другие форматы, есть спец сайты для сжатия картинок - это Тини png, это Scosh или как то так. Поискать и найду.  Также можно настроить сжатие картинок в Gulp.</li>
+        <li>Есть небольшие файлы бибилиотеки: normalize.css, reset.css, animate.css</li>
+        <li>Есть такие фреймворки для CSS как materialize.css(https://materializecss.com/), вьютифай, elementUI, MUI CSS(подгружает рекламу), material UI</li>
+        <li>Песочницы  jsfiddle, stackblitz, codepen, codesandbox, replit, etc</li>
+        <li>Посмотреть яндекс практикум</li>
+        <li>Если сайт многостраничный, то желательно вначале заверстать повторяющиеся элементы.</li>
+        <li>Нужно быть немного перфекционистом</li>
+        <li>Нужно быть немного дизайнером</li>
+        <li>Ссылки на уроки фотошопа:<br>
+        https://creativo.one/?params=games%2F42%2Fworks&ctg=1&page=3<br>
+        https://photoshop-master.ru/<br>
+        https://creativo.one/lessons/web-and-app/1409-sozday-dizayn-veb-sayta-v-fotoshop.html<br>
+        https://creativo.one/lessons/web-and-app/1069-delaem-maket-dlya-portfolio-v-fotoshop.html<br>
+        https://creativo.one/lessons/web-and-app/1151-maket-dlya-delovogo-sayta.html<br>
+        https://creativo.one/lessons/web-and-app/1727-sozda-m-fotoshop-novogodniy-dizayn-dlya-sayta.html<br>
+        https://creativo.one/lessons/web-and-app/4658-sozdaem-akkuratnyiy-maket-portfolio-v-fotoshop.html</li>
+        <li>Макеты для верстки<br>
+        https://tpverstak.ru/free-psd-website-templates/<br>
+        https://tpverstak.ru/20-free-psd-website-templates/</li>
+        <li>Не забыть у Прокапчука посмотреть анимацию JS</li>
+        <li>Тут много бесплатных шаблонов<br>
+        https://psdfreebies.com/psd/sports-store-e-commerce-psd-template/</li>
+        <li>посмотреть как делается новостной портал</li>
+        <li>Посмотреть как разрабатывают приложение для Вконтакте</li>
+        <li>Скачать в браузере плагин PerfectPixel</li>
+        <li>Повторить табы, гармошку</li>
+        <li>Посмотреть свойство css calc() и как его применять</li>
+        <li>Научится подключать платёжные системы на сайт через js</li>
+        <li>Тренироваться с Canvas</li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+    
 </div>
