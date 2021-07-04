@@ -3,30 +3,34 @@
     
     
     <h3 class="header-style2">DOM дерево</h3>
-    <img src="../img/50.png" alt="" class="screen">
+    <img src="../site-shpargalka/img/50.png" alt="" class="screen">
     
     
     
     <h3 class="header-style2">Типы узлов</h3>
-    <img src="../img/65.jpg" alt="" class="screen">
+    <img src="../site-shpargalka/img/65.jpg" alt="" class="screen">
     
     
     
     <h3 class="header-style2">Навигация по всем узлам DOM дерева</h3>
-    <img src="../img/51.png" alt="" class="screen">
+    <img src="../site-shpargalka/img/51.png" alt="" class="screen">
+    <p><span class="tag-style">div.hasChildNodes</span> - есть ли у div дочерние элементы? Вернёт true или false</p>
+    <p><span class="tag-style">div.childNodes.length</span> - возвращает длину псевдомассива.</p>
+    <p><span class="tag-style">div.nodeType</span> - вернёт число тип узла, в данном случае это элемент, а значит вернёт 1</p>
+    <p><span class="tag-style">div.nodeName</span> - вернёт имя элемента большими буквами(DIV).</p>
     
     
     
     <h3 class="header-style2">Навигацияя только по элементам DOM дерева</h3>
-    <img src="../img/52.png" alt="" class="screen">
+    <img src="../site-shpargalka/img/52.png" alt="" class="screen">
     
     
     
     <h3 class="header-style2">Типы псевдомасивов в DOM и их различия</h3>
     <p><b>NodeList</b></p>
-    <p>Чтобы получить такой псевдомассив используется document.querySelectorAll(selector) вот такой метод у документа</p>
+    <p>Чтобы получить такой псевдомассив используется, например, метод document.querySelectorAll(selector) или document.body.childNodes</p>
     <p><b>HTMLCollection</b></p>
-    <p>Чтобы получить такой псевдомассив используется document.getElements...() подобные методы у документа</p>
+    <p>Чтобы получить такой псевдомассив используется document.getElements...() подобные методы у документа или document.body.children</p>
     <p><b>Различия</b></p>
     <p>Если мы получили в переменную массив HTMLCollection каких нибудь элементом, а потом в программе где то поменялось количество этих элементов, то при обращении к этой коллекции там уже всё обновится и будет хранится актуальное количество элементов. А вот NodeList  так не умеет.</p>
     <p>Второе различие, которое я знаю это то что псевдомассив HTMLCollection не может использовать метод массива forEach(), а NodeList может.</p>
