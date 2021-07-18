@@ -3,33 +3,69 @@
     
     
     <h3 class="header-style2">DOM дерево</h3>
-    <img src="/site-shpargalka/img/50.png" alt="" class="screen">
+    <img src="../img/50.png" alt="" class="screen">
     
     
     
     <h3 class="header-style2">Типы узлов</h3>
-    <img src="/site-shpargalka/img/65.jpg" alt="" class="screen">
+    <img src="../img/65.jpg" alt="" class="screen">
     
     
     
     <h3 class="header-style2">Навигация по всем узлам DOM дерева</h3>
-    <img src="/site-shpargalka/img/51.png" alt="" class="screen">
+    <img src="../img/51.png" alt="" class="screen">
+    <p><span class="tag-style">document.head</span> - элемент HEAD доступен так.</p>
     <p><span class="tag-style">div.hasChildNodes</span> - есть ли у div дочерние элементы? Вернёт true или false</p>
     <p><span class="tag-style">div.childNodes.length</span> - возвращает длину псевдомассива.</p>
     <p><span class="tag-style">div.nodeType</span> - вернёт число тип узла, в данном случае это элемент, а значит вернёт 1</p>
-    <p><span class="tag-style">div.nodeName</span> - вернёт имя элемента большими буквами(DIV).</p>
+    <p><span class="tag-style">div.nodeName</span> - вернёт имя узла большими буквами(DIV), будь то текстовый узел или коментарий или элемент.</p>
+    <p><span class="tag-style">text.nodeValue/data</span> - получаем содержимое текстовых узлов, коментарией и т.д. Так как innerHTML не работает для таких узлов</p>
+    <p><span class="tag-style">elem.innerHTML</span> - позволяет получить HTML-содержимое элемента в виде строки. Также можно добавить  или заменить содержимое html элемента</p>
+    <p><span class="tag-style">elem.outerHTML</span> - содержит HTML элемента целиком. Это как innerHTML плюс сам элемент.</p>
+    <p><span class="tag-style">elem.textContent</span> - предоставляет доступ к тексту внутри элемента за вычетом всех &lt;тегов>. На практике редко появляется необходимость читать текст таким образом. Намного полезнее возможность записывать текст в textContent, т.к. позволяет писать текст «безопасным способом»</p>
+    <p><span class="tag-style">elem.hidden = true</span> - Атрибут и DOM-свойство «hidden» указывает на то, видим ли мы элемент или нет. Технически, hidden работает так же, как style="display:none". Но его применение проще</p>
+    <p><span class="tag-style">elem.hasAttribute('href')</span> - проверяет наличие атрибута href.</p>
+    <p><span class="tag-style">elem.getAttribute('src')</span> - получаем значение атрибута src.</p>
+    <p><span class="tag-style">elem.setAttribute('src', value)</span> - устанавливает атрибуту src значение value.</p>
+    <p><span class="tag-style">elem.removeAttribute('src')</span> - удаляет атрибут src.</p>
+    <p class="note">Многие атрибуты тегов представленны в DOM в виде одноимённых свойств у этих элементов.</p>
     
+    
+    <h3 class="header-style2">Методы поиска узла - ELEMENT</h3>
+    <p><span class="tag-style">document.getElementById(id)</span> - поиск элемента на странице по его атрибуту id</p>
+    <p><span class="tag-style">document.getElementsByName(name)</span> - поиск элементов по атрибуту name. Не ищет внутри элемента.</p>
+    <p><span class="tag-style">document.getElementsByTagName(tag)</span> - ищет элементы с данным тегом и возвращает их коллекцию. Передав "*" вместо тега, можно получить всех потомков.. Может искать внутри элемента</p>
+    <p><span class="tag-style">document.getElementsByClassName(className)</span> - возвращает элементы, которые имеют данный CSS-класс. Может искать внутри элемента.</p>
+    <p><span class="tag-style">document.querySelector()</span> - Метод elem.querySelector(css) возвращает первый элемент, соответствующий данному CSS-селектору. Иначе говоря, результат такой же, как при вызове elem.querySelectorAll(css)[0], но он сначала найдёт все элементы, а потом возьмёт первый, в то время как elem.querySelector найдёт только первый и остановится. Это быстрее, кроме того, его короче писать.. Может искать внутри элемента.</p>
+    <p><span class="tag-style">document.querySelectorAll()</span> - Самый универсальный метод поиска – это elem.querySelectorAll(css), он возвращает все элементы внутри elem, удовлетворяющие данному CSS-селектору. Может искать внутри элемента.</p>
+    <p><span class="tag-style">elem.matches(css) </span> - ничего не ищет, а проверяет, удовлетворяет ли elem CSS-селектору, и возвращает true или false. Этот метод удобен, когда мы перебираем элементы (например, в массиве или в чём-то подобном) и пытаемся выбрать те из них, которые нас интересуют. Не путать с методом match у регулярок. Пример:</p>
+    <div class="code-style">
+        <pre>
+            &lt;a href="http://example.com/file.zip">...&lt;/a>
+            &lt;a href="http://ya.ru">...&lt;/a>
+
+            &lt;script>
+              // может быть любая коллекция вместо document.body.children
+              for (let elem of document.body.children) {
+                if (elem.matches('a[href$="zip"]')) {
+                  alert("Ссылка на архив: " + elem.href );
+                }
+              }
+            &lt;/script>
+        </pre>
+    </div>
+    <p><span class="tag-style">elem.closest(css)</span> - ищет ближайшего предка, который соответствует CSS-селектору. Сам элемент также включается в поиск. Другими словами, метод closest поднимается вверх от элемента и проверяет каждого из родителей. Если он соответствует селектору, поиск прекращается. Метод возвращает либо предка, либо null, если такой элемент не найден</p>
     
     
     <h3 class="header-style2">Навигацияя только по элементам DOM дерева</h3>
-    <img src="/site-shpargalka/img/52.png" alt="" class="screen">
+    <img src="../img/52.png" alt="" class="screen">
     
     
     
     <h3 class="header-style2">Типы псевдомасивов в DOM и их различия</h3>
     <p><b>NodeList</b></p>
     <p>Чтобы получить такой псевдомассив используется, например, метод document.querySelectorAll(selector) или document.body.childNodes</p>
-    <p><b>HTMLCollection</b></p>
+    <p><b>HTMLCollection(Живая коллекция)</b></p>
     <p>Чтобы получить такой псевдомассив используется document.getElements...() подобные методы у документа или document.body.children</p>
     <p><b>Различия</b></p>
     <p>Если мы получили в переменную массив HTMLCollection каких нибудь элементом, а потом в программе где то поменялось количество этих элементов, то при обращении к этой коллекции там уже всё обновится и будет хранится актуальное количество элементов. А вот NodeList  так не умеет.</p>
