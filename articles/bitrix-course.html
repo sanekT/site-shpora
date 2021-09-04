@@ -1,0 +1,235 @@
+<div class="wrap">
+   
+    <h2 class="header-style">Курс по 1с-битрикс</h2>
+    
+    
+    <ul class="list">
+        <li><a href="#1">Создаём папку local и файлы в ней</a></li>
+        <li><a href="#2">Папка php_interface</a></li>
+        <li><a href="#3">Папка .default</a></li>
+        <li><a href="#4">Файлы header.php и footer.php</a></li>
+        <li><a href="#5">Натягиваем меню. Компонент "bitrix:menu"</a></li>
+        <li><a href="#6">Как включить отображение ошибок в битриксе</a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+        <li><a href="#1"></a></li>
+    </ul>
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="1">Создаём папку local и файлы в ней</h3>
+    <p>После установки битрикса оставим примерно вот такие файлы и папки. Чтобы начать натягивать вёрстку создадим папку <b>local</b>, а в local создадим папку <b>templates</b>. В templates будут хранится шаблоны нашего сайта.</p>
+    <img class="screen-2" src="../img/Bitrix/1.png" alt="">
+    <p>А вообще битрикс по умолчанию помещает шаблоны по пути /bitrix/templates, но с какой то версии была введена возможность создавать папку local и хранить в ней наш сайт.</p>
+    <p>Тепрь создадим в local/templates папку с названием нашего сайта, например, main. И начнём добавлять в него файлы. Давайте первым файлом добавим <b>description.php</b>. Этот файл позволяет кратко описать наш шаблон сайта, для того чтобы потом в админке по этому описанию выбирать какой шаблон подключить:</p>
+    <div class="code-style">
+        <pre>
+           &lt;?php
+                $arTemplate = [
+                    'NAME' => 'Основной шаблон Main',
+                    'DESCRIPTION' => 'Описание шаблона Main ...'
+                ];
+            ?>
+        </pre>
+    </div>
+    <p>Чтобы для сайта установить наш шаблон-вёрстку, пройдём в админку и по пути Настройки -> Настройки продукта -> Список сайтов откроется табличка со списком сайтов. У нас там будет один сайт с id - s1, жмём на него и в открывшихся настройках опускаемся вниз до настроки Шаблон сайта, и в вехней строке выберем наш шаблон из списка. Всё, мы подключили к сайту наш шаблон:</p>
+    <img class="screen" src="../img/Bitrix/2.png" alt="">
+    <p>Далее создадим ещё 2 файла - <b>header.php</b> и <b>footer.php</b>, также нужно сюда же добавить скриншот нашего шаблона. <b>Скриншот дожен быть 800х600 и расширение .gif</b>. Вот что получилось:</p>
+    <img class="screen-2" src="../img/Bitrix/3.png" alt="">
+    
+    
+    <h3 class="header-style2" id="2">Папка php_interface</h3>
+    <p>Эта папка есть в ядре bitrix. Я также добавил её в папку local как видно из картинки выше. В ней создал  файл init.php, этот файл выполнится до того как подгрузится наш сайт, а значит в этом файле можно задать какие нибудь свои пользовательские функции, константы, переменные, которые уже будут доступны в коде последующих загружаемых файлах. Вот что лежит пока в файле init.php:</p>
+    <div class="code-style">
+        <pre>
+            &lt;?php
+
+                use Bitrix\Iblock\IblockTable;
+                use Bitrix\Main\Loader;
+
+                //Определим свою константу, в которой будет лежать путь до папки .default
+                define("DEFAULT_TEMPLATE_PATH", "/local/templates/.default");
+
+
+                //Функция выводит красиво массивы
+                 function debug($data){
+                    echo '&lt;pre>';
+                    var_dump($data, 1);
+                    echo '&lt;/pre>';
+                 }
+
+                 //Функция получает id инфоблока по его символьному коду
+                function getIblockIdByCode(string $code): int
+                {
+                    Loader::includeModule('iblock');
+
+                    $iblock = IblockTable::getList([
+                        'filter' => [
+                            'CODE' => $code,
+                        ],
+                        'select' => [
+                            'ID',
+                            'CODE',
+                        ],
+                    ])->fetch();
+
+                    if (!isset($iblock['ID'])) {
+                        throw new Exception("Не найден инфоблок с кодом {$code}");
+                    }
+
+                    return (int) $iblock['ID'];
+                }
+        </pre>
+    </div>
+    
+    
+    
+    <h3 class="header-style2" id="3">Папка .default</h3>
+    <p>Для одного сайта могут использоваться несколько шаблонов. Например, на главной странице нет сайдбара, а на других есть, поэтому могут быть несколько папок с шаблонами, но стили для всех этих шаблонов одни и те же. Чтобы не копировать стили во все шаблоны, можно создать рядом с шаблонами папку .default и в неё сложить все наши стили, скрипты, картинки:</p>
+    <img class="screen-2" src="../img/Bitrix/4.png" alt="">
+    <p>Видно что style.css лежит не в папке css, не обращаем внимания, так вёрстка сделална просто.</p>
+    <p>Но теперь нельзя подключить наши скрипты и стили в файле header.php через константу SITE_TEMPLATE_PATH, для этого в init.php я создал свою константу DEFAULT_TEMPLATE_PATH, которая будет вести до папки .deafult, чтобы подключить скрипты и стили буду использовать её.</p>
+    
+    
+    
+    <h3 class="header-style2" id="4">Файлы header.php и footer.php</h3>
+    <p>header.php и footer.php всегда подгружаются из шаблона сайта, а контент из файлов-страниц</p>
+    <p>Теперь из вёрстки нужно вынести повторяющийся html код в header.php и в footer.php. Оставшийся код в index.html это и будет содержимым, которое будет менятся, его перемещаем в index.php и подключаем вверху header.php таким кодом:</p>
+    <div class="code-style">
+        <pre>
+        require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
+        </pre>
+    </div>
+    <p>И footer.php таким же кодом:</p>
+    <div class="code-style">
+        <pre>
+        require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");
+        </pre>
+    </div>
+    <img class="screen" src="../img/Bitrix/5.png" alt="">
+    <p><b>header.php</b></p>
+    <p>Подключим в файле header.php наши стили, скрипты, и остальные meta данные:</p>
+    <div class="code-style">
+        <pre>
+            &lt;?php if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) die(); ?>//защита от открывания этого файла отдельно от index.php
+            &lt;?php 
+               use Bitrix\main\Page\Asset;//подключили класс Asset
+            ?>
+            <!DOCTYPE html>
+            &lt;html class="no-js" lang="en">
+            &lt;head>
+
+                &lt;title>&lt;?php $APPLICATION->ShowTitle(); ?>&lt;/title>
+
+               &lt;link rel="shortcut icon" type="image/x-icon" href="<?php echo DEFAULT_TEMPLATE_PATH; ?>/img/favicon.png">
+
+               &lt;?php 
+
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/bootstrap.min.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/owl.carousel.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/animate-text.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/magnific-popup.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/et-line.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/pe-icon-7-stroke.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/shortcode/shortcodes.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/meanmenu.min.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/font-awesome.min.css');
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/style.css');
+
+                  Asset::getInstance()->addCss(DEFAULT_TEMPLATE_PATH . '/css/responsive.css');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/vendor/modernizr-2.8.3.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/vendor/jquery-1.12.0.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/bootstrap.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/owl.carousel.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.counterup.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/waypoints.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.magnific-popup.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.mixitup.min.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.meanmenu.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.nav.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/jquery.parallax-1.1.3.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/animate-text.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/plugins.js');
+                  Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . '/js/main.js');
+                  Asset::getInstance()->addString('<meta name="viewport" content="width=device-width, initial-scale=1">');
+                  Asset::getInstance()->addString('<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">');
+                  //если есть подключение шрифтов по CDN, то также через addString как и viewport помещаем весь тег link в скобки в этот метод.
+               ?>
+               
+               &lt;?php $APPLICATION->ShowHead();//вернёт все мета теги нужные для сайта ?>
+
+            &lt;/head>
+
+            &lt;body>
+
+               &lt;div id="panel">&lt;?php $APPLICATION->ShowPanel(); ?>&lt;/div>
+        </pre>
+    </div>
+    <p><b>footer.php</b></p>
+    <p>В этом файле в принципе только html и защита.</p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="5">Натягиваем меню. Компонент "bitrix:menu"</h3>
+    <p>Итак начнём натягивать меню. Сначала проанализируем где у нас меню в вёрстке. Я натягиваю вёрстку Coders, в ней 2 меню, в шапке:</p>
+    <img class="screen-2" src="../img/Bitrix/6.png" alt="">
+    <p>И в подвале:</p>
+    <img class="screen-2" src="../img/Bitrix/7.png" alt="">
+    <p>Эти меню немного отличаются поэтому буду делать 2 разных меню. Идём в админку по пути <b>Настройки -> Настройки модулей -> Управление структурой</b> и пролистав немного вниз есть подраздел <b>Настройки для сайтов</b>, в нём в пункте Типы меню создадим 2 типа меню - top->Верхнее меню и bottom->Нижнее меню:</p>
+    <img class="screen" src="../img/Bitrix/8.png" alt="">
+    <p>И жмём сохранить. Всё теперь идём в публичную часть сайта. Для того чтобы нам сделать меню выводимое битриксом нужно подключить компонент меню. Где взять этот компонент? Создадим тестовую страницу, для этого мжём на панели Создать страницу, в открывшемся окне обзовём её Тестовая страница, имя файла - test.php, уберём галочку Добавить в пункт меню и жмём Далее:</p>
+    <img class="screen" src="../img/Bitrix/9.png" alt="">
+    <p>Затем ещё раз Далее и Готово. Откроется окно редактирования этой страницы, сотрём всё что там написанно и теперь нужно разместить компонент меню и настроить его. Для этого справа есть выдвигающееся меню компонентов, нужный нам лежит в Служебные -> Навигация -> Меню. Хватаем его мышкой и переносим влево в код и жмём по нему 2 раза, чтобы перейти к его настройке:</p>
+    <img class="screen" src="../img/Bitrix/10.png" alt="">
+    <p>В открывшемся окне настроек первым пунктом стоит Шаблон компонента, это то место где лежит php код, который сгенерирует html нашего меню. По умолчанию он лежит в папке .defaul в ядре bitrix/components/bitrix/menu/templates/.default/template.php. Пока оставим этот шаблон по умолчанию. Потом мы его скопируем к себе в папку main и настроим под себя. Далее для пункта Тип меню первого уровня выберем ранее созданное название в админке Верхнее меню:</p>
+    <img class="screen" src="../img/Bitrix/11.png" alt="">
+    <p>Пролистаем ниже и снимем галочку с Учитывать права доступа, так как у нас сайт без авторизации, то наше меню будет доступно для всех пользователей. Листаем дальше вниз и в Пункте Уровень вложенности меню поставим 2, так как у нас есть пункты в меню, которые имеют подменю. Пока остальное не меняем и жмём Сохранить и Сохранить. Мы находимся на странице test.php и пока не видим ничего. Начнём добавлять пункты для меню. Для этого жмём Создать раздел и в открывшемся окне вводим Заголовок раздела - Главная, имя папки на анг. пусть будет так как сам битрикс перевёл, галочки не снимаем и жмём Далее. Во 2м окне Имя нового Пункта - Главная, Тип меню - Верхнее меню, Вставить последним пунктом и опять Далее. В новом окне надо ввести свойства раздела, пока во всех пунктах вставим слово Главная и жмём Готово. нас перекинет скорее всего на созданный раздел, но в строке запроса вводим наш файл test.php и переходим на него и видим, что появился первый пункт меню Главная. Таким способом создадим все пункты меню и должно получиться такое:</p>
+    <img class="screen" src="../img/Bitrix/12.png" alt="">
+    <p>В панели есть такая кнопка как Меню и нажав на неё откроется такое окно:</p>
+    <img class="screen" src="../img/Bitrix/13.png" alt="">
+    <p>В этом окне можно изменять имена разделов, менять их местами, удалять.</p>
+    <p>Есть другой путь создания меню. После того как я создал первый пункт меню Главная, то в структуре файлов и папок появился такой файл top.menu.php, в нём в виде массива описываются имена разделов и путь к этому разделу. Так вот можно заполнить этот файл нужными разделами с их путями и на странице test.php эти пункты меню отобразятся. Единственное, что они пока никуда не приведут, потому как в структуре файлов не созданны для них одноимённые папки с индексовым файлом внутри. Можно создать все эти папки и файл index.php внутри них. В файле index.php нужно будет подключить шапку и подвал и прописать некоторые свойства:</p>
+    <img class="screen" src="../img/Bitrix/14.png" alt="">
+    <p>Продолжим по первому пути, где я создавал каждый раздел с помощью панели. Наше меню надо теперь как то привести к виду нашего меню из вёрстки. Для этого в панели включаем режим правки и наводим мышкой на наше меню, появятся спец инструменты для настройки меню, наведём мышкой на стрелочку , откроется подменю и как показано на картинке нажмём на Копировать шаблон компонента:</p>
+    <img class="screen" src="../img/Bitrix/15.png" alt="">
+    <p>Откроется окно, где введём наше название компонента top_menu и поставим галочку сохранить его к нам в шаблон main, галочки ниже можно поснимать:</p>
+    <img class="screen" src="../img/Bitrix/16.png" alt="">
+    <p>Как видно в структуре файлов в ашем шаблоне main появилась папка components, в ней и находится наш скопированный шаблон меню по пути components/bitrix/menu/top_menu/template.php. Для создания нашего меню нам пока нужен только файл template.php, остальные фалы и папки можно удалить:</p>
+    <img class="screen-2" src="../img/Bitrix/17.png" alt="">
+    <p>Теперь нужно к нашему меню применить наш скопированный шаблон, для этого идём в публичную часть сайта и в режиме правки жмём на шестерёнку и в открывшемся окне выберем в пункте Шаблон компонента наш компонент top_menu:</p>
+    <img class="screen" src="../img/Bitrix/18.png" alt="">
+    <p>Сохраним и видим что с меню слетели все стили, потому что я удалил все стили и др. файлы в нашем скопированном компоненте. И теперь надо в шаблоне template.php подставить наш html код меню из вёрстки в php код, который в цикле выводит меню. Вот что получилось у меня:</p>
+    <img class="screen" src="../img/Bitrix/19.png" alt="">
+    <p>И теперь меню стало похоже на оригинал:</p>
+    <img class="screen" src="../img/Bitrix/20.png" alt="">
+    <p>В template.php есть такой массив как <b>$arResult</b>. В нём в подмасиивах лежат все наши созданные пункты меню, разная инфа о пунктах меню разложенна по элементам подмассивов вот так:</p>
+    <img class="screen-2" src="../img/Bitrix/21.png" alt="">
+    остановился в видео 8 на 00:12:12
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="5">Как включить отображение ошибок в битриксе</h3>
+    <p>Если в php коде сделать ошибку, то битрикс вместо сообщения об ошибке выдасть сообщение, что ошибки отключены и если мы хотим их включить, то надо изменить кое что в файле settings.php, Файл этот находится по пути bitrix/settings.php. Изменять его можно только когда разрабатывается сайт. В этом файле различные настройки в массивах, через поиск ищем свойство в массиве - debug и ставим ему значение true.</p>
+    
+    
+    
+    
+</div>
