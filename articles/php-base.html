@@ -15,7 +15,7 @@
     </ul>
     <p>Проверка <b>isset()</b>, устанавливает лежит ли в переменной хоть что то кроме null. Эта функция вернёт false только тогда когда переменной нет и когда в ней null.</p>
     <p>Проверка на пустоту - <b>empty()</b>.
-    <img class="screen" src="../img/39.png" alt="" width="700px">
+    <img class="screen" src="../img/php/4.png" alt="" width="700px">
     
     
     
@@ -495,18 +495,51 @@
     
     <h3 class="header-style2">HTTP</h3>
     <p>Протокол транспортировки гипертекста. уровень 1, урок 3 из 3, время 02:36:15</p>
-    <img class="screen" src="../img/40.png" alt=""> 
-    
-    
-    
-    
-    
-    <h3 class="header-style2">Минимальная обработка параметров из тела запроса формы</h3>
+    <img class="screen" src="../img/php/3.png" alt=""> 
+    <p>Так примерно выглядит форма для отправки данных на сервер:</p>
     <div class="code-style">
         <pre>
-            $name = trim(strip_tags($_POST['name']));
-            $age = (int)$_POST['age'];
+            &lt;form action="handler.php" method="get">
+                Логин:
+                &lt;input type="text" name="login">
+                Пароль:
+                &lt;input type="password" name="pass">
+                &lt;input type="submit">
+            &lt;/form>
         </pre>
     </div>
+    <p>После нажатия на кнопку с типом submit браузер соберёт такую строку для отправки:</p>
+    <p><b>GET /handler.php?login=Mike&amp;pass=1234 HTTP/1.1</b> </p>
+    <p>Всё что написано после ?  и до HTTP называется строка запроса(QUERY_STRING) и лежит она в $_SERVER['QUERY_STRING'].</p>
+    <p>Но посылать метом GET, если есть пароли, не безопасно. Поэтому посылают методом POST, для этого в форме надо в атрибуте method указать 'post'. Тепрь браузер соберёт немного по другому запрос:</p>
+    <p><b>POST  /handler.php  HTTP/1.1</b></p>
+    <p><b>...</b></p>
+    <p><b>Referer:  http://example.com/page-with-form.html</b></p>
+    <p><b>Content-Type:  application/x-www-form-urlencoded</b></p>
+    <p><b>Content-Length:  20</b></p>
+    <p></p>
+    <p><b>login=Mike&amp;pass=1234</b></p>
+    <p>При методе post заголовок Referer всегда посылается, так как он содержит адрес, кто именно послал форму. Также передаётся Content-Type и Content-Length.</p>
+    <p>После того как отправлен запрос по HTTP сервер вызывает указанный обработчик на исполнение и в этом обработчике надо как то принять данные посланные браузером и формой. Php уже подготовил для нас эти данные и распихал их по суперглобальным массивам $_GET, $_POST или $_REQUEST. Если данные были посланы методом GET, то и получаем их в массиве $_GET или $_REQUEST. Если посланы методом POST, то получаем в $_POST или $_REQUEST. Допустим что форма послала методом POST, то и получить наши инпуты можно так:</p>
+    <div class="code-style">
+        <pre>
+            &lt;?php
+            $login = $_POST['login'];
+            $password = $_POST['pass'];
+        </pre>
+    </div>
+    <p>Но так никогда не надо принимать данные пришедшие извне. Всегда надо их хотя бы минимально обрабатывать, потму что могут прислать что угодно и всё сломается. Вот минимальная обработка данных:</p>
+    <div class="code-style">
+        <pre>
+            $login = trim(strip_tags($_POST['login']));
+            $password = trim(strip_tags($_POST['pass']));
+            $age = abs((int)$_POST['age']);//либо 0 либо положительное число получим
+        </pre>
+    </div>
+    
+    
+    
+    
+    
     
 </div>
