@@ -215,6 +215,50 @@
         <li><b>unset($arr)</b> - удаляем массив</li>
         <li><b>unset($arr[2])</b> - удаляем элемент массива с интексом 2</li>
         <li><b>list()</b> - деструктуризация массива по переменным: list($one, $two) = [4, 5]; - теперь в $one лежит 4, а в $two - 5. Это работает только с индексированным массивом. Также доступно такое обращение, например есть фукнция, которая возвращает массив abc() и теперь можно получить отдельный элемент массива так: $one = abc()[3];</li>
+        <li><b>implode</b> - Объединяет элементы массива в строку с разделителем:
+        <div class="code-style">
+            <pre>
+                $array = array('имя', 'почта', 'телефон');
+                $comma_separated = implode(",", $array);
+
+                echo $comma_separated; // имя,почта,телефон
+            </pre>
+        </div>
+        </li>
+        <li><b>explode</b> - разбивает строку на массив по разделилтелю:
+        <div class="code-style">
+            <pre>
+                $pizza  = "кусок1 кусок2 кусок3";
+                $pieces = explode(" ", $pizza);
+                print_r($pieces); // ["кусок1", "кусок2", "кусок3"]
+            </pre>
+        </div>
+        </li>
+        <li><b>serialize(), unserialize()</b>:
+        <div class="code-style">
+            <pre>
+                $user = [
+                    'name' => 'Jhon',
+                    'login' => 'root',
+                    'password' => '1234'
+                ]
+                echo serialize($user); // a:3:{s:4:"name";s:4:"Jhon";s:5:"login";s:4:"root";s:8:"password";s:4:"1234";}
+            </pre>
+        </div>
+        </li>
+        <li><b>base64_encode и base64_decode</b> - запакует и распакует сериализованную строку для того, чтобы сериализованная строка не развалилась, потому что она состоит из : и "", а значит может развалиться, а base64_encode выдаёт только лат. буквы и цифры так:
+        <div class="code-style">
+            <pre>
+                $user = [
+                    'name' => 'Jhon',
+                    'login' => 'root',
+                    'password' => '1234'
+                ]
+                echo serialize($user); // a:3:{s:4:"name";s:4:"Jhon";s:5:"login";s:4:"root";s:8:"password";s:4:"1234";}
+                echo base64_encode(serialize($user));//YTozOntzOjQ6Im5hbWUiO3M6NDoiSmhvbiI7czo1OiJsb2dpbiI7czo0OiJyb290IjtzOjg6InBhc3N3b3JkIjtzOjQ6IjEyMzQiO30=
+            </pre>
+        </div>
+        </li>
     </ul>
     
     
