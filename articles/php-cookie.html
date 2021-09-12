@@ -1,0 +1,129 @@
+<div class="wrap">
+    <h2 class="header-style">Основы PHP. Cookie</h2>
+    
+    
+    <h3 class="header-style2">Посылаем браузеру Cookie</h3>
+    <p>Как работают куки. Пользователь заполняет форму и пишет в одном из полей своё имя, затем отправляет форму. Форма приходит на сервер и он запускает обработчик, который должен обработать эту форму. В обработчике мы из массивов $_GET или $_POST получаем имя пользователя и с помощью функции: </p>
+    <div class="code-style">
+        <pre>
+            //создание временной куки, пока открыт браузер
+            <span class="vue-b">setcookie</span>(<span class="vue-r">"UserName"</span>, <span class="vue-r">"Вася"</span>);
+            
+            //создание долговременной куки, даже если закрыть и открыть браузер, кука сохранится, для этого нужно передать текущую метку времени + 1 час или сколько нужно часов
+            <span class="vue-b">setcookie</span>(<span class="vue-r">"UserName"</span>, <span class="vue-r">"Вася"</span>, <span class="vue-g">time()+3600</span>);
+            
+            У этой функции есть и другие параметры, но они редко используются, если нужно будет, то можно посмотреть в видео специалиста Уровень 2, день 1 с 00:26:50
+        </pre>
+    </div>
+    <p>говорим серверу, чтобы он, когда пошлёт ответ обратно, то послал куку с помощью заголовка ответа Set-Cookie:</p>
+    <img class="screen-2" src="../img/php/5.png" alt="">
+    <p>Браузер примет эту куку(UserName=Вася) и сохранит у себя в LocalStorage. И в следующий раз, когда идёт запрос опять на этот же сайт, браузер смотрит, а оставлял ли куку этот сайт, если да, то он отправляет эти куки ему обратно и сервер уже видит, что это не новый посетитель, а это Вася, который уже заходил как то:</p>
+    <img class="screen-2" src="../img/php/6.png" alt="">
+    <p class="note">Так как setcookie() говорит серверу послать заголовок, то с заголовками есть одна особенность, их нельзя посылать если до послания заголовка в коде есть что то типо echo или что то что выводит на экран. Все заголовки должны быть опеределены до этих конструкций. Эти конструкции для заголовков что то типа return в функции после которых код не выполняется. Вот так мы не сможем послать заголовок:</p>
+    <div class="code-style">
+        <pre>
+            echo "Привет";
+            setcookie("name", "Jhon");
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Читаем пришедшие от браузера Cookie</h3>
+    <p>Чтобы прочитать куку пришедшую от браузера есть глобальный массив $_COOKIE, в который сам php раскидал уже все пришедшие куки от браузера. Чтобы получить куку UserName=Вася, то просто обращаемся так:</p>
+    <div class="code-style">
+        <pre>
+            $_COOKIE["UserName"]; //получим Вася
+        </pre>
+    </div>
+    <p>Вот такой мини код можно написать, когда с первого раза мы отправляем куку, а со второго прихода уже знаем кто это и привествуем его:</p>
+    <div class="code-style">
+        <pre>
+            if(isset($_COOKIE['name'])){
+                echo "Привет" . $_COOKIE['name'];
+            }else{
+                setcookie("name", "Jhon");
+            }
+        </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Удаляем Cookie</h3>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">setcookie</span>(<span class="vue-r">"UserName"</span>, <span class="vue-r">"Вася"</span>, <span class="vue-g">time()-3600</span>);
+        </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Посылаем в куки что то более сложней чем просто имя пользователя</h3>
+    <p>Посылаем массив в куки, для этого мы массив сначала запаковываем в строку с помощью serialize(), посылаем, а когда обратно приходит, то распаковываем и получаем массив:</p>
+    <div class="code-style">
+        <pre>
+            $user = [
+                'name' => 'Jhon',
+                'login' => 'root',
+                'password' => '1234'
+            ]
+            //echo serialize($user); // a:3:{s:4:"name";s:4:"Jhon";s:5:"login";s:4:"root";s:8:"password";s:4:"1234";}
+            $str = serialize($user);
+            setcookie("user" $str);
+            
+            $user = unserialize($_COOKIE["user"]);// $user === array
+        </pre>
+    </div>
+    <p>Но запакованная строка с помощью serialize() может развалится, потому как  ней много : и "", поэтому дополнительно её упаковывают в функцию base64_encode() для сохранения целостности, потому что эта функция выдаст строку, где только буквы лат. алфавита и цифры:</p>
+    <div class="code-style">
+        <pre>
+            $user = [
+                'name' => 'Jhon',
+                'login' => 'root',
+                'password' => '1234'
+            ]
+            //echo serialize($user); // a:3:{s:4:"name";s:4:"Jhon";s:5:"login";s:4:"root";s:8:"password";s:4:"1234";}
+            //echo base64_encode(serialize($user));//YTozOntzOjQ6Im5hbWUiO3M6NDoiSmhvbiI7czo1OiJsb2dpbiI7czo0OiJyb290IjtzOjg6InBhc3N3b3JkIjtzOjQ6IjEyMzQiO30=
+            $str = base64_encode(serialize($user));
+            setcookie("user" $str);
+            
+            $user = unserialize(base64_decode($_COOKIE["user"]));// $user === array
+        </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Небольшой пример как работают куки</h3>
+    <p>Тут пользователь Настя заходит на наш  сайт и посылает форму со своим именем, мы опускаем тут получение её имени, оно уже у нас есть. Мы посылаем куку массив где держим количество посещений и дату посещения и в следующий раз когда Настя приходит снова, мы встречаем её сообщение, где говорим какой по счёту раз она к нам пришла и когда последний раз была у нас:</p>
+    <div class="code-style">
+        <pre>
+            if(isset($_COOKIE['user'])){
+                $user = unserialize(base64_decode($_COOKIE["user"]));
+                $user["visitCounter"]++;
+                $data = $user["lastVisit"];
+                $user["lastVisit"] = date("d-m-Y H:i:s");
+                $str = base64_encode(serialize($user));
+                setcookie("user", $str);
+                echo "Привет {$user['name']}, ты посетила нас {$user['visitCounter']}й раз, твой последний визит был {$data}";
+
+            }else{
+                $user = [
+                    "visitCounter" => 0,
+                    "lastVisit" => date("d-m-Y H:i:s"),
+                    "name" => "Настя"
+                ];
+                $user["visitCounter"]++;
+                $str = base64_encode(serialize($user));
+                setcookie("user", $str);
+                echo "Добро пожаловать!!!";
+            }
+        </pre>
+    </div>
+    
+    
+</div>
