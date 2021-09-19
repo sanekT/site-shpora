@@ -1,9 +1,35 @@
 <div class="wrap">
-    <h2 class="header-style">Основы php. работа с файлами</h2>
+    <h2 class="header-style">Основы php. Работа с файлами.</h2>
     
-    
-    <h3 class="header-style2"></h3>
-    
+    <h3 class="header-style2">Полезные функции</h3>
+    <div class="code-style">
+        <pre>
+            //Проверка файлов и директорий на существование
+            <span class="vue-g">if(<span class="vue-b">file_exists</span>(<span class="vue-r">"file.txt"</span>)){
+                echo <span class="vue-r">"Файл или директория существует"</span>
+            }</span>
+            
+            <span class="vue-g">if(<span class="vue-b">is_file</span>(<span class="vue-r">"file.txt"</span>)){
+                echo <span class="vue-r">"Файл существует"</span>
+            }</span>
+            
+            <span class="vue-g">if(<span class="vue-b">is_dir</span>(<span class="vue-r">"images"</span>)){
+                echo <span class="vue-r">"Директория существует"</span>
+            }</span>
+            
+            //Размер файла
+            <span class="vue-g">echo <span class="vue-r">"Длина файла file.txt: "</span> . <span class="vue-b">filesize</span>(<span class="vue-r">"file.txt"</span>);</span>
+            
+            //Время измененияи доступа к файлу
+            <span class="vue-g">echo <span class="vue-r">"Файл file.txt был изменён: "</span> . <span class="vue-b">filemtime</span>(<span class="vue-r">"file.txt"</span>);</span>
+            <span class="vue-g">echo <span class="vue-r">"И запрошен: "</span> . <span class="vue-b">fileatime</span>(<span class="vue-r">"file.txt"</span>);</span>
+            
+            //Что можно с файлом делать?
+            <span class="vue-g">if(<span class="vue-b">is_readable</span>(<span class="vue-r">"file.txt"</span>)){
+                echo <span class="vue-r">"Файл можно читать"</span>
+            }</span>
+        </pre>
+    </div>
     
     
 </div>
