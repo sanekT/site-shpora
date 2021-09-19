@@ -1,0 +1,120 @@
+<div class="wrap">
+    <h2 class="header-style">Основы php. Session</h2>
+    
+    
+    <h3 class="header-style2">Как работают сесcии и для чего они.</h3>
+    <p>Уровень 2 день 1  02:28:40</p>
+    <p>Рассмотрим сессии на примере тестовых вопросов в интернете. По типу проверка вашей сообразительности и т.д.</p>
+    <p>Пользователь заходит на наш сайт и наш скрипт не плучая от браузера сессионной куки(PHPSESSID) запускает для пользователя сессию, т.е создаётся на сервере просто напросто текстовый файл вида - sess_345jhhj4b53452jbj35k25hk2j34h2k3, где набор букв и цифр после sess_ это идентификатор сессии для зашедшего пользователя. Создали этот текстовый файл и отправили пользователю html-страницу вместе с кукой-идентификатором, где ему задаётся тестовый вопрос, пользователь ставит галочку и ответ улетает на сервер и попутно браузер отправляет вместе с ответом куку-идентификатор, чтобы сервер мог распознать пользователя. Сервер принимая этот ответ сравнивает от какого пользователя он и записывает ответ на тестовый вопрос в файл sess_кука-идентификатор и посылаем следующий тестовый вопрос, пользователь отвечает и отсылает ответ, сервер опять записывает ответ в файл и т.д. до конца. Когда нужно подсчтитать результат, мы берём все ответы из этого файла и подсчитываем и выдаём результат пользователю.</p>
+    <p>Вот функции, которые нам предоставляет php для сессий:</p>
+    <div class="code-style">
+        <pre>
+            //создание и(или) доступ к сессии
+            <span class="vue-b">session_start</span>();
+            
+            //запись в сессионную переменную
+            <span class="vue-b">$_SESSION</span><span class="vue-r">['name']</span> <span class="vue-b">=</span> <span class="vue-g">'Алёна'</span>
+            
+            //чтение из сессионной переменной
+            <span class="vue-g">echo</span> <span class="vue-b">$_SESSION</span><span class="vue-r">['name']</span>;
+            
+            //очистка сессионных переменных, куку не удалит эта функция, просто очистится файл sess_id, если заного вызвать session_start(), то сессия подключится к тому же очищенному файлу
+            <span class="vue-b">session_destroy</span>();
+            
+            //принудительное удаление сессионной куки
+            <span class="vue-b">setcookie</span>(<span class="vue-b">session_name</span>(), <span class="vue-b">session_id</span>(), <span class="vue-g">time() - 3600</span>);
+            
+            //посмотреть где open server хранит создаваемый файл для пользователя sess_id
+            <span class="vue-b">echo</span> <span class="vue-b">session_save_path</span>();
+        </pre>
+    </div>
+    <p><b>Пример:</b></p>
+    <div class="code-style">
+        <pre>
+           &lt;?php
+            session_start();//стартует сессия или подключается к существующей
+	
+            if($_SERVER['REQUEST_METHOD'] === 'POST'){
+                $name = strip_tags($_POST['name']);
+                $age = (int)$_POST['age'];
+
+                $_SESSION['name'] = $name;
+                $_SESSION['age'] = $age;
+            }else{
+                $name = $_SESSION['name'];
+                $age = $_SESSION['age'];
+            }
+            ?>
+            
+            &lt;body>
+                &lt;form action="" method="post">
+                    Ваше имя:&lt;p>&lt;input type="text" name="name">&lt;/p>
+                    Ваше возраст:&lt;p>&lt;input type="text" name="age">&lt;/p>
+                    &lt;input type="submit" value="Передать">
+                &lt;/form>
+
+                &lt;?php
+                    if(!empty($name) &lt;&lt; !empty($age)){
+                        echo "Ваше имя $name, ваш возраст $age";
+                    }
+		        ?>
+            &lt;/body
+            
+        </pre>
+    </div>
+    <p>При запросе на эту страницу php видя session_start() проверяет есть ли кука PHPSESSID от браузера, если нет то он посылает куку с генерированным id браузеру и создаёт файл sess_id. Пользователю загрузилась эта страница с формой, он заполнил её и послал серверу. Скрипт обработчик получил в переменные имя и возраст и записал их в $_SESSION['name'] и в $_SESSION['age'], то есть записал в файл sess_id в таком формате:  name|s:4:"Jhon";age|i:12;</p>
+    <p>А дальше например пользователь перешёл на другую страницу вида:</p>
+    <div class="code-style">
+        <pre>
+           &lt;?php
+            session_start();//стартует сессия или подключается к существующей
+	
+            $name = $_SESSION['name'];
+            $age = $_SESSION['age'];
+            ?>
+            
+            &lt;body>
+                &lt;?php
+                    if(!empty($name) &lt;&lt; !empty($age)){
+                        echo "Ваше имя $name, ваш возраст $age";
+                    }
+		        ?>
+            &lt;/body
+            
+        </pre>
+    </div>
+    <p>И мы также получим вывод имени и возраста, которые берутся из файла sess_id, ну конечно если браузер отправил нужную куку с id, а так как домен один и тот же то браузер отправил куку, php принял, сравнил и пошёл за данными имени и возраста в файл с одноимённым id.</p>
+    <p><b>Если подитожить, то сессия нам предоставляет механизм сохранения наших данных в файл в пределах одного домена, когда мы переходим по разным сраницам и по кукам сравнивать и выдавать данные из этого файла, если совпали куки. Это такая глобальная мини БД к которой есть доступ с любой страницы, нужно только не забывать писать session_start().</b></p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Настройки сессий в php.ini</h3>
+    <p>Уровень 2 день 1  03:05:00</p>
+    <div class="code-style">
+        <pre>
+            //если поставить on, то сессия автоматом будет стартовать в скрипте. Нужна для того чтобы не прописывать в каждом скрипте session_start()
+            <span class="vue-b">session.auto_start</span> = <span class="vue-r">off</span>;
+            <span class="vue-b">ini_set</span>(<span class="vue-r">'session.auto_start'</span>, <span class="vue-r">on</span>);
+            
+            //задаёт имя сессионной куки
+            <span class="vue-b">session.name</span> = <span class="vue-r">"PHPSESSID"</span>;
+            <span class="vue-b">ini_set</span>(<span class="vue-r">'session.name'</span>, <span class="vue-r">"PHPSESSID"</span>);
+            
+            //задаёт путь для создания файла sess_id, у меня в OS задан такой путь. Если задать пустую строку, то файл создастся в папке temp операционной системы
+            <span class="vue-b">session.save_path</span> = <span class="vue-r">"d:/openserver/ospanel/userdata/temp"</span>;
+            <span class="vue-b">ini_set</span>(<span class="vue-r">'session.save_path'</span>, <span class="vue-r">""</span>);
+            
+            //сессия закроется через указанное тут время, если не обновить файл sess_id, т.е. если что то записалось в этот файл, то время начинает заново отсчитывать
+            <span class="vue-b">session.gc_maxlifetime</span> = <span class="vue-r">3600</span>;
+            <span class="vue-b">ini_set</span>(<span class="vue-r">'session.gc_maxlifetime'</span>, <span class="vue-r">""</span>);
+            
+            //время жизни куки
+            <span class="vue-b">session.cookie_lifetime</span> = <span class="vue-r">0</span>;
+            
+            и другие настройки
+        </pre>
+    </div>
+    
+</div>
