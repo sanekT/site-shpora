@@ -17,10 +17,10 @@
                 echo <span class="vue-r">"Директория существует"</span>
             }</span>
             
-            //Размер файла
+            //Размер файла. Возвращает количество байт
             <span class="vue-g">echo <span class="vue-r">"Длина файла file.txt: "</span> . <span class="vue-b">filesize</span>(<span class="vue-r">"file.txt"</span>);</span>
             
-            //Время измененияи доступа к файлу
+            //Время измененияи доступа к файлу, filemtime возвращает временную метку
             <span class="vue-g">echo <span class="vue-r">"Файл file.txt был изменён: "</span> . <span class="vue-b">filemtime</span>(<span class="vue-r">"file.txt"</span>);</span>
             <span class="vue-g">echo <span class="vue-r">"И запрошен: "</span> . <span class="vue-b">fileatime</span>(<span class="vue-r">"file.txt"</span>);</span>
             
@@ -28,8 +28,255 @@
             <span class="vue-g">if(<span class="vue-b">is_readable</span>(<span class="vue-r">"file.txt"</span>)){
                 echo <span class="vue-r">"Файл можно читать"</span>
             }</span>
+            <span class="vue-g">if(<span class="vue-b">is_writable</span>(<span class="vue-r">"file.txt"</span>)){
+                echo <span class="vue-r">"Файл можно писать"</span>
+            }</span>
+            <span class="vue-g">if(<span class="vue-b">is_executable</span>(<span class="vue-r">"file.txt"</span>)){
+                echo <span class="vue-r">"Файл можно исполнять"</span>
+            }</span>
         </pre>
     </div>
+    
+    
+    
+    
+    <h2 class="header-style">Подробная работа с файлом</h2>
+    <h3 class="header-style2">Начало</h3>
+    <div class="code-style">
+        <pre>
+            //fopen открывает файл на запись или чтение если он существует, если его нет то он попытается его создать, при наличии прав на запись
+           
+            //открытие потока на чтение и получение его дескриптора в переменную $f. Тип этого дескриптора будет resource. Указатель помещается в начало файла
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r"</span>) or <span class="vue-b">die</span>(<span class="vue-r">"Не могу открыть файл"</span>)</span>
+            
+            //закрытие потока
+            <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+            //открытие потока на чтение и запись. Указатель помещается в начало файла
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r+"</span>);</span>
+            //открытие потока на запись. Указатель помещается в конец файла
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"a"</span>);</span>
+            //открытие потока на чтение и запись. Указатель помещается в конец файла
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"a+"</span>);</span>
+            //открытие потока на запись. Файл обрезается но нулевой длины. Удобно для перезаписи файла
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"w"</span>);</span>
+            //открытие потока на чтение и запись. Файл обрезается но нулевой длины. Удобно для перезаписи файла
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"w+"</span>);</span>
+        </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Читаем файл побайтово</h3>
+    <div class="code-style">
+        <pre>
+            //при чтении побайтово учитываются и пробелы и пренос строки
+           
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"data.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            //читаем первые 5 байт
+            <span class="vue-g">echo <span class="vue-b">fread</span>(<span class="vue-b">$f</span>, <span class="vue-r">5</span>);</span>
+            //читаем следующие 3 байта
+            <span class="vue-g">echo <span class="vue-b">fread</span>(<span class="vue-b">$f</span>, <span class="vue-r">3</span>);</span>
+            
+            //чтобы зачитать весь файл можно либо указать большое число 2м аргументом, либо воспользовать функцией filesize()
+            
+            //редкая функция fpassthru(). Выводит на экран содержимое файла от курсора и до конца. Результат нельзя принять в переменную.
+            <span class="vue-b">fpassthru</span>(<span class="vue-b">$f</span>);
+        </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Читаем файл построчно в массив</h3>
+    <div class="code-style">
+        <pre>
+            //<span class="vue-b">fgets($f)</span> возвращает строку. Признаком концом строки есть \n
+           
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"data.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            <span class="vue-b">$lines</span> <span class="vue-g">= [];</span>
+            <span class="vue-g">while(<span class="vue-b">$line</span> = <span class="vue-b">fgets</span>(<span class="vue-b">$f</span>))</span>
+                <span class="vue-g"><span class="vue-b">$lines</span>[] = <span class="vue-b">$line</span>;
+            }
+            <span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+        </pre>
+    </div>
+    <p>Часто бывает что нужно из интернета стырить какой нибудь текст из файла. Допустим есть такой файл:</p>
+    <img class="screen" src="../img/php/9.png" alt="">
+    <p>Но нам нужен только текст без тегов, для этих случаев есть функция <span class="vue-r">fgetss()</span>. Она вырезает все теги и возвращает построчно только текст:</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.html"</span>, <span class="vue-r">"r"</span>);</span>
+            <span class="vue-b">$lines</span> <span class="vue-g">= [];</span>
+            <span class="vue-g">while(<span class="vue-b">$line</span> = <span class="vue-b">fgetss</span>(<span class="vue-b">$f</span>))</span>
+                <span class="vue-g"><span class="vue-b">$lines</span>[] = <span class="vue-b">$line</span>;
+            }
+            <span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+        </pre>
+    </div>
+    <p>Один момент связан с тем что в массиве первым элементом будет пустое место, если посмотреть в файл, то если вырезать тег p в самом начале, то там останется каретка и перенос строки, вот они тоже учитываются и положились в 1й элемент массива.</p>
+    <p>В php 8  функция fgetss() удалена.</p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Читаем файл побайтово в массив</h3>
+    <div class="code-style">
+        <pre>
+            //<span class="vue-b">feof($f)</span> проверяет по указателю достигнут ли конец файла
+            //<span class="vue-b">fgetc($f)</span> — Считывает символ из файла
+           
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"data.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            <span class="vue-b">$bytes</span> <span class="vue-g">= [];</span>
+            <span class="vue-g">while(<span class="vue-b">!feof</span>(<span class="vue-b">$f</span>))</span>
+                <span class="vue-g"><span class="vue-b">$bytes</span>[] = <span class="vue-b">fgetc</span>(<span class="vue-b">$f</span>);
+            }
+            <span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Пишем в файл</h3>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"a"</span>);</span>
+            <span class="vue-g"><span class="vue-b">fwrite</span>(<span class="vue-b">$f</span>, <span class="vue-r">"Новый текст"</span>, <span class="vue-b">25</span>);</span>
+            <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            //3й аргумент в <span class="vue-b">fwrite()</span> это ограничение в байтах. Если записываемая строка больше 25 байт, то она обрежется
+            
+            //есть ещё <span class="vue-b">fputs()</span>, это синоним функции <span class="vue-b">fwrite()</span>
+        </pre>
+    </div>
+    <p>Обратим внимание, что стоит режим "а", значит дописывать будет в конец файла.</p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Двигаем курсор</h3>
+    <div class="code-style">
+        <pre>
+            //читаем последние 10 байт из потока
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            //устаналиваем указатель в нужную позицию. 3й аргумент это константа SEEK_END гворит о том что нужно курсор поставить в конец файла, 2й аргумент говорит, что надо отсчитать 10 байт назад
+            <span class="vue-g"><span class="vue-b">fseek</span>(<span class="vue-b">$f</span>, <span class="vue-b">-10</span>, <span class="vue-b">SEEK_END</span>);</span>
+            //в какой позиции мы находимся?
+            <span class="vue-g">echo <span class="vue-b">ftell</span>(<span class="vue-b">$f</span>);</span>
+            //читаем данные
+            <span class="vue-g">echo <span class="vue-b">fread</span>(<span class="vue-b">$f</span>, <span class="vue-b">10</span>);</span>
+            //устанавливаем указатель в начало потока
+            <span class="vue-g"><span class="vue-b">rewind</span>(<span class="vue-b">$f</span>);</span>
+            <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    <h2 class="header-style">Не подробная работа с файлом</h2>
+    <div class="code-style">
+        <pre>
+            //читаем файл напрямую в буфер вывода, не можем в переменную поместить, сразу кидает в буфер, а оттуда выводит на экран. Этим эта функция похожа на <span class="vue-b">fpassthru()</span>
+            <span class="vue-g"><span class="vue-b">readfile</span>(<span class="vue-r">"file.txt"</span>);</span>
+            
+            //примерно похоже на
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            <span class="vue-g">echo <span class="vue-b">fread</span>(<span class="vue-b">$f</span>, <span class="vue-r">filesize(<span class="vue-r">"file.txt"</span>)</span>);</span>
+            <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+            
+            
+            
+            //читаем файл построчно в массив
+            <span class="vue-g"><span class="vue-b">$lines</span> = <span class="vue-b">file</span>(<span class="vue-r">"file.txt"</span>);</span>
+            
+            //то же самое
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"data.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            <span class="vue-b">$lines</span> <span class="vue-g">= [];</span>
+            <span class="vue-g">while(<span class="vue-b">$line</span> = <span class="vue-b">fgets</span>(<span class="vue-b">$f</span>))</span>
+                <span class="vue-g"><span class="vue-b">$lines</span>[] = <span class="vue-b">$line</span>;
+            }</span>
+            
+            
+            
+            
+            //получаем весь файл в виде строки и можем присвоить в переменную
+            <span class="vue-g"><span class="vue-b">$file</span> = <span class="vue-b">file_get_contents</span>(<span class="vue-r">"file.txt"</span>);</span>
+            
+            //то же самое
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            <span class="vue-g">echo <span class="vue-b">fread</span>(<span class="vue-b">$f</span>, <span class="vue-r">filesize(<span class="vue-r">"file.txt"</span>)</span>);</span>
+            <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+            
+            
+            
+            //пишем в файл затирая предыдущее содержимое, если нет файла, то создаст новый с этим именем
+            <span class="vue-g"><span class="vue-b">file_put_contents</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"Новый текст"</span>);</span>
+            
+            //то же самое
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"w"</span>);</span>
+            <span class="vue-g"><span class="vue-b">fwrite</span>(<span class="vue-b">$f</span>, <span class="vue-r">"Новый текст"</span>);</span>
+            <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+            
+            
+            
+            //пишем в файл добавляя содержимое в конец файла
+            <span class="vue-g"><span class="vue-b">file_put_contents</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"Новый текст"</span>, <span class="vue-r">FILE_APPEND</span>);</span>
+            
+            //то же самое
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"a"</span>);</span>
+            <span class="vue-g"><span class="vue-b">fwrite</span>(<span class="vue-b">$f</span>, <span class="vue-r">"Новый текст"</span>);</span>
+            <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
+            
+            
+            
+            //самы 3 ходовые функции это <span class="vue-b">file()</span>, <span class="vue-b">file_get_contents()</span>, <span class="vue-b">file_put_contents()</span>
+            
+            
+            
+            //возвращает массив из файлов, находящихся в папке dir
+            <span class="vue-g"><span class="vue-b">$files</span> = <span class="vue-b">scandir</span>(<span class="vue-r">"dir"</span>);</span>
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    
+    <h2 class="header-style">Упраление файлами</h2>
+    <div class="code-style">
+        <pre>
+            //копируем файл
+            <span class="vue-g"><span class="vue-b">copy</span>(<span class="vue-r">"source.txt"</span>, <span class="vue-r">"destination.txt"</span>)</span>
+            
+            
+            //переименовавыем файл
+            <span class="vue-g"><span class="vue-b">rename</span>(<span class="vue-r">"old.txt"</span>, <span class="vue-r">"new.txt"</span>)</span>
+            
+            
+            //удаляем файл
+            <span class="vue-g"><span class="vue-b">unlink</span>(<span class="vue-r">"file_to_delete.txt"</span>)</span>
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    <h2 class="header-style">Пример работы с файлами на примере журнала посещения страниц.</h2>
+    
     
     
 </div>
