@@ -195,6 +195,15 @@
                &lt;div id="panel">&lt;?php $APPLICATION->ShowPanel(); ?>&lt;/div>
         </pre>
     </div>
+    <p>Также есть другой синтаксис подключения скриптов и стилей без помощи класса Asset, а с помощью объекта $APPLICATION:</p>
+    <div class="code-style">
+        <pre>
+            &lt;?php
+            $APPLICATION->SetAdditionalCSS(SITE_TEMPLATE_SITE . '/css/style.css');
+            $APPLICATION->AddHeadScript(SITE_TEMPLATE_SITE . '/js/script.js');
+            ?>
+        </pre>
+    </div>
     <p><b>footer.php</b></p>
     <p>В этом файле в принципе только html и защита.</p>
     
@@ -243,6 +252,10 @@
     <img class="screen" src="../img/Bitrix/23.png" alt="">
     <p>Всё, меню-вёрстка заменилась на редактируемое меню из битрикса.</p>
     <p>Следующее это натянуть нижнее меню. С нижним меню все операции те же что и с верхним, только подключаем уже в настройках Нижнее меню, ну и если оба этих меню ссылаются на одни и те же страницы, то для нижнего меню можно скопировать файл top.menu.php в файл bottom.menu.php. Только надо первый пункт создать через админку, создавая раздел, битрикс создаст файл bottom.menu.php, а дальше можно уже копирнуть остальное.</p>
+    <p><b>Немного по другому создаётся меню. Смотреть в видео</b></p>
+    <iframe class="screen" width="560" height="315" src="https://www.youtube.com/embed/c4hJJMSzBHs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p><b>Создаём верхнее многоуровневое меню</b></p>
+    <iframe class="screen" width="560" height="315" src="https://www.youtube.com/embed/Yyc9EEclJJc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     
     
     
@@ -268,7 +281,7 @@
         <li><b>Сортировка</b> - по умолчанию стоит 500, можно указать число, например 100, чтобы сортировать наш инфоблок в списке с остальными ифоблоками.</li>
         <li><b>4 поля URL</b> - это шаблоны ссылок до разделов, элементов и id инфоблока. Эти шаблоны используется для правильной работы стандартного функционала битрикса(например: поиск и генерация карты сайта). <a href="https://dev.1c-bitrix.ru/user_help/content/iblock/settings.php">Ссылка</a> на документацию про инфоблоки.</li>
         <li><b>Индексировать разделы для модуля поиска, Индексировать элементы для модуля поиска</b> - если есть поиск на сайте, то эти галочки говорят, чтобы прошла индексация этого инфоблока и он стал доступен для поиска в нём.</li>
-        <li><b>Режим просмотра разделов и элементов</b> - поставим Совместный, чтобы у нас разделы и элементы выводились вместе.</li>
+        <li><b>Режим просмотра разделов и элементов</b> - поставим Совместный, чтобы у нас разделы и элементы при просмотре инфоблока в левом меню были вместе.</li>
     </ul>
     <p><b>Вкладка SEO</b>. Здесь задаются шаблоны, по которым будут генерироваться парамеры для SEO</p>
     <ul class="list">
