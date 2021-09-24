@@ -20,10 +20,11 @@
             </pre>
         </div>
         </li>
-        <li><span class="bitrix-func">echo SITE_TEMPLATE_PATH</span> - подставляет путь к шаблону сайта, например - /local/templates/sparrow</li>
+        <li><span class="bitrix-func">echo SITE_TEMPLATE_PATH</span> - содержит путь к шаблону сайта, например - /local/templates/sparrow</li>
+        <li><span class="bitrix-func">echo SITE_DIR</span> - содержит путь корня сайта  - /</li>
         <li><span class="bitrix-func">$APPLICATION->ShowTitle(false)</span> - заголовок(в h1 например использовать)</li>
-        <li><span class="bitrix-func">$APPLICATION->GetCurDir()</span> - вернёт путь до текущей папки(директории)</li>
-        <li></li>
+        <li><span class="bitrix-func">$APPLICATION->GetCurDir()</span> - вернёт название папки, в которой находимся, например - /about/</li>
+        <li><span class="bitrix-func">$APPLICATION->GetCurPage()</span> - пока заметил, что возвращает то же что и метод $APPLICATION->GetCurDir()</li>
         <li></li>
         <li></li>
         <li></li>
