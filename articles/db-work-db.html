@@ -1,0 +1,176 @@
+<div class="wrap">
+    <h2 class="header-style">Работа с БД</h2>
+    
+    
+    <h3 class="header-style2"></h3>
+    <p>Начало. Уровень 2 день 2, 00:46:10</p>
+    <p>SQL:</p>
+    <img class="screen-2" src="../img/php/13.png" alt="">
+    
+    <h3 class="header-style2">Основные манипуляции с данными</h3>
+    <p><b>ORDER BY</b> - это сортировка по полю в порядке возрастания <b>ASC</b> или убывания <b>DESC</b>.</p>
+    <p><b>LIMIT</b> - это количество записей над которыми будут производиться действия.</p>
+    <p><b>Выборка данных:</b></p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">SELECT</span> что выбрать 
+                [<span class="vue-b">FROM</span> таблица]
+                [<span class="vue-b">WHERE</span> условие]
+                [<span class="vue-b">GROUP BY</span> поле]
+                [<span class="vue-b">ORDER BY</span> поле]
+                [<span class="vue-b">LIMIT</span> количество записей]
+                
+            //получить все новости написаные автором под id = 1
+            <span class="vue-b">SELECT</span> * 
+                <span class="vue-b">FROM</span> news
+                <span class="vue-b">WHERE</span> author_id = '1'
+                
+            //получить 5 последних новостей написаные от новых к старым
+            <span class="vue-b">SELECT</span> * 
+                <span class="vue-b">FROM</span> news
+                <span class="vue-b">ORDER BY</span> date
+                <span class="vue-b">DESC</span>
+                <span class="vue-b">LIMIT</span> 5
+           
+            //Выбрать все имена из поля <b>name</b> таблицы <b>teacher</b>. По умолчанию вернёт в том порядке, в котором были добавлены.
+            <span class="vue-b">SELECT</span> name <span class="vue-b">FROM</span> teacher
+            
+            //Выбрать все имена, адреса, города из таблицы <b>teacher</b> и отсортировать их по полю <b>name</b>
+            <span class="vue-b">SELECT</span> name, addr, city
+                <span class="vue-b">FROM</span> teacher
+                <span class="vue-b">ORDER BY</span> name
+                
+            //Выбрать все названия поля <b>title</b> из таблицы <b>courses</b>, но только те где поле <b>length</b> > 30
+            <span class="vue-b">SELECT</span> title
+                <span class="vue-b">FROM</span> courses
+                <span class="vue-b">WHERE</span> length > 30
+            
+            //Выбрать все поля из таблицы <b>courses</b>, но только те где поле <b>length</b> > 30 и эти названия должны иметь в начале слово 'Web', например Web-disigner, Web-programmer. На боевых сайтах не рекрмендуюут использовать *
+            <span class="vue-b">SELECT</span> *
+                <span class="vue-b">FROM</span> courses
+                <span class="vue-b">WHERE</span> length > 30
+                <span class="vue-b">AND</span> title <span class="vue-b">LIKE</span> 'Web%'
+                
+            //Выбрать уникальные значения продолжительности курсов
+            <span class="vue-b">SELECT</span> <span class="vue-b">DISTINCT</span> length
+                <span class="vue-b">FROM</span> courses
+        </pre>
+    </div>
+    <p><b>Объединение таблиц.</b></p>
+    <p>Есть 2 таблицы в БД. Одна это teachers, другая lessons:</p>
+    <img class="screen" src="../img/php/14.png" alt="">
+    <p>Нам нужно узнать кто из учитилей читал какие курсы. Как видно из таблицы читал курсы только Иванов. Запрос будет выглядеть так:</p>
+    <div class="code-style">
+        <pre>
+            //выбрать имя, код имени и курс из таблицы <b>teachers</b> в связке с таблицей <b>lessons</b> по критерию <b>t.id = l.tid</b>
+            <span class="vue-b">SELECT</span> t.name, t.code, l.course
+                <span class="vue-b">FROM</span> teacher t
+                <span class="vue-b">INNER JOIN</span> lessons l <span class="vue-b">ON</span> t.id = l.tid
+        </pre>
+    </div>
+    <p>В результате выборки получим такой массив:</p>
+    <img class="screen-2" src="../img/php/15.png" alt="">
+    <p><b>Вставка новой записи:</b></p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">INSERT INTO</span> название табл.(поле1, поле2)
+                <span class="vue-b">VALUES</span> (значение1, значение2)
+            
+            <span class="vue-b">INSERT INTO</span> название табл.
+                <span class="vue-b">VALUES</span> (значение1, значение2, значение3)
+                
+            //запись нескольких строк в таблицу
+            <span class="vue-b">INSERT INTO</span> название табл.(поле1, поле2)
+                <span class="vue-b">VALUES</span> (значение1, значение2), (значение1, значение2)
+           
+            //записать в таблицу <b>courses</b> в каждое поле по порядку значения. В первое поле - NULL, во второе поле PHP и так далее.
+            <span class="vue-b">INSERT INTO</span> courses
+                <span class="vue-b">VALUES</span> (NULL, 'PHP', '...', 40)
+                
+            //записать в таблицу <b>courses</b> в поле <b>title</b> - PHP и в поле <b>length</b> значение 40
+            <span class="vue-b">INSERT INTO</span> courses()
+                <span class="vue-b">VALUES</span> (NULL, 'PHP', '...', 40)
+        </pre>
+    </div>
+    <p><b>Удаление записи:</b></p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">DELETE FROM</span> название табл.
+                [<span class="vue-b">WHERE</span> условие]
+                [<span class="vue-b">ORDER BY</span> поле]
+                [<span class="vue-b">LIMIT</span> количество записей]
+            
+            //удаление по дате. Например, удалить все новости записаные раньше 5ти дней назад
+            <span class="vue-b">DELETE FROM</span> название табл.
+                <span class="vue-b">WHERE</span> date &lt; DATE_SUB(CURDATE(), INTERVAL 5 DAY)
+            //CURDATE() - дата сейчас
+            //INTERVAL 5 DAY - отрезок времени 5 дней
+            //DATA_SUB(a, b) - вычесть из даты <b>a</b> отрезок времени <b>b</b>
+            
+            //удалить 3 последние новости(последние значит свежие записи)
+            <span class="vue-b">DELETE FROM</span> название табл.
+                <span class="vue-b">ORDER BY</span> date
+                <span class="vue-b">DESC</span>
+                <span class="vue-b">LIMIT</span> 3
+                
+            //удалить записи у которых поле date = '2021-06-11'
+            <span class="vue-b">DELETE FROM</span> название табл.
+                <span class="vue-b">WHERE</span> date = '2021-06-11'
+            
+            //удалить все записи в таблице
+            <span class="vue-b">DELETE FROM</span> название табл.
+        </pre>
+    </div>
+    <p><b>Изменение записи:</b></p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">UPDATE</span> название табл.
+                <span class="vue-b">SET</span> поле1 = выражение1, поле2 = выражение2
+                <span class="vue-b">WHERE</span> условие
+                [<span class="vue-b">ORDER BY</span> поле]
+                [<span class="vue-b">LIMIT</span> количество записей]
+                
+            //надо скрыть все новости на сайте. За скрытие и показ отвечает поле <b>status</b>, 1 - показывать, 0 - скрывать
+            <span class="vue-b">UPDATE</span> news
+                <span class="vue-b">SET</span> status = '0'
+                <span class="vue-b">WHERE</span> условие
+            
+            //увеличить зарплату и премию учителям фамилии которых начинаются на указанные слова - Иванов, Иванова, Ивановских и т.д.
+            <span class="vue-b">UPDATE</span> teachers
+                <span class="vue-b">SET</span> salary = salary * 2, premia = premia = 10
+                <span class="vue-b">WHERE</span> name <span class="vue-b">LIKE</span> 'Иванов%'
+                <span class="vue-b">OR</span> name <span class="vue-b">LIKE</span> 'Петров%'
+                <span class="vue-b">OR</span> name <span class="vue-b">LIKE</span> 'Сидоров%'
+            
+            //запрос делает то же что и запрос выше, но более гибкий, так как мы будем вместо фамилий подставлять переменные
+            <span class="vue-b">UPDATE</span> teachers
+                <span class="vue-b">SET</span> salary = salary * 2, premia = premia = 10
+                <span class="vue-b">WHERE</span> name <span class="vue-b">IN</span> ('Иванов', 'Петров', 'Сидоров')
+            
+            
+            //также как и при удалении если не указать условие, то изменению подлежат все записи
+        </pre>
+    </div>
+    <p><b>Создание базы данных:</b></p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">CREATE DATABASE</span> news
+        </pre>
+    </div>
+    <p><b>Создание таблицы и полей(MySQL):</b></p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">CREATE TABLE</span> items(
+                id <span class="vue-b">int NOT NULL auto_increment</span>,
+                title <span class="vue-b">varchar(255) NOT NULL default</span> '',
+                description <span class="vue-b">varchar(255) NOT NULL default</span> '',
+                context <span class="vue-b">text</span>,
+                author <span class="vue-b">varchar(50) NOT NULL default</span> '',
+                pubdate <span class="vue-b">timestamp NOT NULL default</span> '',
+                <span class="vue-b">PRIMARY KEY</span> (id)
+            )
+        </pre>
+    </div>
+    
+    
+</div>
