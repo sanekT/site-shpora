@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h2 class="header-style">Основы php. Работа с файлами.</h2>
+    <h2 class="header-style">Основы php. Работа с файлами  и папками.</h2>
     
     <h3 class="header-style2">Полезные функции</h3>
     <div class="code-style">
@@ -275,8 +275,38 @@
     
     
     
-    <h2 class="header-style">Пример работы с файлами на примере журнала посещения страниц.</h2>
     
-    
+    <h2 class="header-style">Работа с директориями</h2>
+    <div class="code-style">
+        <pre>
+            //создание директории. Создадим папку dir2 в папке dir1, которая находится с нашим скриптом в одной папке
+            <span class="vue-g"><span class="vue-b">mkdir</span>(<span class="vue-r">"./dir1/dir2"</span>);</span>
+            
+            //удаление директории
+            <span class="vue-g"><span class="vue-b">rmdir</span>(<span class="vue-r">"dir_to_delete"</span>);</span>
+            
+            //имя текущей директории
+            <span class="vue-g">echo <span class="vue-b">getcwd</span>();</span>
+            
+            //заходим в текущую директорию. По аналогии с fopen() $dir получает тип ресурс(дескриптор) 
+            <span class="vue-g"><span class="vue-b">$dir</span> = <span class="vue-b">opendir</span>(<span class="vue-r">"."</span>);</span>
+            //читаем содержимое директории
+            <span class="vue-g">while(<span class="vue-b">$name</span> = <span class="vue-b">readdir</span>(<span class="vue-b">$dir</span>)){
+                if(<span class="vue-b">is_dir</span>(<span class="vue-b">$name</span>)){
+                    echo <span class="vue-r">"$name - директория"</span>;
+                }else{
+                    echo <span class="vue-r">"$name - не директория"</span>;
+                }
+            }</span>
+            //выходим из директории
+            <span class="vue-g"><span class="vue-b">closedir</span>(<span class="vue-b">$dir</span>);</span>
+            
+            //читаем содержимое текущей директории в массив. Вернётся массив отсортированный по букварю, если 2м аргументом поставить 1, то отсортирует в обратном порядке.
+            <span class="vue-g"><span class="vue-b">$dir_content</span> = <span class="vue-b">scandir</span>(<span class="vue-r">"."</span>);</span>
+            
+            //читаем определённое содержимое в массив. Вернёт все файлы в текущей директории с разширением .txt
+            <span class="vue-g"><span class="vue-b">$dir_txt_content</span> = <span class="vue-b">glob</span>(<span class="vue-r">"*.txt"</span>);</span>
+        </pre>
+    </div>
     
 </div>
