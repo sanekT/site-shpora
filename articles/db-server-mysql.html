@@ -212,7 +212,21 @@
             <span class="vue-g"><span class="vue-b">$link</span> = <span class="vue-b">mysqli_connect</span>(<span class="vue-r">'localhost'</span>, <span class="vue-r">'root'</span>, <span class="vue-r">''</span>, <span class="vue-r">'name_db'</span>,);</span>
             
             //экранируем строки!
+            <span class="vue-g"><span class="vue-b">$name</span> = <span class="vue-b">mysqli_real_escape_string</span>(<span class="vue-b">$link</span>, <span class="vue-r">"Jhon O'Brian"</span>);</span>
+            <span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"INSERT INTO teachers(name, email) VALUES('<span class="vue-b">$name</span>', 'jhon@gmail.com')"</span></span>
             
+            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
+            //получаем первичный ключ новой записи
+            <span class="vue-g"><span class="vue-b">$id</span> = <span class="vue-b">mysqli_insert_id</span>(<span class="vue-b">$link</span>);</span>
+                  
+            <span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"DELETE FROM lessons WHERE room = 'БК-1'"</span>;</span>
+            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
+            //сколько записей изменено?
+            <span class="vue-g"><span class="vue-b">$count</span> = <span class="vue-b">mysqli_affected_rows</span>(<span class="vue-b">$link</span>);</span>
+            
+            <span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"SELECT * FROM courses"</span>;</span>
+            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
+            //сколько записей вернулось?
         </pre>
     </div>
     
