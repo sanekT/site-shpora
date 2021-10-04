@@ -1,0 +1,135 @@
+<div class="wrap">
+    <h2 class="header-style">Скрипты</h2>
+    
+    <ul class="list">
+        <li><a href="1">Гостевая книга. Использую БД</a></li>
+        <li><a href="2"></a></li>
+        <li><a href="3"></a></li>
+        <li><a href="4"></a></li>
+        <li><a href="5"></a></li>
+        <li><a href="6"></a></li>
+        <li><a href="7"></a></li>
+        <li><a href="8"></a></li>
+        <li><a href="9"></a></li>
+        <li><a href="10"></a></li>
+        <li><a href="11"></a></li>
+        <li><a href="12"></a></li>
+        <li><a href="13"></a></li>
+        <li><a href="14"></a></li>
+        <li><a href="15"></a></li>
+        <li><a href="16"></a></li>
+        <li><a href="17"></a></li>
+        <li><a href="18"></a></li>
+        <li><a href="19"></a></li>
+        <li><a href="20"></a></li>
+    </ul>
+    
+    
+    <h3 class="header-style2">Гостевая книга. Использую БД</h3>
+    <p>Имя БД - test. Таблица - users. Поля - id, data, name, text</p>
+    <div class="code-style">
+        <pre>
+            &lt;?php 
+                ob_start();
+                $link = mysqli_connect('localhost', 'root', '', 'test',);
+                if(!$link){
+                    echo 'Ошибка соединения: ' . mysqli_connect_errno($link) . ':' . mysqli_connect_error($link);
+                    die();
+                }
+
+                function clearString($data, $link){
+                    $data = trim(strip_tags($data));
+                    return mysqli_real_escape_string($link, $data);
+                }
+
+                if(!empty($_POST)){
+                    $name = clearString($_POST['name'], $link);
+                    $text = clearString($_POST['text'], $link);
+
+                    $sqlInsert = "INSERT INTO users(id, name, text) VALUES(NULL, '$name', '$text')";
+                    $resultI = mysqli_query($link, $sqlInsert);
+                    if(!$resultI){
+                        echo 'Ошибка запроса на запись: ' . mysqli_errno($link) . ':' . mysqli_error($link);
+                        die();
+                    }
+                }
+
+                if(isset($_GET['del'])){
+                    $id_for_del = abs((int)$_GET['del']);//ради безопасности приводим к положительному числу, если в del будет не число, то оно приведётся к 0
+                    if($id_for_del){
+                        $sqlDelete = "DELETE FROM users WHERE id = $id_for_del";
+                        $resultD = mysqli_query($link, $sqlDelete);
+                        if(!$resultD){
+                            echo 'Ошибка запроса на запись: ' . mysqli_errno($link) . ':' . mysqli_error($link);
+                            die();
+                        }
+                    }
+                }
+
+                //$sqlSelect = "SELECT name, text, UNIX_TIMESTAMP(data) as dt FROM users"; силами mysql UNIX_TIMESTAMP() превращает дату и время в метку времени, чтобы потом работать с этой меткой как нам нужно
+                $sqlSelect = "SELECT id, name, text, data FROM users ORDER BY id";//сортируем по id начиная с первой записи(по умолчанию ASC, потому и не пишем его)
+                $resultS = mysqli_query($link, $sqlSelect);
+                if(!$resultS){
+                    echo 'Ошибка запроса на получение: ' . mysqli_errno($link) . ':' . mysqli_error($link);
+                    die();
+                }
+
+
+                $arr = mysqli_fetch_all($resultS, MYSQLI_ASSOC);
+
+                $num_rows = mysqli_num_rows($resultS);
+
+                if(!empty($_POST)){
+                    header('Location: ' . $_SERVER['PHP_SELF']);
+                }
+                mysqli_close($link);
+
+                $id = null;
+                ?>
+                <!doctype html>
+                &lt;html>
+                    &lt;head>
+                        &lt;meta charset="utf-8">
+                        &lt;title>&lt;/title>
+                        &lt;link rel="stylesheet" href="css/tren.css">
+                    &lt;/head>
+                    &lt;body>
+
+                        &lt;form action="" method="post">
+                            Ваше имя:&lt;p>&lt;input type="text" name="name">&lt;/p>
+                            Ваша почта:&lt;p>&lt;input type="text" name="email">&lt;/p>
+                            Сообщение:
+                            &lt;p>&lt;textarea name="text" col="10">&lt;/textarea>&lt;/p>
+                            &lt;input type="submit" value="Отправить">
+                        &lt;/form>
+
+                        &lt;table border="1">
+                        &lt;tr>
+                            &lt;th>Имя&lt;/th>
+                            &lt;th>Сообщение&lt;/th>
+                            &lt;th>Дата&lt;/th>
+                        &lt;/tr>
+                        &lt;?php if(isset($arr)): ?>
+                            &lt;?php foreach($arr as $v):  ?>
+                                &lt;tr>
+                                    &lt;?php foreach($v as $val):  ?>
+                                        &lt;?php if($key === 'id' ): ?>
+                                            &lt;?php $id = $val; ?>
+                                        &lt;?php else: ?>
+                                            &lt;td style="padding: 10px 20px;">&lt;?=$val?>&lt;/td>
+                                        &lt;?php endif; ?>
+                                    &lt;?php endforeach; ?>
+                                    &lt;td>&lt;a href="http://tren/?del=&lt;?=$id?>">Удалить&lt;/a>&lt;/td>
+                                &lt;/tr>
+                            &lt;?php endforeach; ?>
+                        &lt;?php endif; ?>
+                        &lt;/table>
+                        &lt;?php echo 'Всего записей в гостевой книге - ' . $num_rows; ?>
+
+                    &lt;/body>
+                &lt;/html>
+        </pre>
+    </div>
+   
+  
+</div>
