@@ -10,6 +10,7 @@
     <h3 class="header-style2">Основные манипуляции с данными</h3>
     <p><b>ORDER BY</b> - это сортировка по полю в порядке возрастания <b>ASC</b> или убывания <b>DESC</b>.</p>
     <p><b>LIMIT</b> - это количество записей над которыми будут производиться действия.</p>
+    <p><span class="vue-r">Хороший сайт, где указаны примеры работы с PHP, с БД, с куки, с сессиями и т.д.</span><a href="http://komotoz.ru/uroki/php/mysql_zaprosy.php">тут</a>.</p>
     <p><b>Выборка данных:</b></p>
     <div class="code-style">
         <pre>
@@ -19,6 +20,11 @@
                 [<span class="vue-b">GROUP BY</span> поле]
                 [<span class="vue-b">ORDER BY</span> поле]
                 [<span class="vue-b">LIMIT</span> количество записей]
+                
+            //получить все поля под id=1 и id=2
+            <span class="vue-b">SELECT</span> * 
+                <span class="vue-b">FROM</span> news
+                <span class="vue-b">WHERE</span> id <span class="vue-b">IN</span> (1,2)
                 
             //получить все новости написаные автором под id = 1
             <span class="vue-b">SELECT</span> * 
@@ -90,6 +96,15 @@
             //записать в таблицу <b>courses</b> в поле <b>title</b> - PHP и в поле <b>length</b> значение 40
             <span class="vue-b">INSERT INTO</span> courses()
                 <span class="vue-b">VALUES</span> (NULL, 'PHP', '...', 40)
+                
+                
+                
+                
+            //записать в поля <b>id</b>, <b>name</b>, <b>text</b>, <b>data</b> следующие значения из переменных. Важно!!! Переменные в запросе оборачиваем в ''
+            $name = 'Маша';
+            $text = 'Сообщение от Маши';
+            $sqlInsert = "INSERT INTO users VALUES(NULL, '$name', '$text', NOW())";
+            $result = mysqli_query($link, $sqlInsert);
         </pre>
     </div>
     <p><b>Удаление записи:</b></p>
