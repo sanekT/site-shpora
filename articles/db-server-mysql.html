@@ -22,7 +22,7 @@
     <ul class="list">
         <li>Соединение с монотором MySQL
             <ul class="list">
-                <li>mysql <b>-u</b>логин <b>-p</b>пароль</li>
+                <li>mysql <b>-u</b>логин <b>-p</b>пароль. В моём случае чтобы зайти в командную строку mysql надо в cmd перейти в папку где лежит mysql, это D:\OpenServer\OSPanel\modules\database\MySQL-5.7-x64\bin  и ввести команду - mysql -uroot без ; на конце.</li>
             </ul>
         </li>
         <li>Внимание! Внутри монитора MySQL надо явно указывать конец запроса(;). Когда жмём enter, то это не считывается как конец запроса, а вот ; и enter считывается.
@@ -30,6 +30,8 @@
                 <li>USE имя_БД;</li>
                 <li>quit;</li>
             </ul>
+        </li>
+        <li>После соединения с БД мы посылаем запросы, например выборку всех данных, они вернутся ту же в командной строке в виде таблички, а можно на конце запроса дописать \G и вернутся в другом виде данные.
         </li>
         <li>Экспорт базы данных
             <ul class="list">
@@ -71,6 +73,8 @@
             
             //посылаем простой запрос. Результат: true или false. Важно знать, что если сервер не смог установить кодировку, то php не выдаст никакой ошибки, для этого и нужно результат проверять на наличие ошибок
             <span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-r">"SET NAMES 'utf8'"</span>);</span>
+            или
+            <span class="vue-g"><span class="vue-b">mysqli_set_charset</span>(<span class="vue-b">$link</span>, <span class="vue-r">'utf8'</span>);</span>
             
             //отслеживаем ошибки при исполнении запроса
             <span class="vue-g">if(!<span class="vue-b">$result</span>){
@@ -211,12 +215,17 @@
         <pre>
             <span class="vue-g"><span class="vue-b">$link</span> = <span class="vue-b">mysqli_connect</span>(<span class="vue-r">'localhost'</span>, <span class="vue-r">'root'</span>, <span class="vue-r">''</span>, <span class="vue-r">'name_db'</span>,);</span>
             
-            //экранируем строки!
+            //экранируем строки! Эта функция подставляет обратный слэш для внутреннего '.
             <span class="vue-g"><span class="vue-b">$name</span> = <span class="vue-b">mysqli_real_escape_string</span>(<span class="vue-b">$link</span>, <span class="vue-r">"Jhon O'Brian"</span>);</span>
             <span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"INSERT INTO teachers(name, email) VALUES('<span class="vue-b">$name</span>', 'jhon@gmail.com')"</span></span>
+            //полезная функция, которой надо пользоваться пропуская все строки приходящие из формы
+            function clearString($data, $link){
+                $data = trim(strip_tags($data));
+                return mysqli_real_escape_string($link, $data);
+            }
             
             <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
-            //получаем первичный ключ новой записи
+            //получаем первичный ключ(id) новой записи. Если сразу после запроса вызвать эту функцию, то она вернёт id новой записи, например, чтобы послать куку нвовму пользователю. Также ключ вернётся, если id в БД являются автоинрементарными и если запрос в БД был INSERT
             <span class="vue-g"><span class="vue-b">$id</span> = <span class="vue-b">mysqli_insert_id</span>(<span class="vue-b">$link</span>);</span>
                   
             <span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"DELETE FROM lessons WHERE room = 'БК-1'"</span>;</span>
@@ -225,10 +234,52 @@
             <span class="vue-g"><span class="vue-b">$count</span> = <span class="vue-b">mysqli_affected_rows</span>(<span class="vue-b">$link</span>);</span>
             
             <span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"SELECT * FROM courses"</span>;</span>
-            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
+            <span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
             //сколько записей вернулось?
+            <span class="vue-g"><span class="vue-b">$row_count</span> = <span class="vue-b">mysqli_num_rows</span>(<span class="vue-b">$result</span>);</span>
+            //сколько полей в вернувшихся записях?
+            <span class="vue-g"><span class="vue-b">$fields_count</span> = <span class="vue-b">mysqli_num_fields</span>(<span class="vue-b">$result</span>);</span>
         </pre>
     </div>
     
     
+    
+    
+    
+    
+    <h3 class="header-style2">Опасность SQL-инъекций</h3>
+    <p>В запрос мы подставляем только строки и числа</p>
+    <p><b>Первое правило</b>, если мы подставляем в запрос числовую переменную для вставки id, то нужно приводить эту переменную к положительному числу: <b>$id = abs((int)$id);</b></p>
+    <p><b>Второе правило</b> для строк использовать <b>подготовленные запросы</b>. Смысл подготовленных запросов в том, что с помощью функции <b>msqli_prepare($link, $sql)</b> мы говорим серверу, чтобы он разобрал запрос, сервер разбирает запрос и  ждёт только параметров для этого запроса. При разобранных запросах уже очень трудно сделать вставку вредоносных строк от злоумышленника.</p>
+    <p>Подготовленные запросы немного медленее чем обычные, тут нужно самим уже выбирать, что для нас больше подходит, безопасность или можно ей пренебречь.</p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Обязательная минимальная защита приходящих данных на сервер и запись их в БД</h3>
+    <div class="code-style">
+        <pre>
+            function clearString($data, $link){
+                $data = trim(strip_tags($data));
+                return mysqli_real_escape_string($link, $data);
+            }
+            
+            $name = clearString($_POST['name']);
+            $id = abs((int)$_POST['id']);
+            
+            
+            //<b>если будем вставлять эти данные в запрос к БД</b>
+            $sql = "INSERT INTO users(id, name) VALUES(?, ?)";
+            $stmt = mysqli_prepare($link, $sql);//<b>сервер разбери запрос</b>
+            mysqli_stmt_bind_param($stmt, "is", $id, $name);//<b>сервер, вот параметры для запроса. "is" обозначает, 1й параметр это число(i - integer), 2й - строка(s - string)</b>
+            //<b>а теперь исполни подготовленный запрос с переданными параметрами</b>
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+        </pre>
+    </div>
+    
+    
+    
+</div>
     
