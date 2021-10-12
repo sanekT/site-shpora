@@ -1,0 +1,137 @@
+<div class="wrap">
+  
+  <h2 class="header-style">ООП</h2>
+   
+   <ul class="list">
+       <li><a href="#1"></a></li>
+       <li><a href="#2"></a></li>
+       <li><a href="#3"></a></li>
+       <li><a href="#4"></a></li>
+       <li></li>
+       <li></li>
+   </ul>
+   
+    <h3 class="header-style2"></h3>
+    <div class="code-style">
+        <pre>
+            class Animal{
+               //<span class="vue-r">public</span> <span class="vue-g">это модификатор, который показывает что свойство доступно на запись и на чтение отовсюду</span>
+                <span class="vue-b">public</span> $name;
+                <span class="vue-b">public</span> $age = 0;
+                <span class="vue-b">public</span> $type;
+                
+                //<span class="vue-g">это магический метод, который запускается автоматически как только сработал оператор new при создании объекта</span>
+                function <span class="vue-b">__construct</span>($t){
+                    $this->type = $t;
+                }
+                
+                //<span class="vue-g">метод класса. <span class="vue-r">$this</span> это ссылка на тот объект, который будет создан из этого класса. Обратим внимание, что свойство $name здесь вызывается без знака $</span>
+                //<span class="vue-g">вызовы внутри класса свойств и методов происходят через <span class="vue-r">$this</span></span>
+                function say($w){
+                    echo "{$this->name} сказал $w";
+                    $this->drawLine();
+                }
+                
+                function run(){
+                    echo "$this->name бежит";
+                }
+                
+                function drawLine(){
+                    echo "&lt;hr>";
+                }
+                
+                function functionName(){
+                    echo "Вызвана функция " . <span class="vue-b">__FUNCTION__</span>;
+                }
+                
+                function className(){
+                    echo "Используем класс " . <span class="vue-b">__CLASS__</span>;
+                }
+                
+                function methodName(){
+                    echo "Вызван метод " . <span class="vue-b">__METHOD__</span>;
+                }
+                
+                
+                //<span class="vue-g">это магический метод, который запускается автоматически перед тем как удаляется объект</span>
+                function <span class="vue-b">__destruct</span>($t){
+                    echo "Тут можно закрыть БД или удалить объект или ещё что то";
+                }
+            }
+            
+            
+            class Cattish <span class="vue-b">extends</span> Animal{
+                //<span class="vue-g">класс "Кошачий" наследует от класса "Животные" все свойства и методы с модификаторами <span class="vue-r">public</span> и <span class="vue-r">protected</span></span>
+                
+                //<span class="vue-g">переопределить и дополнить можно и этот метод</span>
+                function __construct($t){
+                    parent::__construct($t);
+                    //<span class="vue-g">что то своё</span>
+                }
+                
+                //<span class="vue-g">перегрузка метода. Наследник переопределил метод родителя</span>
+                function drawLine(){
+                    echo "&lt;hr>&lt;hr>";
+                }
+                
+                //<span class="vue-g">тоже переопределяем родительский метод, но не весь, а только часть. То что уже есть в род. методе нас устраивает, мы только добавили своё немного, для этого вызываем то что есть в род. методе и добавляем свой код.</span>
+                function run(){
+                    parent::run();
+                    echo "&lt;br>И при этом мявкает";
+                }
+            }
+            
+            //<span class="vue-g">аргумент в скобках передаётся в метод конструктор</span>
+            $cat = new Animal("Кошка");
+            $dog = new Animal("Собака");
+            $obj = new Animal("Просто объект");
+            
+            //как видно, свойство $name вызывается без $
+            $cat->name = 'Мурзик';
+            echo $cat->age;//<span class="vue-g">0</span>
+            $cat->say('мяу');//<span class="vue-g">Мурзик сказал мяу</span>
+            
+            $obj->functionName();//<span class="vue-g">Вызвана функция functionName</span>
+            $obj->className();//<span class="vue-g">Используем класс className</span>
+            $obj->methodName();//<span class="vue-g">Вызван метод Animal::methodName</span>
+            
+            echo $cat->type;//<span class="vue-g">Кошка</span>
+            echo $obj->type;//<span class="vue-g">Просто объект</span>
+            
+            
+            $bars = new Cattish("Барс");
+            $bars->run();//<span class="vue-g">Барс бежит&lt;br>И при этом мявкает</span>
+        </pre>
+    </div>
+    
+    
+    
+    
+    <h3 class="header-style2">Обработка исключений try catch</h3>
+    <p>В PHP есть встроенные классы как Error так и Exception. Error отличается тем, что этот класс вызывают, когда знают что может произойти грубая ошибка. А Exception использую при не очень грубых ошибках.</p>
+    <p>Есть такой код:</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g">function <span class="vue-b">test</span>(<span class="vue-b">$var</span> = <span class="vue-b">false</span>){
+                try{
+                    echo <span class="vue-r">"Начинаем\n"</span>;
+                    if(!<span class="vue-b">$var</span>){
+                        throw new <span class="vue-b">Exception</span>(<span class="vue-r">'$var is false!'</span>);
+                    }
+                    echo <span class="vue-r">"Продолжаем\n"</span>;
+                }catch(<span class="vue-b">Exception $e</span>){
+                    echo <span class="vue-r">"Exception: "</span> . <span class="vue-b">$e</span>-><span class="vue-b">getMessage</span>() . <span class="vue-r">"\n"</span>;
+                    echo <span class="vue-r">"in file: "</span> . <span class="vue-b">$e</span>-><span class="vue-b">getFile</span>() . <span class="vue-r">"\n"</span>;
+                    echo <span class="vue-r">"on line: "</span> . <span class="vue-b">$e</span>-><span class="vue-b">getLine</span>() . <span class="vue-r">"\n"</span>;
+                }
+                echo <span class="vue-r">"Закончили"</span>;
+            }</span>
+        </pre>
+    </div>
+    <p>Кратко опишу что как работает. Вызываем функцию и мы заходим в блок try, если внутри произойдёт ошибка, то создастся объект класса Exception и в метод __construct передастся аргумент '$var is false!'. Но как видно присваивания ссылки на объект в какую либо переменную мы не видим, для этого есть оператор throw, который объясняет, что нужно эту ссылку на объект присвоить в блоке catch переменной $e(можем назвать как угодно). Также в блоке catch перед переменной стоит слово Exception, это означает, что мы в переменную $e ожидаем объект именно от класса Exception  и никакой другой. Далее в catch мы выводим на экран информацию. $getMessage() выводит то сообщение, которое передали как аргумент в блоке try, остальные методы по названиям понятно что выводят.</p>
+    <p>Если же в блоке try ошибок не было, то код продолжится выполняться пропуская блок catch. Важно! Строка "Закончили" выведется при обоих случаях, при ошибке не выведется строка "Продолжаем"</p>
+    
+    
+    
+    
+</div>
