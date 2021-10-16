@@ -11,10 +11,107 @@
        <li></li>
    </ul>
    
-    <h3 class="header-style2"></h3>
+   
+   
+   
+   
+   <h3 class="header-style2">Абстрактный класс</h3>
+    <p>Абстрактный класс - это не сам чертёж, а набросок чертежа. Это зарисовка, а не сам рисунок. Чтобы обозначить абстрактый класс, перед словом class пишут слово abstract.</p>
+    <ul class="list">
+        <li>От абстрактоного класса нельзя создать объект.</li>
+        <li>От абстрактного класса обязаны наследоваться другие классы.</li>
+        <li>Абстрактный класс может иметь абстрактые методы и если они есть, то наследник обязан переопределить эти методы(перегрузить) иначе ошибка. Этот пункт один из главных для чего используют абстрактный класс. Также если есть аргумент в абстрактном классе, то и наследник обязан при переопределении указать этот аргумент.</li>
+    </ul>
     <div class="code-style">
         <pre>
-            class Animal{
+            //<b><span class="vue-or">создание абстрактного класса</span>
+            <span class="vue-g">abstract class <span class="vue-b">HouseAbstract</span>{
+                public <span class="vue-b">$model</span> = <span class="vue-r">""</span>;
+                public <span class="vue-b">$square</span>;
+                public <span class="vue-b">$floors</span>;
+                
+                function <span class="vue-b">__construct</span>(<span class="vue-b">$model</span>, <span class="vue-b">$square</span> = <span class="vue-b">0</span>, <span class="vue-b">$floors = 1</span>){
+                    if(!<span class="vue-b">$model</span>)
+                        throw new <span class="vue-b">Exception</span>(<span class="vue-r">'Ошибка! Укажите модель!'</span>);
+                    <span class="vue-b">$this</span>-><span class="vue-b">model</span> = <span class="vue-b">$model</span>;
+                    <span class="vue-b">$this</span>-><span class="vue-b">square</span> = <span class="vue-b">$square</span>;
+                    <span class="vue-b">$this</span>-><span class="vue-b">floors</span> = <span class="vue-b">$floors</span>;
+                }
+                
+                function <span class="vue-b">startProject</span>(){
+                    echo <span class="vue-r">"Start. Model:</span> {$this->model}<span class="vue-r">\n\n</span>";
+                }
+                
+                function <span class="vue-b">stopProject</span>(){
+                    echo <span class="vue-r">"Stop. Model:</span> {$this->model}<span class="vue-r">\n\n</span>";
+                }
+                
+                //<span class="vue-or">абстрактный метод</span>
+                abstract function <span class="vue-b">build</span>();
+            }</span></b>
+            
+            
+            
+            <b><span class="vue-g">class <span class="vue-b">SimpleHouse</span> extends <span class="vue-b">HouseAbstract</span>{
+                //<span class="vue-or">обязательная реализация абстрактного метода</span>
+                function <span class="vue-b">build</span>(){
+                    echo <span class="vue-r">"Build. House:</span> <span class="vue-b">{$this</span>-><span class="vue-b">square}</span><span class="vue-r">x</span>{$this-><span class="vue-b">floors}</span><span class="vue-r">\n</span>";
+                }
+                <span class="vue-r">или</span>
+                //<span class="vue-or">Ну или как минимум указать у этого метода {}.</span>
+                function <span class="vue-b">build</span>(){}
+            }</span></b>
+        </pre>
+    </div>
+    <p>Смысл абстрактных классов это заставить наслеников реализовать абстрактные методы. Т.е. смысл программы заклыдывается в абстрактных классах, а детали реализуются в обычных классах. Это можно представить как руководитель отдела(абстрактный класс) раздаёт задачи(абстрактные методы), которые сотрудники должны выполнить и без разницы, одни сотрудники уволились или другие нанялись, сотрудникам не нужно заного вспоминать или бегать спрашивать, а "что делать?", есть руководитель, котрый скажет что делать. Сотрудники просто должны уже детально испольнить указы.</p>
+   
+   
+   
+   
+   
+   <h3 class="header-style2">Интерфейс</h3>
+   <p>Интерфейс это абстрактый класс, который содержит только абстрактые методы.</p>
+   <table border="1">
+       <tr><th>Абстрактный класс</th><th>Интерфейс</th></tr>
+       <tr><td>1. Свойства</td><td>1. ---</td></tr>
+       <tr><td>2. Обычные методы</td><td>2. ---</td></tr>
+       <tr><td>3. Абстрактные методы</td><td>3. Абстрактные методы(слово abstract перед function писать не надо)</td></tr>
+       <tr><td>4. Создание объекта невозможно</td><td>4. Создание объекта невозможно</td></tr>
+       <tr><td>5. Наследуется(extends)</td><td>5. Реализуется(implements)</td></tr>
+       <tr><td>6. Наследник имеет только одного родителя</td><td>6. Наследник может реализовать методы нескольких интерфейсов</td></tr>
+       <tr><td>7. ---</td><td>7. Все методы должны быть public</td></tr>
+   </table>
+   <div class="code-style">
+        <pre>
+            //<b><span class="vue-or">создание интерфейса</span>
+            <span class="vue-g">interface <span class="vue-b">Paintable</span>{
+                //<span class="vue-or">абстрактный метод</span>
+                function <span class="vue-b">paint</span>();
+            }</span></b>
+            
+            //<b><span class="vue-or">создание интерфейса</span>
+            <span class="vue-g">interface <span class="vue-b">Brik</span>{}</span></b>
+            
+            <b><span class="vue-g">class <span class="vue-b">SimpleHouse</span> extends <span class="vue-b">HouseAbstract</span> implements <span class="vue-b">Paintable</span>, <span class="vue-b">Brik</span>{
+                //<span class="vue-or">обязательная реализация абстрактного метода</span>
+                function <span class="vue-b">paint</span>(){
+                    echo <span class="vue-r">"Красим дом"</span>;
+                }
+            }</span></b>
+        </pre>
+    </div>
+    <p>Бывают интерфейсы пустые, но с разными названиями, если класс реализует какой то интерфейс, то название этого интерфейса выступает в качестве флага, что класс использовал такой то интефейс, а значит класс развивается в таком то направлении. Например, есть класс Human и он реализует интерфейс MedicalPropertyHuman, потом мы можем посмотреть а какой интерфейс мы реализовали и сделать вывод, что класс развивался в сторону медициских показателей человека.</p>
+    <p>Или другой пример, описаный кодом выше, есть интерфейс Paintable, а в нём метод paint(), и уже потом когда есть какой то абстракный класс HouseAbstract дома и мы наследуем от него, то нам не понятно этот дом можно красить или нет. Мы берём наследуем от абстрактного класа и реализуем интерфейс Paintable и уже понятно что дом нужно красить и реализовать метод paint() нужно тоже. Интерфейсы Paintable и Brik выступают в качестве флагов, что делать с домом. И когда приходят маляры, то они не в курсе, что там в интерфейсах находится, создаётся объект от SimpleHouse и этот объект проверяется, а ты от таких то родителей: <b>if($obj instanceOf Paintable)</b> и если да, то маляры красят дом.</p>
+   
+   
+   
+   
+   
+   
+    <h3 class="header-style2">Шпаргалка по ООП</h3>
+    <div class="code-style">
+        <pre>
+            <b>class Animal{
                //<span class="vue-r">public</span> <span class="vue-g">это модификатор, который показывает что свойство доступно на запись и на чтение отовсюду</span>
                 <span class="vue-b">public</span> $name;
                 <span class="vue-b">public</span> $age = 0;
@@ -100,9 +197,106 @@
             
             
             $bars = new Cattish("Барс");
-            $bars->run();//<span class="vue-g">Барс бежит&lt;br>И при этом мявкает</span>
+            $bars->run();//<span class="vue-g">Барс бежит&lt;br>И при этом мявкает</span></b>
         </pre>
     </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Константы и статические члены класса.</h3>
+    <div class="code-style">
+        <pre>
+            <b><span class="vue-g">class <span class="vue-b">Company</span>{
+               //<span class="vue-or">константа класса, к ней нельзя обратиться из объекта класса($obj->NAME - так нельзя и нельзя внутри класса обратиться через $this, так как $this это ссылка на объект), только способами указанными ниже</span>
+                const <span class="vue-b">NAME</span> = <span class="vue-r">"Рога и копыта"</span>;
+                
+                function <span class="vue-b">printName</span>(){
+                    //<span class="vue-or">обращение к константе из метода класса</span>
+                    echo <span class="vue-b">self</span>::<span class="vue-b">NAME</span>;
+                }
+            }
+            
+            //<span class="vue-or">обращение к константе без создания экземпляра класса</span>
+            echo <span class="vue-b">Company</span>::<span class="vue-b">NAME</span>;//<span class="vue-or">Рога и копыта</span>
+            
+            <span class="vue-b">$company</span> = new <span class="vue-b">Company</span>();
+            <span class="vue-b">$company</span>-><span class="vue-b">printName</span>();//<span class="vue-or">Рога и копыта</span>
+            
+            
+            
+            
+            class <span class="vue-b">Worker</span>{
+                public <span class="vue-b">name</span>;
+                //<span class="vue-or">статическое свойство класса, оно тут как и в функции сохраняет своё значение</span>
+                public static <span class="vue-b">$workerCount</span> = 0;
+                
+                function <span class="vue-b">__construct</span>(<span class="vue-b">$name</span>){
+                    if(!<span class="vue-b">$name</span>)
+                        throw new <span class="vue-b">Exception</span>(<span class="vue-r">'Ошибка! Укажите имя рабочего'</span>);
+                    <span class="vue-b">$this</span>-><span class="vue-b">name</span> = <span class="vue-b">$name</span>;
+                    //<span class="vue-or">изменение статического свойства класса</span>
+                    ++<span class="vue-b">self</span>::<span class="vue-b">$workerCount</span>;
+                }
+                
+                //<span class="vue-or">статический метод класса, он как и статическое св-во принадлежит только классу</span>
+                static function <span class="vue-b">welcome</span>(){
+                    //<span class="vue-or">никаких <span class="vue-g">$this</span> в статическом методе</span>
+                    echo <span class="vue-r">"Добро пожаловать! Нас уже"</span> . <span class="vue-b">self</span>::<span class="vue-b">$workCount</span>;
+                }
+            }
+            
+            <span class="vue-b">Worker</span>::<span class="vue-b">welcome</span>();//<span class="vue-g">0</span>
+            <span class="vue-b">$w1</span> = new <span class="vue-b">Worker</span>(<span class="vue-r">'Вася Пупкин'</span>);
+            <span class="vue-b">$w2</span> = new <span class="vue-b">Worker</span>(<span class="vue-r">'Дмитрий Иванов'</span>);
+            echo <span class="vue-r">'Текущее количество рабочих: '</span> . <span class="vue-b">Worker</span>::<span class="vue-b">$workerCount</span>;//<span class="vue-g">2</span>
+            </span></b>
+        </pre>
+    </div>
+    <p>Ещё есть такое слово static вместо self, редко встречается, можно посмотреть уровень 3 день 1 02:38:00</p>
+    <hr>
+    <p>Небольшой пример кода:</p>
+    <div class="code-style">
+        <pre>
+            	class A{
+                    public static $countA = 0;
+
+                    function __construct(){
+                        ++self::$countA;
+                    }
+                }
+
+                class B extends A{
+                    public static $countB = 0;
+
+                    function __construct(){
+                        ++self::$countA;
+                        или
+                        parent::$countA;
+                        ++self::$countB;
+                    }
+                }
+                $a = new A();
+                $b = new A();
+                $c = new B();
+                echo A::$countA;//3
+                echo B::$countB;//1
+                //<span class="vue-or">как видим можно к статическому свойству $countA родителя обращаться из наследника через self или parent</span>
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2"></h3>
+    
+       
     
     
     
@@ -112,7 +306,7 @@
     <p>Есть такой код:</p>
     <div class="code-style">
         <pre>
-            <span class="vue-g">function <span class="vue-b">test</span>(<span class="vue-b">$var</span> = <span class="vue-b">false</span>){
+            <b><span class="vue-g">function <span class="vue-b">test</span>(<span class="vue-b">$var</span> = <span class="vue-b">false</span>){
                 try{
                     echo <span class="vue-r">"Начинаем\n"</span>;
                     if(!<span class="vue-b">$var</span>){
@@ -125,13 +319,77 @@
                     echo <span class="vue-r">"on line: "</span> . <span class="vue-b">$e</span>-><span class="vue-b">getLine</span>() . <span class="vue-r">"\n"</span>;
                 }
                 echo <span class="vue-r">"Закончили"</span>;
-            }</span>
+            }</span></b>
         </pre>
     </div>
     <p>Кратко опишу что как работает. Вызываем функцию и мы заходим в блок try, если внутри произойдёт ошибка, то создастся объект класса Exception и в метод __construct передастся аргумент '$var is false!'. Но как видно присваивания ссылки на объект в какую либо переменную мы не видим, для этого есть оператор throw, который объясняет, что нужно эту ссылку на объект присвоить в блоке catch переменной $e(можем назвать как угодно). Также в блоке catch перед переменной стоит слово Exception, это означает, что мы в переменную $e ожидаем объект именно от класса Exception  и никакой другой. Далее в catch мы выводим на экран информацию. $getMessage() выводит то сообщение, которое передали как аргумент в блоке try, остальные методы по названиям понятно что выводят.</p>
     <p>Если же в блоке try ошибок не было, то код продолжится выполняться пропуская блок catch. Важно! Строка "Закончили" выведется при обоих случаях, при ошибке не выведется строка "Продолжаем"</p>
+    <hr>
+    <p>От встроенного класса Exception мы можем наследовать свой какой нибудь класс:</p>
+    <div class="code-style">
+        <pre>
+            <b><span class="vue-g">class <span class="vue-b">MathException extends Exception</span>{
+                function <span class="vue-b">__construct</span>(<span class="vue-b">$msg</span>){
+                    <span class="vue-b">parent</span>::<span class="vue-b">__construct</span>(<span class="vue-b">$msg</span>);
+                }
+                
+                function <span class="vue-b">showClass</span>(){
+                    return <span class="vue-b">__CLASS__</span>;
+                }
+            }
+            
+            try{
+                <span class="vue-b">$x</span> = <span class="vue-b">rand</span>(<span class="vue-b">5</span>, <span class="vue-b">15</span>);
+                <span class="vue-b">$y</span> = <span class="vue-b">rand</span>(<span class="vue-b">0</span>, <span class="vue-b">1</span>);
+                if(<span class="vue-b">$y</span> == <span class="vue-b">0</span>)//<span class="vue-or">создаём своё исключение</span>
+                    throw new <span class="vue-b">MathException</span>(<span class="vue-r">"На 0 делить нельзя"</span>);
+                if(<span class="vue-b">$y</span> &lt; <span class="vue-b">0</span>)//<span class="vue-or">создаём встроенное исключение</span>
+                    throw new <span class="vue-b">Exception</span>(<span class="vue-r">"Что то случилось"</span>);
+                echo <span class="vue-b">$x</span> / <span class="vue-b">$y</span>;
+            }cath(<span class="vue-b">MathException $e</span>){
+                echo <span class="vue-b">$e</span>-><span class="vue-b">showClass</span>() . <span class="vue-r">":"</span> . <span class="vue-b">$e</span>-><span class="vue-b">getMessage</span>();
+            }cath(<span class="vue-b">Exception $e</span>){
+                echo <span class="vue-b">$e</span>-><span class="vue-b">getMessage</span>();
+            }</span></b>
+        </pre>
+    </div>
+    <p>В примере выше в самом нижнем catch блоке должен быть встроенный класс, потому что если их поменять местами, то в блоке try какой бы не сработал if мы попадём в catch блок с Exception и не попадём в наш MathException catch блок.</p>
+    <hr>
+    <p>У блока try catch может быть блок finally:</p>
+    <div class="code-style">
+        <pre>
+            <b><span class="vue-g">function <span class="vue-b">test</span>(<span class="vue-b">$var</span> = <span class="vue-b">false</span>){
+                try{
+                    echo <span class="vue-r">"Try\n"</span>;
+                    if(!<span class="vue-b">$var</span>){
+                        throw new <span class="vue-b">Exception</span>(<span class="vue-r">'Error'</span>);
+                    }
+                }catch(<span class="vue-b">Exception $e</span>){
+                    echo <span class="vue-r">"Catch";</span>
+                }finally{
+                    echo <span class="vue-r">"Finally";</span>
+                }
+            }</span></b>
+        </pre>
+    </div>
+    <p>В блок finally мы попадаем всегда.</p>
+    <p>Отличие try catch от других вариантов обработки ошибок - Уровень 3 день 1  01:56:00</p>
     
     
     
+    
+    
+    
+    <h3 class="header-style2">Контроль типов(type hinting)</h3>
+    <p>Есть в PHP такая фишка как контроль типов:</p>
+    <div class="code-style">
+        <pre>
+            <b>$arr = [1,2,3];
+            function sum(<span class="vue-b">array</span> $var){
+                //...
+            }</b>
+        </pre>
+    </div>
+    <p>Контроль типов уточняет какого типа должен быть аргумент. Если туда передать что то другое, то будет не просто ошибка, а отлавливаемая ошибка.</p>
     
 </div>
