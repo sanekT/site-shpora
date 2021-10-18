@@ -1,0 +1,113 @@
+<div class="wrap">
+  
+  <h2 class="header-style">Лента новостей на БД SQLite</h2>
+   
+   <ul class="list">
+       <li><a href="#1">Начало. Знакомство с SQLite</a></li>
+       <li><a href="#2">Особенности SQLite</a></li>
+       <li><a href="#3">Команды для работы с SQLite</a></li>
+       <li><a href="#4">Структура приложения "Лента новостей"</a></li>
+       <li><a href="#5"></a></li>
+       <li><a href="#6"></a></li>
+       <li><a href="#7"></a></li>
+       <li><a href="#8"></a></li>
+       <li><a href="#9"></a></li>
+   </ul>
+   
+   <h3 class="header-style2">Начало. Знакомство с SQLite</h3>
+   <p>Напишем маленький и простенький интернет магазин с БД SQLite. Такая БД используется для внутреннего хранения данных в IPad и IPhone компании Apple. Эта БД не СУБД, то есть это не сервер баз данных, а просто голый движок. Она осуществляет механизм работы с данными с помощью SQL. Отличие этой БД от сервера БД MYSQL в том, что сервер может выдерживать большое количество запросов к БД. Если у нас запрсов мало, то SQLite справляется не плохо.</p>
+   <p><b>Плюсы и минусы этой БД. Начнём с плюсов:</b></p>
+   <ul class="list">
+       <li>Полностью бесплатна</li>
+       <li>Представляет из себя просто файл, с которым мы работаем</li>
+       <li>Нет необходимости в средствах администрирования</li>
+       <li>Высокая производительность и лёгкая переносимость</li>
+       <li>Поддержка только ООП интерфейсов</li>
+       <li>Хранение больших объёмом данных/li>
+       <li>Хранение строк и бинарных данных неограниченной длины</li>
+   </ul>
+   <p><b>Минусы:</b></p>
+   <ul class="list">
+       <li>Предназначена для небольших и средних приложений</li>
+       <li>основной выишрыш в производительности, если преобладают операуии вставки и выборки данных</li>
+       <li>При чрезвычайно активном обращении к данным или в случае частых сортировок, SQLite начинает работать медленее</li>
+   </ul>
+   
+   
+   
+   
+   
+   <h3 class="header-style2">Особенности SQLite</h3>
+   <p>Эта БД безтиповая:</p>
+   <ul class="list">
+       <li>Можно так: CREATE TABLE users(id INTEGER, name TEXT, age INTEGER)</li>
+       <li>А можно и так: CREATE TABLE users(id, name, age)</li>
+       <li>Для задания первичного ключа: id INTEGER PRIMARY KEY, id INTEGER PRIMARY KEY AUTOINCREMENT</li>
+       <li>Экранирование строк через двойной апостроф: 'Harry O"Brian'</li>
+   </ul>
+   
+   
+   
+   
+   
+   <h3 class="header-style2">Команды для работы с SQLite</h3>
+   <p style="text-align:center;">Методы класса SQLite3</p>
+    <p><span class="vue-g"><span class="vue-b">$db</span> = new <span class="vue-b">SQLite3</span>(<span class="vue-r">"news.db"</span>); - создаём или открываем базу данных news.db</span></p>
+    <p><span class="vue-g"><span class="vue-b">$db</span>-><span class="vue-b">close</span>(); - закрываем БД без удаления объекта</span></p>
+    <p><span class="vue-g"><span class="vue-b">$db</span>-><span class="vue-b">open</span>(<span class="vue-r">"another.db"</span>); - открываем другую БД для работы</span></p>
+    <p><span class="vue-g"><span class="vue-b">unset</span>(<span class="vue-b">$db</span>); - удаляем объект</span></p>
+
+    <p style="text-align:center;">Выполнение запроса</p>
+    <ol class="list">
+        <li><span class="vue-g"><span class="vue-b">$name</span> = <span class="vue-b">$db</span>-><span class="vue-b">escapeString</span>(<span class="vue-b">$name</span>); - экранирование апострофов</span></li>
+        <li><span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"INSERT INTO users (name, age) VALUES ('$name', 25)"</span>;  - запрос на запись данных</span></li>
+        <li><span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">$db</span>-><span class="vue-b">exec</span>(<span class="vue-b">$sql</span>); - запросы выполняются методом exec(), возвращает булево значение, потому что тип запроса был без ответный</span></li>
+        <li><span class="vue-g">echo <span class="vue-b">$db</span>-><span class="vue-b">changes</span>(); - количество изменённых записей</span></li>
+        <li><span class="vue-g">echo <span class="vue-b">$db</span>-><span class="vue-b">lastErrorCode</span>(); - отслеживание ошибок</span></li>
+        <li><span class="vue-g">echo <span class="vue-b">$db</span>-><span class="vue-b">lastErrorMsg</span>();</span></li>
+    </ol>
+    <p style="text-align: center">Подготовленные запросы</p>
+    <ol class="list">
+        <li><span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"INSERT INTO users (name, age) VALUES (:name, :age)"</span>;</span></li>
+        <li><span class="vue-g"><span class="vue-b">$stmt</span> = <span class="vue-b">$db</span>-><span class="vue-b">prepare</span>(<span class="vue-b">$sql</span>); - Готовим запрос</span></li>
+        <li><span class="vue-g"><span class="vue-b">$stmt</span>-><span class="vue-b">bindParam</span>(<span class="vue-r">':name'</span>, <span class="vue-b">$name</span>);<br><span class="vue-b">$stmt</span>-><span class="vue-b">bindParam</span>(<span class="vue-r">':age'</span>, <span class="vue-b">$age</span>); - Привязываем параметры</span></li>
+        <li><span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">$stmt</span>-><span class="vue-b">execute</span>(); - Исполняем запрос</span></li>
+        <li><span class="vue-g"><span class="vue-b">$stmt</span>-><span class="vue-b">close</span>(); - Закрываем при необходимости</span></li>
+    </ol>
+    <p style="text-align: center">Выборка данных</p>
+    <ol class="list">
+        <li><span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"SELECT name, age FROM users"</span>;</span></li>
+        <li><span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">$db</span>-><span class="vue-b">querySingle</span>(<span class="vue-b">$sql</span>) - в $result попадает значение первого поля первой записи. В случае неудачи возвращает false</span></li>
+        <li><span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">$db</span>-><span class="vue-b">querySingle</span>(<span class="vue-b">$sql</span>, <span class="vue-b">true</span>) - в $result попадает массив значений первой записи.</span></li>
+        <li><span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">$db</span>-><span class="vue-b">query</span>(<span class="vue-b">$sql</span>); - Стандартная выборка. Возвращает либо false, либо объект.</span></li>
+        <li><span class="vue-g"><span class="vue-b">$row</span> = <span class="vue-b">$result</span>-><span class="vue-b">fetchArray</span>(); - обработка объекта с выборкой. По умолчанию стоит SQLITE3_BOTH.</span></li>
+        <li><span class="vue-g"><span class="vue-b">$row</span> = <span class="vue-b">$result</span>-><span class="vue-b">fetchArray</span>(<span class="vue-b">SQLITE3_ASSOC</span>); - Получаем ассоциативный массив</span></li>
+        <li><span class="vue-g"><span class="vue-b">$row</span> = <span class="vue-b">$result</span>-><span class="vue-b">fetchArray</span>(<span class="vue-b">SQLITE3_NUM</span>); - Получаем индексированный массив</span></li>
+    </ol>
+    <p style="text-align: center">Удаление данных</p>
+    <ol class="list">
+        <li><span class="vue-g"><span class="vue-b">$sql</span> = <span class="vue-r">"DELETE FROM msgs WHERE id = $id"</span>;<br><span class="vue-b">$this</span>-><span class="vue-b">_db</span>-><span class="vue-b">exec</span>(<span class="vue-b">$sql</span>);</span></li>
+    </ol>
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Структура приложения "Лента новостей"</h3>
+    <p><b>index.php</b> - основной файл новостной ленты</p>
+    <p><b>INewsDB.php</b> - интерфейс INewsDB с заявленными методами для новостной ленты</p>
+    <p><b>NewsDB.php</b> - класс NewsDB реализующий нитерфейс INewsDB</p>
+    <p><b>save_news.php</b> - php-код обработки данных для добавления записи в таблицу БД</p>
+    <p><b>delete_news.php</b> - php-код обработки данных для удаления записи из таблицы БД</p>
+    <p><b>get_news.php</b> - вывод списка записей из таблицы БД</p>
+    
+    
+    
+    
+    
+    
+    
+   
+</div>
