@@ -1,0 +1,93 @@
+<div class="wrap">
+   
+    <h2 class="header-style">PHP и XML</h2>
+    <p>Уровень 3 день 2 - 01:52:20</p>
+    
+    
+    <h3 class="header-style2">Введение в XML</h3>
+    <p>XML - это расширяемый язык разметки. Предназначен для: 1) хранения структурированных данных 2) обмена информацией между программами 3) создание на его основе других, более специализированных, языков разметки(OFX, OTP, WSDL, SOAP, VML, XSL, ebXML, CML, XLANG). Цель создания - это обеспечение совместимости при передаче данных между разными системами обработки информации. Различия XML и HTML: HTML описывает ИЗ ЧЕГО СОСТОИТ и КАК отображать документ, а XML определяет ЗНАЧЕНИЕ и ОТНОШЕНИЕ данных.</p>
+    <p>Простой пример xml разметки:</p>
+    <div class="code-style">
+        <pre>
+            &lt;?xml version="1.0" encoding="utf-8" ?>
+            &lt;catalog>
+                &lt;book id="1">
+                    &lt;author>Алекс Гомер&lt;/author>
+                    &lt;title>XML и IE5&lt;/title>
+                    &lt;price>200&lt;/price>
+                    &lt;!--Комментарий-->
+                &lt;/book>
+            &lt;/catalog>
+        </pre>
+    </div>
+    <p>В XML в отличии от HTML очень жёсткие правила. Вот они:</p>
+    <ul class="list">
+        <li>Если документ содержит символы выходящие за рамки ASCII, то необходимо указать кодировку</li>
+        <li>XML состоит из вложеных элементов</li>
+        <li>Элемент состоит из открывающегося и закрывающегося тегов, а также содержимого</li>
+        <li>XML чувствителен к регистру символов</li>
+        <li>Элементы могут вкладываться друг в друга</li>
+        <li>Теги должны быть правильно вложены друг в друга</li>
+        <li>Все парные теги должны быть закрыты</li>
+        <li>Возможно формирование пустых элементов</li>
+        <li>Должен существовать только один корневой элемент, который содержит все остальные элементы. Пустой документ(без корневого элемента) недопустим</li>
+        <li>Элемнты могут иметь атрибуты</li>
+        <li>Значения атрибутов заключаются в одинарные или двойные кавычки</li>
+        <li>У каждого конкретного элемента не должно быть повторяющихся атрибутов</li>
+    </ul>
+    <p>Когда я составляю XML документ, то я могу указать в теге price не просто число 200, а 200 рублей и тогда xml парсер не распознает что написано. Или пошлю в теге data дату в виде 01-02-03 и кто разберёт что тут за дата. Для этих вещей придумали описывать структуру документа. Есть 2 способа описать: DTD(Document Type Definition) и XML Схемы. С помощью схемы я описываю для других, что есть что в моём xml документе.</p>
+    
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Средства PHP для работы с XML-документом</h3>
+    <p><b>SAX(Simple API for XML)</b>:</p>
+    <ul class="list">
+        <li>Чтение XML-документа</li>
+    </ul>
+    <p><b>DOM(Document Object Model)</b>:</p>
+    <ul class="list">
+        <li>Чтение, изменение и создание новых XML-документов</li>
+    </ul>
+    <p><b>SimpleXML(Чисто phpшная разработка)</b>:</p>
+    <ul class="list">
+        <li>Чтение и изменение XML-документов</li>
+    </ul>
+    <p><b>XMLReader и XMLWriter</b>:</p>
+    <ul class="list">
+        <li>Чтение и изменение XML-документов</li>
+    </ul>
+    <p><b>XSL/T(Extensible StylesheetLanguage Transformations)</b>:</p>
+    <ul class="list">
+        <li>Преобразование XML-документов в другие форматы</li>
+    </ul>
+    <p>Начнём с SAX.</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g">
+                //<span class="vue-or">создание парсера</span>
+                <span class="vue-b">$sax</span> = <span class="vue-b">xml_parser_create</span>(<span class="vue-r">"utf-8"</span>);
+                
+                //<span class="vue-or">объявление функций обработки событий</span>
+                function <span class="vue-b">onStart</span>(<span class="vue-b">$parser</span>, <span class="vue-b">$tag</span>, <span class="vue-b">$attributes</span>){}
+                function <span class="vue-b">onEnd</span>(<span class="vue-b">$parser</span>, <span class="vue-b">$tag</span>){}
+                function <span class="vue-b">onText</span>(<span class="vue-b">$parser</span>, <span class="vue-b">$text</span>){}
+                
+                //<span class="vue-or">регистрация функций как обработчиков событий</span>
+                <span class="vue-b">xml_set_element_handler</span>(<span class="vue-b">$sax</span>, <span class="vue-r">"onStart"</span>, <span class="vue-r">"onEnd"</span>);
+                <span class="vue-b">xml_set_character_data_handler</span>(<span class="vue-b">$sax</span>, <span class="vue-r">"onText"</span>);
+                
+                //<span class="vue-or">запуск парсера</span>
+                <span class="vue-b">xml_parse</span>(<span class="vue-b">$sax</span>, <span class="vue-r">"XML строка!"</span>);
+                //закончил на 02:22:10
+            </span>
+        </pre>
+    </div>
+    
+    
+    
+    
+</div>
