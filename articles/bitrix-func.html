@@ -5,12 +5,7 @@
     
     <h3 class="header-style2">В основном шаблоне</h3>
     <ul class="list">
-        <li><span class="bitrix-func">$APPLICATION->ShowTitle()</span> - выводит тайтл сайта, сама строка с названием тайтла вводится в админке.
-        <div class="code-style">
-            <pre>
-                &lt;title> &lt;?php $APPLICATION->ShowTitle(); ?> &lt;/title>
-            </pre>
-        </div>
+        <li><span class="bitrix-func">$APPLICATION->ShowTitle()</span> - выводит то что задано в системе через $APPLICATION->SetTitle("О компании");, если в системе задать $APPLICATION->SetPageProperty('TITLE', 'Заголовок о компании');, то $APPLICATION->ShowTitle() уже будет выводить то что задано через SetPageProperty(), но если $APPLICATION->ShowTitle(false), то он начнёт снова выводить то что задано в $APPLICATION->SetTitle("О компании");. То есть как объяснили, то через SetPageProperty() задаётся для поисковиков и будет отображаться в заглавии закладки браузера, а для h1 и др. заголовков задаётся в $APPLICATION->SetTitle("О компании");, только когда выводить буду в h1, то нужно указать в скобках false - $APPLICATION->ShowTitle(false). По крайней мере так объяснил Salavey.
         </li>
         <li><span class="bitrix-func">$APPLICATION->ShowHead()</span> - подключает для вывода в шаблоне сайта основные поля тега: мета-теги Content-type, robots, keywords, description; стили css; скрипты стандартные</li>
         <li><span class="bitrix-func">$APPLICATION->ShowPanel()</span> - выводит панель управления администратора. Нужно писать сразу после открывающегося тега body и в div с id = "panel":
@@ -22,9 +17,9 @@
         </li>
         <li><span class="bitrix-func">echo SITE_TEMPLATE_PATH</span> - содержит путь к шаблону сайта, например - /local/templates/sparrow</li>
         <li><span class="bitrix-func">echo SITE_DIR</span> - содержит путь корня сайта  - /</li>
-        <li><span class="bitrix-func">$APPLICATION->ShowTitle(false)</span> - заголовок(в h1 например использовать)</li>
-        <li><span class="bitrix-func">$APPLICATION->GetCurDir()</span> - вернёт название папки, в которой находимся, например - /about/</li>
+        <li><span class="bitrix-func">$APPLICATION->GetCurDir()</span> - вернёт название папки, в которой находимся, например - /about/, на главной возвращает /. Если поставить аргумент true, то к папке ещё добавляет index.php, вот так - /about/index.php</li>
         <li><span class="bitrix-func">$APPLICATION->GetCurPage()</span> - пока заметил, что возвращает то же что и метод $APPLICATION->GetCurDir()</li>
+        <li><span class="bitrix-func">$APPLICATION->GetCurPageParam()</span> - возвращает путь к текущей странице относительно корня c добавленными новыми и(или) удаленными текущими параметрами. Смотреть в <a href="https://dev.1c-bitrix.ru/api_help/main/reference/cmain/getcurpageparam.php">API битрикса</a></li>
         <li><span class="bitrix-func">CJSCore::Init(array("jquery"));</span> - подключение jquery из ядра битрикса</li>
         <li></li>
         <li></li>
