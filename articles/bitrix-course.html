@@ -548,6 +548,89 @@
     <h3 class="header-style2" id="12">Пункты меню из разделов инфоблока</h3>
     <p>Речь пойдёт о меню, у которого есть подменю и вот в пункты подменю нужно выводить разделы(виртуальные папки) из инфоблока. Если мы в инфоблоке добавим папку, то она сразу отобразиться в подменю как дополнительный пункт.</p>
     <p><a href="https://camouf.ru/blog-note/722/?sphrase_id=55080">Тут</a>. Либо в этом видео с 00:57:00 - <a href="https://www.youtube.com/watch?v=MVPbUOVmZGg&t=3223s">перейти</a></p>
+    <p>Или вот в этом видео от Вячеслава:</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/96h7gQ5XIxA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Кратко опишу как добавлять разделы инфоблока в пункт меню. Выбираем пункт меню где будем размещать динамическое меню, это значит выбираем папку(ну конечно если главное меню статическое и основано на папках) с одноимённым названием. В этой папке размещаем файл left.mewnu_ext.php, заранее отметив его в настройках главного меню. И теперь в этот файл добавляем такой код:</p>
+    <div class="code-style">
+        <pre>
+            if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+            global $APPLICATION;
+
+            $aMenuLinksExt = $APPLICATION->IncludeComponent(
+                "bitrix:menu.sections",
+                "",
+                Array(
+                    "CACHE_TIME" => "36000000",
+                    "CACHE_TYPE" => "A",
+                    "DEPTH_LEVEL" => "2",
+                    "DETAIL_PAGE_URL" => "#SECTION_ID#/#ELEMENT_ID#",
+                    "IBLOCK_ID" => "6",
+                    "IBLOCK_TYPE" => "catalog",
+                    "ID" => $_REQUEST["ID"],
+                    "IS_SEF" => "Y",
+                    "SECTION_PAGE_URL" => "#SECTION_ID#/",
+                    "SECTION_URL" => "",
+                    "SEF_BASE_URL" => "/catalog/"
+                )
+            );
+            $aMenuLinks = array_merge($aMenuLinksExt, $aMenuLinks);
+        </pre>
+    </div>
+    <p>Только задать нужно свой инфоблок: название и id</p>
+    <p>Вот шаблон выводящий 3х уровневое меню:</p>
+    <div class="code-style">
+        <pre>
+            &lt;?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+
+            &lt;?if (!empty($arResult)):?>
+                &lt;ul class="header_menu">
+                    &lt;?
+                    $previousLevel = 0;
+                    foreach($arResult as $key => $arItem):?>
+
+                        &lt;?if ($previousLevel &amp;&amp; $arItem["DEPTH_LEVEL"] &lt; $previousLevel):?>
+                            &lt;?=str_repeat("&lt;/ul>&lt;/li>", ($previousLevel - $arItem["DEPTH_LEVEL"]));?>
+                        &lt;?endif?>
+
+                        &lt;?if ($arItem["IS_PARENT"]):?>
+
+                            &lt;?if ($arItem["DEPTH_LEVEL"] == 1):?>
+                                //<span class="vue-g">тут выводятся пункты самого первого уровня главного меню, если они являются родителями и в них есть подпункты</span>
+                                &lt;li>&lt;a href="<?=$arItem["LINK"]?>" class="menu_lvl1_bt arrow &lt;?if ($arItem["SELECTED"]):?>active&lt;?endif?>">&lt;span>&lt;?=$arItem["TEXT"]?>&lt;/span>&lt;/a>
+                                    &lt;ul class="menu_lvl2">
+                            &lt;?else:?>
+                                //<span class="vue-g">тут выводятся пункты 2го уровня и если они являются родителями и в них есть подпункты</span>
+                                &lt;li>&lt;a href="&lt;?=$arItem["LINK"]?>" class="menu_lvl2_bt arrow &lt;?if ($arItem["SELECTED"]):?>active&lt;?endif?>">&lt;?=$arItem["TEXT"]?>&lt;/a>
+                                    &lt;ul class="menu_lvl3">
+                            &lt;?endif?>
+
+                        &lt;?else:?>
+
+                            &lt;?if ($arItem["PERMISSION"] > "D"):?>
+                                &lt;?if ($arItem["DEPTH_LEVEL"] == 1):?>
+                                    //<span class="vue-g">тут выводятся пункты самого первого уровня главного меню, если они являются не родителями и в них нет подпунктов</span>
+                                    &lt;li>&lt;a href="<?=$arItem["LINK"]?>" class="menu_lvl1_bt &lt;?if ($arItem["SELECTED"]):?>active&lt;?endif?>">&lt;span>&lt;?=$arItem["TEXT"]?>&lt;/span>&lt;/a>&lt;/li>
+                                &lt;?elseif($arItem["DEPTH_LEVEL"] == 2):?>
+                                    //<span class="vue-g">тут выводятся подпункты 2го уровня и они не являются родителями</span>
+                                    &lt;li>&lt;a href="&lt;?=$arItem["LINK"]?>" class="menu_lvl2_bt &lt;?if ($arItem["SELECTED"]):?>active&lt;?endif?>">&lt;?=$arItem["TEXT"]?>&lt;/a>&lt;/li>
+                                &lt;?else:?>
+                                    //<span class="vue-g">тут выводятся подпункты 3го уровня и они не являются родителями</span>
+                                    &lt;li>&lt;a href="&lt;?=$arItem["LINK"]?>">&lt;?=$arItem["TEXT"]?>&lt;/a>&lt;/li>
+                                &lt;?endif?>
+                            &lt;?endif?>
+                        &lt;?endif?>
+
+                        &lt;?$previousLevel = $arItem["DEPTH_LEVEL"];?>
+
+                    &lt;?endforeach?>
+
+                    &lt;?if ($previousLevel > 1)://close last item tags?>
+                        &lt;?=str_repeat("&lt;/ul>&lt;/li>", ($previousLevel-1) );?>
+                    &lt;?endif?>
+                &lt;/ul>
+            &lt;?endif?>
+        </pre>
+    </div>
     
     
 </div>
