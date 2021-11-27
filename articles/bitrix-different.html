@@ -18,9 +18,9 @@
         <li><a href="#12">Получение подразделов указанного раздела инфоблока с помощью API битрикса</a></li>
         <li><a href="#13">Компонент "Умный фильтр" - "bitrix:catalog.smart.filter</a></li>
         <li><a href="#14">Сортировка элементов</a></li>
-        <li><a href="#1"></a></li>
-        <li><a href="#1"></a></li>
-        <li><a href="#1"></a></li>
+        <li><a href="#15">Файл component_epilog.php</a></li>
+        <li><a href="#16">Как выводить галереи</a></li>
+        <li><a href="#17">Скрипт "Добавление товаров в избранное"</a></li>
         <li><a href="#1"></a></li>
         <li><a href="#1"></a></li>
         <li><a href="#1"></a></li>
@@ -156,5 +156,113 @@
     
     <h3 class="header-style2" id="14">Сортировка элементов</h3>
     <p>На данный момент не знаю есть ли в битрикс какой то компонент, который занимается сортировкой элементов, но в этом видео автор делает сортировку самостоятельно программируя. Я делал также сортировку  у себя в сайте Техника в файле D:\OpenServer\domains\bitrix-tehnika.local\local\templates\.default\components\bitrix\news\my_catalog\section.php</p>
+    
+    
+    
+    
+    <h3 class="header-style2" id="15">Файл component_epilog.php</h3>
+    <p>Надо описать этот файл. Если что в видео Вячеслава про него рассказывается где то при натягивании каталога.</p>
+    
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="16">Как выводить галереи</h3>
+    <p>Чтобы вывести несколько фотографий из множественного свойства MORE_PHOTO, смотреть видео где то ближе к середине:</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/txwgyK8T5ws" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Картинки свойства MORE_PHOTO будут доступны в $arResult['PROPERTIES']['MORE_PHOTO']['VALUE'], в VALUE будет лежать массив, в котором id каждой картинки, так вот чтобы нам получить src картинок нужно сделать ещё запрос в БД. Делается запрос с помощью API битрикса вот таким методом:</p>
+    <p><b>$src = CFile::GetPath(id_картинки);</b></p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="17">Скрипт "Добавление товаров в избранное"</h3>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/p_OFUZXPKbg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>JS скрипты для установления куков и jquery, который навешивает событие клик на ссылку "Избранное", по которому происходит считываение id из data атрибута и устанавление класса active:</p>
+    <div class="code-style">
+        <pre>
+            $(document).ready(function(){
+            
+             //вариант на jquery
+             $('.favor_bt').on('click', function(){
+                 let id = $(this).data('id');
+                 //console.log(a);
+                 if($(this).hasClass('active')){
+                    actionFavourites('del', id);
+                    $(this).removeClass('active');
+                 }else{
+                    actionFavourites('add', id);
+                    $(this).addClass('active');
+                 }
+                 return false;
+             });
+
+        });
+
+        /* action это действие, котрое нужно сделать с товаром в избранном, id это id товара */
+        function actionFavourites(action, id){
+
+            let favorite = JSON.parse(getCookie('favorite'));
+            if(favorite === null || !(favorite instanceof Array)){
+                favorite = [];
+            }
+
+            let inArr = false;
+            //проверим существование товара в массиве корзины
+            for(let i = 0; i &lt; favorite.length; i++){
+                //console.log(favorite[i])
+                if(favorite[i] == id){
+                    if(action == 'del') { favorite.splice(i, 1); }
+                    inArr = true;
+                }
+            }
+            //если товара нет в корзине, то добавим
+            if(action == 'add' &amp;&amp; !inArr) { favorite.push(id); }
+            let d = new Date();
+            d.setMonth(d.getMonth + 1);
+            setCookie('favorite', JSON.stringify(favorite), d.toUTCString(), '/');
+
+            return favorite;
+        }
+
+
+        /*name это имя куки, value это значение куки, expires(истекать) это время, на которое мы хотим установить куки, path это путь 
+        где именно на сайте куки будут видны, а где нет, но мы поставим '/', чтобы наша кука была видна на всём сайте. В принципе 
+        аргументы техе что и в функции setcookie() у php */
+        function setCookie(name, value, expires, path, domain, secure){
+            document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + 
+                    ((expires) ? "; expires-" + expires : "") +
+                    ((path) ? "; path-" + path : "") +
+                    ((domain) ? "; domain-" + domain : "") +
+                    ((secure) ? "; secure" : "");
+        }
+
+
+        //эта функция вернёт по имени куку
+        function getCookie(name){
+            let cookie = " " + document.cookie;
+            let search = " " + name + "-";
+            let setStr = null;
+            let offset = 0;
+            let end = 0;
+            if(cookie.length > 0){
+                offset = cookie.indexOf(search);
+                if(offset != -1){
+                    offset += search.length;
+                    end = cookie.indexOf(";", offset);
+                    if(end == -1){
+                        end = cookie.length;
+                    }
+                    setStr = unescape(cookie.substring(offset, end));
+                }
+            }
+            return setStr;
+        }
+        </pre>
+    </div>
+    
+    
     
 </div>
