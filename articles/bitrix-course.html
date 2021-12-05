@@ -181,6 +181,8 @@
                   Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/animate-text.js');
                   Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/plugins.js');
                   Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/main.js');
+                  Asset::getInstance()->addJs('адрес');//можно также указать загрузку например плагина jquery, указав адрес плагина в сети
+                  
                   Asset::getInstance()->addString('&lt;meta name="viewport" content="width=device-width, initial-scale=1">');
                   Asset::getInstance()->addString('&lt;link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">');
                   //если есть подключение шрифтов по CDN, то также через addString как и viewport помещаем весь тег link в скобки в этот метод.
