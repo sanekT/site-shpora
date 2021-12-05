@@ -21,9 +21,16 @@
         <li><a href="#15">Файл component_epilog.php</a></li>
         <li><a href="#16">Как выводить галереи</a></li>
         <li><a href="#17">Скрипт "Добавление товаров в избранное"</a></li>
-        <li><a href="#1"></a></li>
-        <li><a href="#1"></a></li>
-        <li><a href="#1"></a></li>
+        <li><a href="#18">Как сделать форму в битриксе  и отправить письмо с полями этой формы на почту</a></li>
+        <li><a href="#19">Компонент "Поиск по заголовкам(bitrix:search.title)"</a></li>
+        <li><a href="#20">Делаем шаблон постраничной навигации</a></li>
+        <li><a href="#21">Делаем "ленивую подгрузку" товаров на странице</a></li>
+        <li><a href="#20"></a></li>
+        <li><a href="#20"></a></li>
+        <li><a href="#20"></a></li>
+        <li><a href="#20"></a></li>
+        <li><a href="#20"></a></li>
+        <li><a href="#20"></a></li>
     </ul>
     
     <h3 class="header-style2" id="1">Как подключится к хостингу через Win SCP клиент</h3>
@@ -185,7 +192,7 @@
         <pre>
             $(document).ready(function(){
             
-             //вариант на jquery
+             //вариант на jquery. Вешаем событие click на кнопки "В избранное", которые добавляют или удаляют товар в массив "favorite"
              $('.favor_bt').on('click', function(){
                  let id = $(this).data('id');
                  //console.log(a);
@@ -198,70 +205,212 @@
                  }
                  return false;
              });
+             
+             
+             //вариант на чистом js. Вешаем событие click на кнопки "В избранное", которые добавляют или удаляют товар в массив "favorite"
+             let favorBt = document.querySelectorAll('.favor_bt');
+             for(let key of favorBt){
+                 key.addEventListener('click', function(){
+                     let id = this.dataset.id;
+                     if(this.classList.contains('active')){
+                        actionFavourites('del', id);
+                        this.classList.remove('active');
+                     }else{
+                        actionFavourites('add', id);
+                        this.classList.add('active');
+                     }
+                     return false;
+                 });
+             }
 
-        });
-
-        /* action это действие, котрое нужно сделать с товаром в избранном, id это id товара */
-        function actionFavourites(action, id){
-
-            let favorite = JSON.parse(getCookie('favorite'));
-            if(favorite === null || !(favorite instanceof Array)){
-                favorite = [];
-            }
-
-            let inArr = false;
-            //проверим существование товара в массиве корзины
-            for(let i = 0; i &lt; favorite.length; i++){
-                //console.log(favorite[i])
-                if(favorite[i] == id){
-                    if(action == 'del') { favorite.splice(i, 1); }
-                    inArr = true;
+            /* action это действие, котрое нужно сделать с товаром в избранном, id это id товара */
+            function actionFavourites(action, id){
+                let favorite = JSON.parse(getCookie('favorite'));
+                if(favorite === null || !(favorite instanceof Array)){
+                    favorite = [];
                 }
-            }
-            //если товара нет в корзине, то добавим
-            if(action == 'add' &amp;&amp; !inArr) { favorite.push(id); }
-            let d = new Date();
-            d.setMonth(d.getMonth + 1);
-            setCookie('favorite', JSON.stringify(favorite), d.toUTCString(), '/');
 
-            return favorite;
-        }
-
-
-        /*name это имя куки, value это значение куки, expires(истекать) это время, на которое мы хотим установить куки, path это путь 
-        где именно на сайте куки будут видны, а где нет, но мы поставим '/', чтобы наша кука была видна на всём сайте. В принципе 
-        аргументы техе что и в функции setcookie() у php */
-        function setCookie(name, value, expires, path, domain, secure){
-            document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + 
-                    ((expires) ? "; expires-" + expires : "") +
-                    ((path) ? "; path-" + path : "") +
-                    ((domain) ? "; domain-" + domain : "") +
-                    ((secure) ? "; secure" : "");
-        }
-
-
-        //эта функция вернёт по имени куку
-        function getCookie(name){
-            let cookie = " " + document.cookie;
-            let search = " " + name + "-";
-            let setStr = null;
-            let offset = 0;
-            let end = 0;
-            if(cookie.length > 0){
-                offset = cookie.indexOf(search);
-                if(offset != -1){
-                    offset += search.length;
-                    end = cookie.indexOf(";", offset);
-                    if(end == -1){
-                        end = cookie.length;
+                let inArr = false;
+                //проверим существование товара в массиве корзины
+                for(let i = 0; i &lt; favorite.length; i++){
+                    //console.log(favorite[i])
+                    if(favorite[i] == id){
+                        if(action == 'del') { favorite.splice(i, 1); }
+                        inArr = true;
                     }
-                    setStr = unescape(cookie.substring(offset, end));
                 }
+                //если товара нет в корзине, то добавим
+                if(action == 'add' &amp;&amp; !inArr) { favorite.push(id); }
+                let d = new Date();
+                d.setMonth(d.getMonth + 1);
+                setCookie('favorite', JSON.stringify(favorite), d.toUTCString(), '/');
+
+                return favorite;
             }
-            return setStr;
-        }
+
+
+            /*name это имя куки, value это значение куки, expires(истекать) это время, на которое мы хотим установить куки, path это путь 
+            где именно на сайте куки будут видны, а где нет, но мы поставим '/', чтобы наша кука была видна на всём сайте. В принципе 
+            аргументы техе что и в функции setcookie() у php */
+            function setCookie(name, value, expires, path, domain, secure){
+                document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + 
+                        ((expires) ? "; expires-" + expires : "") +
+                        ((path) ? "; path-" + path : "") +
+                        ((domain) ? "; domain-" + domain : "") +
+                        ((secure) ? "; secure" : "");
+            }
+
+
+            //эта функция вернёт по имени куку
+            function getCookie(name){
+                let cookie = " " + document.cookie;
+                let search = " " + name + "-";
+                let setStr = null;
+                let offset = 0;
+                let end = 0;
+                if(cookie.length > 0){
+                    offset = cookie.indexOf(search);
+                    if(offset != -1){
+                        offset += search.length;
+                        end = cookie.indexOf(";", offset);
+                        if(end == -1){
+                            end = cookie.length;
+                        }
+                        setStr = unescape(cookie.substring(offset, end));
+                    }
+                }
+                return setStr;
+            }
         </pre>
     </div>
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="18">Как сделать форму в битриксе и отправить письмо с полями этой формы на почту</h3>
+    <p>Часто заказчики не готовы платить за более дорогую редакцию битрикса больше денег, например модуль "веб формы" в редакции "Стандарт" есть, а в стартовой нету. Поэтому программисты должны уметь сами спрограммировать похожий модуль в стартовой редакции, чем экономят деньги  заказчику. Делается "веб форма" самостоятельно через инфоблок, у которого задаём нужные свойства и потом выводим через компонент. Есть 3 способа как это сделать. 3й способ пока не будем использовать, потому как он делается через создание собственного компонента.</p> 
+    <p>1й способ это использование компонента "Контент" - "Добавление элементов" - "Форма добавления/редактирования(bitrix:iblock.element.add.form)". Этот компонент добавляет элементы инфоблока в форму. Отправку письма также нужно будет дописать самостоятельно. Итак, создадим новый тип инфоблока Формы и в нём нужно создать 2 инфоблока: один на формы в детальных акциях и контактах, второй на форму обратного звонка, которая открывается на главной в шапке. Это всё на сайте Техника. Создаём первый инфоблок, его настройка будет в видео с 00:06:20:</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/5DtMGsKnGvY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>2й способ с помощью компонента "Служебные" - "Форма обратной связи(bitrix:main.feedback)". Этот компонент уже в настройках содержит поля почты, имени, телефона, также может отправлять письмо, но к нему нельзя добавлять дополнительные элементы из инфоблока. Да и Вячеслав говорит, что с инфоблоком удобней. Для "Обратной связи мы используем первый способ, а для "Обратного звонка(всплывающая форма в модальном окне)" будем использовать 2й способ.</p>
+    <p>Итак делаем по первому способу форму "Обратная связь", эта та что на детальной акции с названием "Отправить заявку":</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/aOqMyWYG4b0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Если заказчик скажет, что ему нужна каптча, то лучше использовать современную Google recaptcha вместо той что предлагаем нам этот компонент. Если нужно будет как то делать форму на сайте, то посмотреть эти видео обязательно, Вячеслав рассказывает и то, как правильно её делать.</p>
+    <p>Итак в этих видео мы с помощью инфоблока и компонента из первого способа подогнали элементы под вид наших форм, теперь при заполнении формы и нажатии кнопки отправить, все данные сохраняются у нас в инфоблоке в виде элементов инфоблока. Но нам также нужно отправить письмо на почту. Есть такие события как OnBeforeIBlockElementAdd и OnAfterIBlockElementAdd, как видно из их названий, то они срабатывают до и после добавления элемента в инфоблок, а значит и в БД. Так вот мы планируем после добавления элемента в инфоблок отослать письмо на почту, т.е. мы пишем код так, что ждём срабатывания события и делаем свои дела. Вот тут док-я по событию - <a href="https://dev.1c-bitrix.ru/api_help/iblock/events/onafteriblockelementadd.php">здесь</a>. Чтобы описать наш обработчик события, мы воспользуемся файлом init.php, который должен распологаться в папке php_interface, а эта папка должна лежать либо у нас в local либо в системной папке bitrix. Почему файл init.php? Если мы хотим задать какие то действия до выполнения нашего header.php, то описываем их в этом файле. Мы можем описать в init.php любые наши функции, константы и пользоваться ими уже в header.php, footer.php, в файле с контентом, который между ними будет. Я буду распологать папку php_interface у себя в папке local рядом с папкой templates. Начнём писать наш обработчик события OnAfterIBlockElementAdd. Есть функция, которая связывает это событие инфоблока с нашим обработчиком, т.е когда событие наступает, запускается указанный обработчик. В обработчик как аргумент передаётся массив $arFields с полями добавленного элемента. Нам, для того чтобы отправить письмо, нужны значения этих полей. Давайте узнаем что лежит в переданном нам массиве в наш обработчик:</p>
+    <div class="code-style">
+        <pre>
+            // файл /local/php_interface/init.php
+            // регистрируем обработчик
+            AddEventHandler("iblock", "OnAfterIBlockElementAdd", "OnAfterIBlockElementAddHandler");
+
+            // создаём обработчик события "OnAfterIBlockElementAdd"
+            function OnAfterIBlockElementAddHandler(&amp;$arFields)
+            {
+                echo "&lt;pre>"; print_r($arFields); echo "&lt;/pre>";
+                die();
+            }
+            
+            
+            //примерно такой массив прийдёт в ответ
+            [
+                [NAME] => Виталий
+                [PREVIEW_TEXT_TYPE] => text
+                [PREVIEW_TEXT] => 
+                [MODIFIED_BY] => 1
+                [PROPERTY_VALUES] => Array
+                    (
+                        [13] => vit@mail.ru
+                        [14] => +7(918) 347-36-47
+                    )
+
+                [ACTIVE] => Y
+                [IBLOCK_ID] => 7
+                [DATE_ACTIVE_FROM] => 01.12.2021 11:21:35
+                [ACTIVE_FROM] => 01.12.2021 11:21:35
+                [SEARCHABLE_CONTENT] => ВИТАЛИЙ
+
+                [CREATED_BY] => 1
+                [~DATE_CREATE] => now()
+                [~TIMESTAMP_X] => now()
+                [XML_ID] => 53
+                [ID] => 53
+                [RESULT] => 53
+            ]
+        </pre>
+    </div>
+    <p>Как видно наша почта и телефон лежат  в $arFields['PROPERTY_VALUES'] под числовыми ключами, являющиеся id этих свойств. Эти id также прописаны в свойствах инфоблока слева от названия сво-тв "Почта" и "Телефон". Но если не хочется получать почту и телефон через числовые ключи, а хочется указывать символьный код, то нужно тогда сделать ещё один запрос в БД, ID данного элемента у нас есть, он равен 53. Для того чтобы сделать ещё запрос по id есть функция <b>GetIBlockElement(int ID [, string type = ""])</b>, которой передаём $arFields['ID'] нашего элемента. Она выбирает все базовые поля элемента, его свойства и информацию об инфоблоке. Но эта функция считается устаревшей и вместо неё рекомендуют использовать:</p> 
+    <p><b>
+        CIBlockElement::GetList(
+            array arOrder = Array("SORT"=>"ASC"),
+            array arFilter = Array(),
+            mixed arGroupBy = false,
+            mixed arNavStartParams = false,
+            array arSelectFields = Array()
+        );
+        </b>
+    </p>
+    <p>Вот код получения полей элемента по этому методу:</p>
+    <div class="code-style">
+        <pre>
+            function OnAfterIBlockElementAddHandler(&amp;$arFields)
+            {
+                $arSelect = ["NAME", "PREVIEW_TEXT", "PROPERTY_ATT_EMAIL", "PROPERTY_ATT_PHONE"];
+                $arElement = CIBlockElement::GetList([], [ "IBLOCK_ID" => $arFields['IBLOCK_ID'], "ID" => $arFields['ID'] ], false, false, $arSelect)->fetch();
+                echo "&lt;pre>"; var_dump($arElement); echo "&lt;/pre>";die();
+            }
+            
+            
+            //ответ
+            [
+              ["NAME"] => string(16) "Виталий"
+              ["PREVIEW_TEXT"] => string(29) "Текст сообщения"
+              ["PROPERTY_ATT_EMAIL_VALUE"] => string(11) "wer@mail.ru"
+              ["PROPERTY_ATT_EMAIL_VALUE_ID"] => string(3) "435"
+              ["PROPERTY_ATT_PHONE_VALUE"] => string(14) "+7918345345345"
+              ["PROPERTY_ATT_PHONE_VALUE_ID"] => string(3) "436"
+              ["PREVIEW_TEXT_TYPE"] => string(4) "text"
+            ]
+        </pre>
+    </div>
+    <p>Первым аргументом в GetList() передаём способ сортировки, указывая пустой массив, мы по умолчанию передаём ["SORT"=>"ASC"], вторым аргументом передаём массив фильтр, в котором указываем обязательно ID инфоблока, затем ID нужного нам элемента, потом 2 раза false, они нам не важны и последним аргументом посылаем массив полей, которые мы хотим видеть в вернувшемся элементе. Одна заметка, к полям, которые являются свойствами нужно прибалять слово PROPERTY, также как тогда при сортировке делали. Ну и в конце метода можно вызвать fetch(), чтобы сразу пришёл нормальный ассоциативный массив.</p>
+    <p>Итак мы получили из БД массив с полями добавленного элемента. Теперь нужно послать письмо, для этого есть метод из старого движка битрикс CEvent::Send(). В новом движке D7 это метод  \Bitrix\Main\Mail\Event::send. Найдём этот метод в API битрикса и в примерах использования полностью копируем пример и вставляем себе в обработчик, удаляем поля внутри массива и подставляем свои:</p>
+    <div class="code-style">
+        <pre>
+            $arEventFields = array(
+                "NAME"            => $arFieldsElement['NAME'],
+                "PREVIEW_TEXT"    => $arFieldsElement['PREVIEW_TEXT'],
+                "PHONE"           => $arFieldsElement['PROPERTY_ATT_PHONE_VALUE'],
+                "EMAIL"           => $arFieldsElement['PROPERTY_ATT_EMAIL_VALUE'],
+                );
+            CEvent::Send("ADV_CONTRACT_INFO", SITE_ID, $arEventFields);
+        </pre>
+    </div>
+    <p>Дальше можно посмотреть с 13й минуты, а вообще всё что выше описано, всё есть в этом видео.</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/-3Wfqi1oi0g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Отослать письмо получилось, только с задержкой, а у себя на локалке пока не пойму куда оно ушло, в папке temp нету.</p>
+    <p>Теперь сделаем форму обратного звонка, которая вызывается в всплывающем окне. делать будем 2м способом через компонент "bitrix:main.feedback". Лежит он в "Служебные" - "Форма обратной связи". Вот видео где используем этот компонент:</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/MRBsmK6P1pQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    
+    
+    
+    
+    <h3 class="header-style2" id="19">Компонент "Поиск по заголовкам(bitrix:search.title)"</h3>
+    <p>Компонентов связанных с поиском как я посмотрел не мало. У меня в редакции "Старт" их 6, не знаю сколько их в других редакциях. Мы сначала будем использовать компонент "Поиск по заголовкам(bitrix:search.title)", находится он по пути Служебные - Поиск - Поиск по заголовкам. Вот видео, где мы вставляем этот компонент на то месте где у нас вёрстка поиска:</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/0m22O7FnEDk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <p>Поиск мы на страницу добавили, теперь при вводе например названия товара нам автоматом выдаётся подсказка, где показаны результаты поиска и в этой подсказке можно нажать на товар и мы перейдём на его детальную страницу, а если нажать на все найденные товары, то мы должны попасть на страницу со всеми найденными товарами. Такую страницу нужно создать, для этого используем другой компонент поиска "bitrix:search.page", который надо разместить в вновь созданной папке на его индексной странице. Вновь созданную папку называем search. Смотреть в этом видео:</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/TOrFeIgFnD8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    
+    
+    <h3 class="header-style2" id="20">Делаем шаблон постраничной навигации</h3>
+    <p>Делаем по этому видео:</p>
+    <iframe class="video" width="560" height="315" src="https://www.youtube.com/embed/NaPpyH5_NGo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    
+    
+    
+    
+    <h3 class="header-style2" id="20">Делаем "ленивую подгрузку" товаров на странице</h3>
     
     
     
