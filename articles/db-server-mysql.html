@@ -71,12 +71,6 @@
                 echo <span class="vue-r">'Ошибка: '</span> . <span class="vue-b">mysqli_connect_errno</span>(<span class="vue-b">$link</span>) . <span class="vue-r">':'</span> . <span class="vue-b">mysqli_connect_error</span>(<span class="vue-b">$link</span>);
             }</span>
             
-            //если создаём БД из функций, то делаем такой запрос к БД. "IF NOT EXISTS" ставим для проверки на существование БД
-            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-r">"CREATE DATABASE IF NOT EXISTS"</span> . <span class="vue-b">$db_name</span>);</span>
-            
-            //если создаём БД из функций, то делаем такой запрос к БД. "IF NOT EXISTS" ставим для проверки на существование БД
-            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-r">"CREATE DATABASE IF NOT EXISTS"</span> . <span class="vue-b">$db_name</span>);</span>
-            
             //посылаем простой запрос. Результат: true или false. Важно знать, что если сервер не смог установить кодировку, то php не выдаст никакой ошибки, для этого и нужно результат проверять на наличие ошибок
             <span class="vue-g"><span class="vue-b">$result</span> = <span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-r">"SET NAMES 'utf8'"</span>);</span>
             или
