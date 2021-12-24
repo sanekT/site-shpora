@@ -11,6 +11,13 @@
     <p><b>ORDER BY</b> - это сортировка по полю в порядке возрастания <b>ASC</b> или убывания <b>DESC</b>.</p>
     <p><b>LIMIT</b> - это количество записей над которыми будут производиться действия.</p>
     <p><span class="vue-r">Хороший сайт, где указаны примеры работы с PHP, с БД, с куки, с сессиями и т.д.</span><a href="http://komotoz.ru/uroki/php/mysql_zaprosy.php">тут</a>.</p>
+    
+    
+    <p><b>Очистить таблицу category в БД im:</b> - $query = "TRUNCATE `im`.`category`";</p>
+    <p><b>Удалить поле parent_id в таблице products:</b> - $query = "ALTER TABLE `products` DROP `parent_id`;"</p>
+    <p><b>Переименовать в БД im таблицу products в таблицу teachers:</b> - $query = "RENAME TABLE `im`.`products` TO `im`.`teachers`";</p>
+    
+    
     <p><b>Выборка данных:</b></p>
     <div class="code-style">
         <pre>
@@ -21,10 +28,20 @@
                 [<span class="vue-b">ORDER BY</span> поле]
                 [<span class="vue-b">LIMIT</span> количество записей]
                 
-            //получить все поля под id=1 и id=2
+            //получить все поля со значенниями под id=1 и id=2
             <span class="vue-b">SELECT</span> * 
                 <span class="vue-b">FROM</span> news
                 <span class="vue-b">WHERE</span> id <span class="vue-b">IN</span> (1,2)
+                
+            //получить id поля name 'Маша' и 'Саша'
+            <span class="vue-b">SELECT</span> id 
+                <span class="vue-b">FROM</span> news
+                <span class="vue-b">WHERE</span> name <span class="vue-b">IN</span> ('Маша','Саша')
+                
+            //получить id поля name всех кроме 'Маша' и 'Саша'
+            <span class="vue-b">SELECT</span> id 
+                <span class="vue-b">FROM</span> news
+                <span class="vue-b">WHERE</span> name <span class="vue-b">NOT IN</span> ('Маша','Саша')
                 
             //получить все новости написаные автором под id = 1
             <span class="vue-b">SELECT</span> * 
@@ -76,6 +93,195 @@
     </div>
     <p>В результате выборки получим такой массив:</p>
     <img class="screen-2" src="../img/php/15.png" alt="">
+    
+    
+    <p><b>Один ко многим.</b></p>
+    <p>Есть 2 таблицы: одна таблица - категории товаров(category), другая сами товары(products). Задача: получить по категории, например "Ягоды" товары относящиеся к этой категории.</p>
+    <p align="center" style="color:red;">category</p>
+    <img class="screen-2" src="../img/php/16.png" alt="">
+    <p align="center" style="color:red;">products</p>
+    <img class="screen-2" src="../img/php/17.png" alt="">
+    <p>В таблице products поле parent_id содержит id категорий к которым относятся товары. Можно написать запрос несколькими способами. Первый способ это вложеные запросы</p>
+    <div class="code-style">
+        <pre>
+            //выбрать поле name из products где parent_id = и опять новая выборка id из таблицы category по искомому полю Ягоды, т.е. находим id Ягоды и возвращаем этот id в parent_id и уже возвращаются все товары, у которых такой parent_id
+            <span class="vue-b">SELECT</span> name
+                <span class="vue-b">FROM</span> products
+                <span class="vue-b">WHERE</span> parent_id=(
+                    <span class="vue-b">SELECT</span> id
+                    <span class="vue-b">FROM</span> category
+                    <span class="vue-b">WHERE</span> name='Ягоды')
+                    
+            //ответ
+            Array
+            (
+                [0] => Array
+                    (
+                        [name] => Арбуз
+                    )
+
+                [1] => Array
+                    (
+                        [name] => Малина
+                    )
+
+            )
+        </pre>
+    </div>
+    <p>Один ко многим называется так, потому что ищем по одной категории много товаров.</p>
+    <p>Вложенные запросы не так быстро работают как запросы с инструкцией JOIN. Самыми быстрыми являются запросы с внутренним объединением таблиц INNER JOIN. Итак второй спсоб с использованием JOIN:</p>
+    <div class="code-style">
+        <pre>
+            //выбрать поле name таблицы products в связке с таблицей category по признаку, что parent_id таблицы products равен category.id где id категории равен 2
+            <span class="vue-b">SELECT</span> products.name
+                <span class="vue-b">FROM</span> products
+                <span class="vue-b">LEFT JOIN</span> category
+                <span class="vue-b">ON</span> products.parent_id=category.id
+                <span class="vue-b">WHERE</span> category.id=1
+            
+            //ответ
+            Array
+            (
+                [0] => Array
+                    (
+                        [name] => Персик
+                    )
+
+                [1] => Array
+                    (
+                        [name] => Яблоко
+                    )
+
+            )
+        </pre>
+    </div>
+    <p>Теперь напишем запрос, чтобы вернулось и категории и товары, так как id кактегории и товаров вместе нельзя ставить, один другого просто заместит, то нужно кому то из них придумать вымышленное имя, давайте товарам дадим такое имя:</p>
+    <div class="code-style">
+        <pre>
+            //выбрать поле name таблицы category и products в связке с таблицей category по признаку, что parent_id таблицы products равен category.id
+            <span class="vue-b">SELECT</span> category.id, category.name, products.id as p_id, products.name as p_name
+                <span class="vue-b">FROM</span> products
+                <span class="vue-b">LEFT JOIN</span> category
+                <span class="vue-b">ON</span> products.parent_id=category.id
+            
+            //ответ
+            Array
+            (
+                [0] => Array
+                    (
+                        [name] => Овощи
+                        [p_name] => Свекла
+                    )
+
+                [1] => Array
+                    (
+                        [name] => Овощи
+                        [p_name] => Картошка
+                    )
+
+                [2] => Array
+                    (
+                        [name] => Фрукты
+                        [p_name] => Персик
+                    )
+
+                [3] => Array
+                    (
+                        [name] => Фрукты
+                        [p_name] => Яблоко
+                    )
+
+                [4] => Array
+                    (
+                        [name] => Ягоды
+                        [p_name] => Арбуз
+                    )
+
+                [5] => Array
+                    (
+                        [name] => Ягоды
+                        [p_name] => Малина
+                    )
+
+            )
+        </pre>
+    </div>
+    
+    
+    
+    
+    
+    <p><b>Многие ко многим.</b></p>
+    <p>Возьмём опять 3 таблицы, нам нужно узнать какие студенты у каких учителей учатся, как в запросах выше использовать parent_id уже не получится, поэтому нужна 3я таблица, в которой мы указываем id студента напротив id учителя</p> 
+    <p align="center" style="color:red;">teachers</p>
+    <img class="screen-2" src="../img/php/18.png" alt="">
+    <p align="center" style="color:red;">students</p>
+    <img class="screen-2" src="../img/php/19.png" alt="">
+    <p align="center" style="color:red;">stud_tech</p>
+    <img class="screen" src="../img/php/20.png" alt="">
+    <p>Тут теперь нужно соединить 3 таблицы. Присоединяем к таблице учителя таблицу stud_tech по признаку teachers.id=stud_tech.teachers, и теперь надо присоединить таблицу студенты по признаку students.id=stud_tech.students:</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">SELECT</span> teachers.name, students.name as s_name
+                <span class="vue-b">FROM</span> teachers
+                <span class="vue-b">LEFT JOIN</span> stud_tech
+                <span class="vue-b">ON</span> 
+                teachers.id=stud_tech.teachers
+                <span class="vue-b">LEFT JOIN</span> students
+                <span class="vue-b">ON</span> students.id=stud_tech.students
+            //ответ
+            Array
+            (
+                [0] => Array
+                    (
+                        [name] => Марь ивановна
+                        [s_name] => Саша
+                    )
+
+                [1] => Array
+                    (
+                        [name] => Марь ивановна
+                        [s_name] => Маша
+                    )
+
+                [2] => Array
+                    (
+                        [name] => Иван Петрович
+                        [s_name] => Саша
+                    )
+
+                [3] => Array
+                    (
+                        [name] => Иван Петрович
+                        [s_name] => Маша
+                    )
+
+                [4] => Array
+                    (
+                        [name] => Иван Петрович
+                        [s_name] => Миша
+                    )
+
+                [5] => Array
+                    (
+                        [name] => Дмитрий Вадимович
+                        [s_name] => 
+                    )
+
+                [6] => Array
+                    (
+                        [name] => Алёна Александровна
+                        [s_name] => 
+                    )
+
+            )
+        </pre>
+    </div>
+    
+    
+    
+    
+    
     <p><b>Вставка новой записи:</b></p>
     <div class="code-style">
         <pre>
@@ -166,10 +372,28 @@
             //также как и при удалении если не указать условие, то изменению подлежат все записи
         </pre>
     </div>
+    
+    
+    <p><b>Получаем информацию о полях из БД:</b></p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g"><span class="vue-b">$link</span> = <span class="vue-b">mysqli_connect</span>(<span class="vue-r">'localhost'</span>, <span class="vue-r">'root'</span>, <span class="vue-r">''</span>, <span class="vue-r">'name_db'</span>);</span>
+            <span class="vue-g"><span class="vue-b">$sql</span> = "<span class="vue-r">SHOW COLUMNS FROM</span> " . <span class="vue-b">$db_name</span>;</span>
+            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
+            
+            //также есть SHOW FULL COLUMNS FROM - даёт немного больше информации о полях
+        </pre>
+    </div>
+    <p>Но эти запросы не дают информацию о том как 2 таблицы связаны по внешнему ключу и чтобы получить информацию о том что они связаны по этому ключу, нам поможет служебная таблица в phpMyAdmin - information_shema</p>
+    
+    
     <p><b>Создание базы данных:</b></p>
     <div class="code-style">
         <pre>
-            <span class="vue-b">CREATE DATABASE</span> news
+            //если создаём БД из функций, то делаем такой запрос к БД. "IF NOT EXISTS" ставим для проверки на существование БД
+            <span class="vue-g"><span class="vue-b">$link</span> = <span class="vue-b">mysqli_connect</span>(<span class="vue-r">'localhost'</span>, <span class="vue-r">'root'</span>, <span class="vue-r">''</span>, <span class="vue-r">'name_db'</span>);</span>
+            <span class="vue-g"><span class="vue-b">$sql</span> = "<span class="vue-r">CREATE DATABASE IF NOT EXISTS</span> " . <span class="vue-b">$db_name</span>;</span>
+            <span class="vue-g"><span class="vue-b">mysqli_query</span>(<span class="vue-b">$link</span>, <span class="vue-b">$sql</span>);</span>
         </pre>
     </div>
     <p><b>Создание таблицы и полей(MySQL):</b></p>
