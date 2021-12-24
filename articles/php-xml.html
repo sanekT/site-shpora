@@ -64,7 +64,7 @@
     <ul class="list">
         <li>Преобразование XML-документов в другие форматы</li>
     </ul>
-    <p>Начнём с SAX.</p>
+    <p>Начнём с <b>SAX</b>.</p>
     <div class="code-style">
         <pre>
             <span class="vue-g">
@@ -81,11 +81,145 @@
                 <span class="vue-b">xml_set_character_data_handler</span>(<span class="vue-b">$sax</span>, <span class="vue-r">"onText"</span>);
                 
                 //<span class="vue-or">запуск парсера</span>
-                <span class="vue-b">xml_parse</span>(<span class="vue-b">$sax</span>, <span class="vue-r">"XML строка!"</span>);
-                //закончил на 02:22:10
+                <span class="vue-b">xml_parse</span>(<span class="vue-b">$sax</span>, <span class="vue-r">file_get_contents("catalog.xml")</span>);
+                //<span class="vue-or">обработка ошибок</span>
+                <span class="vue-g">echo <span class="vue-b">xml_error_string</span>(<span class="vue-b">xml_get_error_code</span>(<span class="vue-b">$sax</span>));</span>
+                //дальше описывается пример как считать xml документ в таблицу
             </span>
         </pre>
     </div>
+    
+    <p>Далее идёт <b>DOM</b>.</p>
+    <p>Создаём RSS документ с помощью DOM</p>
+    
+    <p>Далее идёт <b>SimpleXML</b>.</p>
+    <p></p>
+    <p>закончил на 02:22:10 в уроке Уровень 3, день 2. Потом допишу если нужно будет</p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">Как работать в php с XML Web Services</h3>
+    <p>Уровень 3, день 3 начинается с 00:37:08</p>
+    <p>На самом деле мы часто используем XML технологии в интернете и сами того не замечая. Даже когда мы зачитываем какой то документ сделанный в Exel, то он просто трансформируется с помощью XSL/T из XML в понятный нам например HTML.</p>
+    <p>В чём идея веб служб? Общая идея служб заключается в том, чтобы предоставить пользователю какую то услугу. Например Яндекс поиск или Гугл поиск это и есть услуга про поиску информации в сети. Или например Яндекс показывает у себя курсы валют, но это не значит что Яндекс каждый день ходит к банкам и запрашивает у них эти курсы. Просто существует какая то услуга в инете, которая занимается этим, она сама собирает эти данные по банками и подсоединяясь к этой услуге Яндекс получает от них в автоматическом режиме эти курсы валют. К этой услуге может подключится любой.</p>
+    <p>Чем характерна XML веб служба?</p>
+    <ul class="list">
+        <li>Программы, доступ к которым осуществляется по протоколу HTTP</li>
+        <li>Обмен данными происходит в формате XML</li>
+        <li>Независимы от платформы, языка программирования</li>
+        <li>Просты в разработке и отладке</li>
+        <li>Используются открытые протоколы и стандарты</li>
+        <li>Есть возможность описать услуги, предоставляемые службой и способы обращения к ним</li>
+        <li></li>
+    </ul>
+    <p>история появления веб служб:</p>
+    <ul class="list">
+        <li>Remote Procedure Call
+            <ul class="list">
+                <li>подход, позволяющий программе вызывать процедуры из другого адресного пространтсва</li>
+            </ul>
+        </li>
+        <li>Реализации RPC
+            <ul class="list">
+                <li><b>XML-RPC</b> - текстовый протокол на базе HTTP(RFC-3529)</li>
+                <li><b>SOAP</b> - текстовый протокол на базе HTTP(RFC-3529)</li>
+                <li><b>XML-RPC</b> - текстовый протокол на базе HTTP(RFC-4227)</li>
+                <li><b>JSON-RPC</b> - текстовый протокол на базе HTTP(RFC-4627)</li>
+                <li><b>.NET-Remoting</b> - бинарный протокол на базе TCP, UPD, HTTP</li>
+                <li><b>DCOM</b> - MSRPC Microsoft Remote Procedure Call</li>
+                <li><b>Java RMI</b></li>
+            </ul>
+        </li>
+    </ul>
+    <p>Идея RPC в том, что я кодируя у себя могу получить доступ к другому куску кода в инете, и тот кусок кода, как будто будет находится у меня в файле. Тот чужой кусок кода даже может быть на другом языке программирования. И вот такая идея получила реализацию в разных стандартах, которые перечислены выше. Стандарты которые обмениваются с помощью XML их 2: это XML-RPC и SOAP. XML-RPC более старый стандарт. SOAP это можно сказать XML-RPC 2. Поговорим о SOAP</p>
+    
+    
+    
+    
+    
+    <h3 class="header-style2">SOAP</h3>
+    <p><b>Simple Object Access Protocol</b></p>
+    <p></p>
+    <ul class="list">
+        <li>Простой протокол доступа к объекту</li>
+        <li>Запросы посылаются HTTP методом POST</li>
+        <li>Строка, которая передаётся от сервера к клиенту и наоборот это XML строка. Корневой элемент это Envelope, внутри него Header и Body. Header не обязателен. Структура SOAP сообщения:
+            <ul class="list">
+                <li>Envelope</li>
+                <li>Header</li>
+                <li>Body</li>
+            </ul>
+        </li>
+        <li>SOAP запрос:
+            <div class="code-style">
+                <pre>
+                    //<span class="vue-or">клиент запрашивает у сервера функцию или метод getStock передавая ей параметр num</span>
+                    <span class="vue-g"><span class="vue-b">&lt;soap:Envelop</span>
+                            <span class="vue-r">xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"</span>
+                        <span class="vue-b">&lt;soap:Body></span>
+                            <span class="vue-b">&lt;getStock <span class="vue-r">xmlns="http://site.ru/ws"</span></span>
+                                <span class="vue-b">&lt;num></span>1234<span class="vue-b">&lt;/num></span>
+                            <span class="vue-b">&lt;/getStock></span>
+                        <span class="vue-b">&lt;/soap:Body></span>
+                    <span class="vue-b">&lt;/soap:Envelop></span></span>
+                </pre>
+            </div>
+        </li>
+        <li>SOAP ответ:
+            <div class="code-style">
+                <pre>
+                    <span class="vue-g"><span class="vue-b">&lt;soap:Envelop</span>
+                            <span class="vue-r">xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"</span>
+                        <span class="vue-b">&lt;soap:Body></span>
+                            <span class="vue-b">&lt;getStockDetailsResponse <span class="vue-r">xmlns="http://site.ru/ws"</span></span>
+                                <span class="vue-b">&lt;getStockDetailsResult></span>
+                                    <span class="vue-b">&lt;id></span>12345<span class="vue-b">&lt;/id></span>
+                                    <span class="vue-b">&lt;productName></span>Стакан<span class="vue-b">&lt;/productName></span>
+                                    <span class="vue-b">&lt;description></span>Стакан гранённый, 250мл.<span class="vue-b">&lt;/description></span>
+                                    <span class="vue-b">&lt;price></span>9.95<span class="vue-b">&lt;/price></span>
+                                <span class="vue-b">&lt;/getStockDetailsResult></span>
+                            <span class="vue-b">&lt;/getStockDetailsResponse></span>
+                       <span class="vue-b">&lt;/soap:Body></span>
+                    <span class="vue-b">&lt;/soap:Envelop></span></span>
+                </pre>
+            </div>
+        </li>
+    </ul>
+    <p>В php для работы с SOAP есть модуль php_soap.dll.  Основные SOAP классы: SoapServer и SoapClient</p>
+    <p>Напишем небольшой пример SOAP службы. Ещё раз что такое по сути служба? Это код на сервере, который принимает данные и вычисляя возвращает какой то результат. Например наша служба будет состоять из одной функции getStock() на сервере, которая возвращает количество товара на складе по id:</p>
+    <div class="code-style">
+        <pre>
+            //описание функции нашей веб услуги
+            function getStock($id)
+            {
+                $stock = [
+                    '1' => 100,
+                    '2' => 200,
+                    '3' => 300,
+                    '4' => 400,
+                ];
+                if(isset($stock[$id]))
+                {
+                    return $stock[$id];
+                }else
+                {
+                    throw new SoapFault("Server", "Нет такого id товара");
+                }
+            }
+            
+            //затем создаём SOAP сервер и передаём ему в конструктор адрес документа wsdl(web services descriptor language - язык описания веб службы, в которой автор этой службы описывает её)
+            $server = new SoapServer("http://mysite.local/stock.wsdl");
+            
+            //регестрируем в объекте сервера нашу функцию getStock, так как у нас могут быть и вспомогательные функции, но запрашивать будут именно getStock, поэтому и добавляем её 
+            $server->addFunction("getStock");
+            
+            //ну и запускаем сервер
+            $server->handle();
+        </pre>
+    </div>
+    
     
     
     
