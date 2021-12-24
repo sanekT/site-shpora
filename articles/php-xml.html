@@ -189,6 +189,7 @@
     </ul>
     <p>В php для работы с SOAP есть модуль php_soap.dll.  Основные SOAP классы: SoapServer и SoapClient</p>
     <p>Напишем небольшой пример SOAP службы. Ещё раз что такое по сути служба? Это код на сервере, который принимает данные и вычисляя возвращает какой то результат. Например наша служба будет состоять из одной функции getStock() на сервере, которая возвращает количество товара на складе по id:</p>
+    <p><b>Описываем Soap сервер в файле server.php</b></p>
     <div class="code-style">
         <pre>
             //описание функции нашей веб услуги
@@ -240,6 +241,18 @@
         <pre>
             &lt;?xml version='1.0' encoding='UTF-8' ?>
             &lt;defenitions name='Stock'>
+                &lt;message name='getStockRequest'>
+                    &lt;part name='id' type='xsd:string' />
+                &lt;/message>
+                &lt;message name='getStockResponse'>
+                    &lt;part name='Result' type='xsd:integer' />
+                &lt;/message>
+                &lt;portType name='StockPortType'>
+                    &lt;operation name='getStock'>
+                        &lt;input message='tns:getStockRequest' />
+                        &lt;output message='tns:getStockResponse' />
+                    &lt;/opration>
+                &lt;/portType>
                 &lt;binding name='StockBinding' type='tns:StockPortType'>
                     &lt;soap:binding style='rpc' transport='http://schemas.xmlsoap.org/soap/http' />
                     &lt;operation name='getStock' />
@@ -254,9 +267,26 @@
     </div>
     <p>Тут элементы нужно просматривать как бы снизу вверх.</p>
     <p>Внутри элемента <b>service</b> в soap:address атрибута location содержится адрес сервера с веб службой. Далее у элемента port внутри service есть атрибут binding и в нём указано имя binding элемента выше, в котором указаны все функции, доступные клиенту. Идём выше к элементу binding с указанным именем.</p>
-    <p>У элемента <b>binding</b> внутри есть элемент operation и вот этот элемент говорит, что у нашей службы всего одна операция-функция getStock. Есть функции, которые возвращают значение, есть не возвращают и нам надо узнать какого плана функции нам доступны, для этого у binding есть атрибут type в значении которого указано имя элемента portType и в этом элементе и будет указано какого плана функции нам длступны.</p>
-    <p>Идём выше к элементу <b>portType</b></p>
-    
+    <p>У элемента <b>binding</b> внутри есть элемент operation и вот этот элемент говорит, что у нашей службы всего одна операция-функция getStock. Есть функции, которые возвращают значение, есть не возвращают и нам надо узнать какого плана функции нам доступны, для этого у binding есть атрибут type в значении которого указано имя элемента portType и в этом элементе и будет указано какого плана функции нам доступны.</p>
+    <p>Идём выше к элементу <b>portType</b>. В нём мы видим опять же элемент operation и имя доступной нам функции в нём, а в operation уже описваются элементы input и output, если они нужны для этой функции, т.е. они описывают есть ли у функции входящие данные и выходящие. Если есть эти элементы, то они дальше указывают на элемент message, в которых и нужно смотреть информацию о входящих и выходящих данных.</p>
+    <p>Идём выше к <b>message</b> с соответствующим именем указанном в portType  в input или output и смотрим в элементе part какие данные нужны на вход, в случае если input, как видим нужен параметр id типа string. Ну а выходные данные смотрим соответственно в message с соответственным именем и видим что функция возвращает значение типа integer. Вот примерно так выглядит wsdl документ.</p>
+    <p><b>Теперь опишем Soap клиент в файле client.php</b>.</p>
+    <div class="code-style">
+        <pre>
+           try{
+                //создание Soap клиента
+                $client = new SoapClient("http://mysite.local/stock.wsdl");
+
+                //посылка Soap запроса с получением результата
+                $result = $client->getStock("4");
+                echo "Текущий запас на складе: ", $result;
+           }catch(SoapFault $e){
+               echo $e->getMessage();
+           }
+            
+            
+        </pre>
+    </div>
     
     
     
