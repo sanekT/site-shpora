@@ -19,8 +19,8 @@
         </li>
         <li><span class="bitrix-func">echo SITE_TEMPLATE_PATH</span> - содержит путь к шаблону сайта, например - /local/templates/sparrow</li>
         <li><span class="bitrix-func">echo SITE_DIR</span> - содержит путь корня сайта  - /</li>
-        <li><span class="bitrix-func">$APPLICATION->GetCurDir()</span> - вернёт название папки, в которой находимся, например - /about/, на главной возвращает /. Если поставить аргумент true, то к папке ещё добавляет index.php, вот так - /about/index.php</li>
-        <li><span class="bitrix-func">$APPLICATION->GetCurPage()</span> - пока заметил, что возвращает то же что и метод $APPLICATION->GetCurDir()</li>
+        <li><span class="bitrix-func">$APPLICATION->GetCurDir()</span> - вернёт название папки, в которой находимся, например, находимся мы на странице /ru/support/index.php?id=3&s=5 - вернёт /ru/support/, на главной возвращает /. Если поставить аргумент true, то к папке ещё добавляет index.php.</li>
+        <li><span class="bitrix-func">$APPLICATION->GetCurPage()</span> - возвращает путь к текущей странице относительно корня,например из такого url - /ru/?id=3&s=5 вернёт /ru/index.php</li>
         <li><span class="bitrix-func">$APPLICATION->GetCurPageParam()</span> - возвращает путь к текущей странице относительно корня c добавленными новыми и(или) удаленными текущими параметрами. Смотреть в <a href="https://dev.1c-bitrix.ru/api_help/main/reference/cmain/getcurpageparam.php">API битрикса</a></li>
         <li><span class="bitrix-func">CJSCore::Init(array("jquery"));</span> - подключение jquery из ядра битрикса</li>
         <li><span class="bitrix-func">echo $USER->GetEmail()</span> - вернёт почту админа, если он авторизован</li>
