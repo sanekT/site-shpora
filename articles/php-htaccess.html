@@ -7,6 +7,7 @@
     <div class="code-style">
         <pre>
             <span class="vue-g">php_flag magic_quotes_gpc off</span> - апач в зависимости от разных хостингов экранирует или не экранирует кавычки, мы в данном случае отключаем экранирование кавычек у приходящих данных, мы сами в коде заэкранируем что нам надо. Чтобы дважды не экранировать в том случае, если где то на хостинге включенна эта возможность у apach.
+            <span class="vue-g">php_value upload_max_filesize 100M</span> - увеличиваем максимальный размер загружаемых файлов до 100 мегабайт
             <span class="vue-g">AddDefaultCharset utf-8</span> - устанавливаем для нашего веб сервера кодировку utf-8
             <span class="vue-g">DirectoryIndex index.php</span> - без этой директивы апач ищет у нас в сайте файлы сначала index.php, потом index.html затем index.htm и вот этой директивой мы ему говорим, чтобы он искал только index.php
             <span class="vue-g">RewriteEngine on</span> - включает мод rewrite
@@ -15,4 +16,12 @@
             <span class="vue-g">RewriteRule ^(.*) index.php</span> - то перенаправить его на файл index.php
         </pre>
     </div>
+    <h3 class="header-style2">Включение ошибок через .htaccess</h3>
+    <p>Чтобы включить отображение ошибок, можно в файле .htaccess написать такие инструкции:</p>
+    <p><b>php_value display_errors 1</b></p>
+    <p><b>php_value display_startup_errors 1</b></p>
+    <p><b>php_value error_reporting E_ALL</b></p>
+    
+    
+    
 </div>
