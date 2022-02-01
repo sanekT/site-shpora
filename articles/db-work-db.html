@@ -13,7 +13,9 @@
     <p><span class="vue-r">Хороший сайт, где указаны примеры работы с PHP, с БД, с куки, с сессиями и т.д.</span><a href="http://komotoz.ru/uroki/php/mysql_zaprosy.php">тут</a>.</p>
     
     
-    <p><b>Очистить таблицу category в БД im:</b> - $query = "TRUNCATE `im`.`category`";</p>
+    <p><b>Очистить таблицу category в БД im:</b> - $query = "TRUNCATE TABLE `im`.`category`";</p>
+    <p><b>Вротой способ очистить таблицу category в БД im</b> - $query = "DELETE FROM `im`.`category`";</p>
+    <p><b>Разница между DELETE и TRUNCATE в том, что после DELETE в памяти остаётся номер позиции ключа id и если будем вставлять новые записи, то id начнётся с предыдущего заповнившегося номера + 1, а вот после TRUNCATE память очищается и начинается всё с 1</b></p>
     <p><b>Удалить поле parent_id в таблице products:</b> - $query = "ALTER TABLE `products` DROP `parent_id`;"</p>
     <p><b>Переименовать в БД im таблицу products в таблицу teachers:</b> - $query = "RENAME TABLE `im`.`products` TO `im`.`teachers`";</p>
     
@@ -137,7 +139,7 @@
                 <span class="vue-b">FROM</span> products
                 <span class="vue-b">LEFT JOIN</span> category
                 <span class="vue-b">ON</span> products.parent_id=category.id
-                <span class="vue-b">WHERE</span> category.id=1
+                <span class="vue-b">WHERE</span> category.id=2
             
             //ответ
             Array
@@ -411,5 +413,13 @@
         </pre>
     </div>
     
+    
+    
+    
+    
+    <h3 class="header-style2">Внешние ключи</h3>
+    <p>Внешний ключ дочерней таблицы ссылается на некое поле родительской таблицы. Внешний ключ не может ссылаться на не уникальное поле родителя, ему нужно уникальное, типо первичного ключа id. Итак предположим есть 2 таблицы, одна называется articles, другая pages. первая дочерняя и имеет поле parent_id, вторая родительская. Нужно связать их по внешнему ключу. В PhpMyAdmin это делается нажатием на кнопку "Связи", в колонке выбираем parent_id, а правее выбираем род. таблицу и сохраняем. Вот такой sql запрос произошёл:</p>
+    <p><b>ALTER TABLE `articles` ADD FOREIGN KEY (`parent_id`) REFERENCES `pages`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;</b></p>
+    <p>Тема про внешние клучи важная, если что она разбирается немного в видео Дениса про создание фреймворка начиная с 39 и 40 включительн.</p>
     
 </div>
