@@ -52,15 +52,17 @@
             //закрытие потока
             <span class="vue-g"><span class="vue-b">fclose</span>(<span class="vue-b">$f</span>);</span>
             
-            //открытие потока на чтение и запись. Указатель помещается в начало файла
+            //Открытие файла только для чтения; установка указателя файла на его начало. Возвращение FALSE, если файла не существует
+            <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r"</span>);</span>
+            //Открытие файла для чтения и записи; установка указателя файла на его начало. Возвращение FALSE, если файла не существует
             <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r+"</span>);</span>
-            //открытие потока на запись. Указатель помещается в конец файла
+            // Открытие файла только для записи; установка указателя файла на его конец. Если файла не существует, попытка его создания
             <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"a"</span>);</span>
-            //открытие потока на чтение и запись. Указатель помещается в конец файла
+            //Открытие файла для чтения и записи; установка указателя файла на его конец. Если файла не существует, попытка его создания
             <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"a+"</span>);</span>
-            //открытие потока на запись. Файл обрезается но нулевой длины. Удобно для перезаписи файла
+            //Открытие файла только для записи; установка указателя файла на его начало и сокращение размера файла до нуля. Если файла не существует, попытка его создания
             <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"w"</span>);</span>
-            //открытие потока на чтение и запись. Файл обрезается но нулевой длины. Удобно для перезаписи файла
+            //Открытие файла для чтения и записи; установка указателя файла на его начало и сокращение его размера до нуля. Если файла не существует, попытка его создания
             <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"w+"</span>);</span>
         </pre>
     </div>
@@ -92,7 +94,7 @@
     <h3 class="header-style2">Читаем файл построчно в массив</h3>
     <div class="code-style">
         <pre>
-            //<span class="vue-b">fgets($f)</span> возвращает строку. Признаком концом строки есть \n
+            //<span class="vue-b">fgets($f)</span> возвращает строку. Признаком концом строки есть \n. s на конце обозначает "строка" - string
            
             <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"data.txt"</span>, <span class="vue-r">"r"</span>);</span>
             <span class="vue-b">$lines</span> <span class="vue-g">= [];</span>
@@ -168,6 +170,10 @@
             <span class="vue-g"><span class="vue-b">$f</span> = <span class="vue-b">fopen</span>(<span class="vue-r">"file.txt"</span>, <span class="vue-r">"r"</span>);</span>
             //устаналиваем указатель в нужную позицию. 3й аргумент это константа SEEK_END гворит о том что нужно курсор поставить в конец файла, 2й аргумент говорит, что надо отсчитать 10 байт назад
             <span class="vue-g"><span class="vue-b">fseek</span>(<span class="vue-b">$f</span>, <span class="vue-b">-10</span>, <span class="vue-b">SEEK_END</span>);</span>
+            //Режим SEEK_SET предписывает функции установку указателя файла на конкретную позицию, заданную предыдущим параметром
+            <span class="vue-g"><span class="vue-b">fseek</span>(<span class="vue-b">$f</span>, <span class="vue-b">18</span>, <span class="vue-b">SEEK_SET</span>);</span>
+            //Ржим SEEK_CUR приводит к установке указателя файла на позицию, которая смещена от текущей позиции на заданное значение. Если в данный момент указатель файла находится на позиции 18, то следующий вызов функции переместит его на позицию 23:
+            <span class="vue-g"><span class="vue-b">fseek</span>(<span class="vue-b">$f</span>, <span class="vue-b">5</span>, <span class="vue-b">SEEK_CUR</span>);</span>
             //в какой позиции мы находимся?
             <span class="vue-g">echo <span class="vue-b">ftell</span>(<span class="vue-b">$f</span>);</span>
             //читаем данные
