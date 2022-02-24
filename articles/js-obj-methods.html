@@ -17,7 +17,17 @@
 
     <p><span class="tag-style">Object.setPrototypeOf(obj, proto)</span> – устанавливает прототип для объекта obj как proto</p>
 
-    <p><span class="tag-style">Object.assign(src1, src2, src3...)</span>  -  копирует в объект src1 свойства и методы из остальных объектов src2, src3 и т.д. Этот метод также копирует и такие свойства как Symbol()</p>
+    <p><span class="tag-style">Object.assign(src1, src2, src3...)</span>  -  копирует в объект src1 свойства и методы из остальных объектов src2, src3 и т.д. Этот метод также копирует и такие свойства как Symbol(). Если принимающий объект (src1) уже имеет свойство с таким именем, оно будет перезаписано. Мы также можем использовать этот метод для клонирования:</p>
+    <div class="code-style">
+		<pre>
+			let user = {
+				name: "Иван",
+				age: 30
+			};
+
+			let clone = Object.assign({}, user);
+		</pre>
+    </div>
 
     <p><span class="tag-style">Object.assign({}, src)</span> - клонируем объект src в новый чистый объект{}</p>
     
