@@ -3,11 +3,33 @@
     
     <p><span class="tag-style">Object.keys(obj)</span>  -  возвращает массив собственных ключей объекта, свойства прототипа не возвращает и свойства типа Symbol() тоже.</p>
 
-    <p><span class="tag-style">Object.value(obj)</span>  -  возвращает массив собственных значений свойств объекта</p>
+    <p><span class="tag-style">Object.value(obj)</span>  -  возвращает массив собственных значений свойств объекта, игнорирует символьные свойства</p>
 
-    <p><span class="tag-style">Object.entries(obj)</span>  -  возвращает массив собственных пар [ключ, значение]</p>
+    <p><span class="tag-style">Object.entries(obj)</span>  -  возвращает массив собственных пар [ключ, значение], игнорирует символьные свойства</p>
+	
+    <p><span class="tag-style">Object.fromEntries(array)</span>  -  превращает обратно массив в объект и возвращает его</p>
+    <div class="code-style">
+	<pre>
+		let prices = {
+		  banana: 1,
+		  orange: 2,
+		  meat: 4,
+		};
+
+		let doublePrices = Object.fromEntries(
+		  // преобразовать в массив, затем map, затем fromEntries обратно объект
+		  Object.entries(prices).map(([key, value]) => [key, value * 2])
+		);
+
+		alert(doublePrices.meat); // 8
+	</pre>
+    </div>
 
     <p><span class="tag-style">obj.hasOwnProperty(key)</span> -  возвращает true, если у obj есть собственное, не унаследованное, свойство с именем key. Object.keys(obj) его более новый вариант.</p>
+   
+    <p><span class="tag-style">Object.getOwnPropertySymbols(obj)</span> -  возвращает массив только символьных ключей</p>
+	
+    <p><span class="tag-style">Reflect.ownKeys(obj)</span> -  возвращает массив всех ключей</p>
 
     <p><span class="tag-style">Object.getOwnPropertyNames(obj)</span>  -  возвращает имена собственных свойст объекта</p>
 
