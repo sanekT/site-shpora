@@ -1,7 +1,12 @@
+:root{
+    --size1: 200px;
+    --size2: 200px;
+}
+
 *{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box
 }
 body{
     background-image: url('../img/5.jpg');
@@ -11,16 +16,23 @@ body{
     font-family: 'Ubuntu', sans-serif;
 }
 
+hr{
+    margin: 30px 0px 30px 0px;
+}
+table{
+    margin-left: 30px;
+    margin-top: 30px;
+}
+table td{
+    padding: 5px 10px;
+}
+
 #container{
     max-width: 1100px;
+    min-height: 880px;
     margin: 0 auto;
     padding: 1%;
     background-color: rgba(255,255,255, 0.3);
-}
-img{
-    display: block;
-    width: 94%;
-    height: auto;
 }
 
 /*TOTAL CSS*/
@@ -58,6 +70,9 @@ img{
 .vue-g{
     color: forestgreen;
 }
+.vue-or{
+    color: orange;
+}
 .code-style{
     width: 96%;
     background-color: aliceblue;
@@ -83,10 +98,10 @@ img{
 
 /*MAIN*/
 #main{
-    height: auto;
     display: flex;
     padding-top: 3%;
     padding-bottom: 3%;
+    min-height: 700px;
 }
 .sidebar{
     width: 30%;
@@ -149,7 +164,7 @@ img{
 }
 .mainbar p {
     margin: 10px 0 0 10px;
-    line-height: 1.7;
+    line-height: 1.2;
 }
 .mainbar .list {
     line-height: 1.7;
@@ -198,6 +213,7 @@ iframe{
 }
 
 
+
 /*для списка .list*/
 .list{
     margin-left: 45px;
@@ -206,14 +222,21 @@ iframe{
 
 
 
-/*для скриншотов*/
+/*для скриншотов которые вылазиют за ширину контейнера*/
 .screen{
-    width: 96%;
-    height: auto;
     display: block;
     margin: 15px auto;
     border: 7px solid grey;
     border-radius: 5px;
+    width: 95%;
+}
+/*для скриншотов которые меньше ширины контейнера*/
+.screen-2{
+    display: block;
+    margin: 15px auto;
+    border: 7px solid grey;
+    border-radius: 5px;
+    width: auto;
 }
 
 
@@ -237,7 +260,7 @@ iframe{
 
 /*для битрикс функций*/
 .bitrix-func{
-    color: #0ea9e8;
+    color: #0094d1;
     
 }
 
@@ -270,6 +293,68 @@ iframe{
 .foot{
     height: 50px;
 }
+
+
+
+
+/*Для примеров стили*/
+.g-circle{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    margin-left: 100px;
+    background-image: linear-gradient(#405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+}
+.g-circle-border{
+    width: 100px;
+    height: 100px;
+    border: 10px solid transparent;
+    border-radius: 100px;
+    border-image-source: linear-gradient(to top, #405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+    border-image-slice: 1;
+    margin-left: 100px;
+}
+div.outer{
+    width: 102px;
+    height: 102px;
+    border: 1px solid black;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-left: 100px;
+}
+div.inner{
+    width: 100px;
+    height: 100px;
+    border: 10px solid transparent;
+    border-image-source: linear-gradient(to top, #405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+    border-image-slice: 1;
+}
+div.outer2{
+    width: var(--size1);
+    height: var(--size2);
+    background-color: #fff;
+    border-radius: 50%;
+    position: relative;
+    margin-left: 100px;
+}
+div.outer2::after{
+    content: '';
+    display: block;
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    z-index: -1;
+    border-radius: 50%;
+    background: linear-gradient(#405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+}
+div.outer2 img{
+    display: block;
+    width: 100%;
+    border-radius: 50%;
+}
+
 
 
 @media (max-width: 907px) {
