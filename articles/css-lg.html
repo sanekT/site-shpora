@@ -1,0 +1,152 @@
+<div class="wrap">
+   
+    <h2 class="header-style">Linear-gradient и border-image</h2>
+
+
+    <p>Чтобы задать линейный градиент нужно свойству <b>background-image</b> или <b>background</b> дать такое значение - linear-gradient(цвет 0.0%, цвет 100%). Вот пример:</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g">//css</span>
+            div{
+                width: 100px;
+                height: 100px;
+                border-radius: 100px;
+                background-image: linear-gradient(#405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+            }
+
+            <span class="vue-g">//html</span>
+            &lt;body>
+                &lt;div>&lt;/div>
+            &lt;/body
+
+            <span class="vue-g">//результат</span>
+        </pre>
+        <div class="g-circle"></div>
+    </div> 
+    <p>Про направления градиента можно почитать <a href="https://webref.ru/css/value/linear-gradient">тут</a>. По умолчанию стоит to bottom(сверху вниз).</p>
+
+
+
+
+
+
+
+
+    <h3 class="header-style2">Задаём линейный градиент границе элемента</h3>
+
+    <p>Свойство <b>border-image-source</b> указывает исходное изображение или градиент, которое нужно применить. Это может быть URL-адрес растрового или векторного изображения (SVG) или URI ну или градиент.</p>
+    <p>Свойство <b>border-image-slice</b> определяет процесс нарезки изображения, который делит изображение на девять областей. Определяя до четырех значений, вы можете указать, какая часть изображения будет повторяться как часть границы. Пока мы в этом свойстве не укажем число, то не будет виден ни градиент, ни картинка.</p>
+    <p>Свойство <b>border-image-repeat</b> имеет основных 3 значения:</p>
+    <ul class="list">
+        <li> <b>srtetch</b> - Растягивает рисунок границы до размеров элемента. Это значение используется по умолчанию.</li>
+        <li> <b>repeat</b>  - Повторяет рисунок границы.</li>
+        <li> <b>round</b> - Повторяет рисунок и масштабирует его так, чтобы на стороне элемента оказалось целое число изображений.</li>
+    </ul>
+    <p>Вот тут более менее объясняет как работают изображения в рамке <a href="https://www.youtube.com/watch?v=sQ1v-aVj03M">видео</a></p>
+    <p>Существует собирательное свойство, которое позволяет одновременно указать значения для border-image-source и border-image-slice: это свойство <b>border-image</b>.</p>
+    <p>Указывать цвет границы можно любой, если мы применяем картинку или градиент, то она перекроет цвет границы. Цвет обычно задают на случай не прогруза картинка, тогда граница будет того цвета, который задан.</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g">//css</span>
+            div{
+                width: 100px;
+                height: 100px;
+                border-radius: 100px;
+                border: 10px solid transparent;
+                border-image-source: linear-gradient(to top, #405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+                border-image-slice: 1; /* Чтобы заданный градиент сместился или растянулся по всей границе.*/
+            }
+
+            <span class="vue-g">//html</span>
+            &lt;body>
+                &lt;div>&lt;/div>
+            &lt;/body
+
+            <span class="vue-g">//Результат</span>
+        </pre>
+        <div class="g-circle-border"></div>
+    </div> 
+    <p>Но есть небольшая проблема, мы задали свойство border-radius: 100px;, а граница элемента не закруглилась, потому что border-image не работает вместе с border-radius. Кстати пока искал решение как закруглить края, вот такой прикольный вид получился:</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g">//css</span>
+            body{
+                box-sizing: border-box;
+            }
+            div.outer{
+                width: 102px;
+                height: 102px;
+                border: 1px solid black;
+                border-radius: 100px;
+                overflow: hidden;
+            }
+            div.inner{
+                width: 100px;
+                height: 100px;
+                border: 10px solid transparent;
+                border-image-source: linear-gradient(to top, #405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+                border-image-slice: 1;
+            }
+
+            <span class="vue-g">//html</span>
+            &lt;body>
+                &lt;div class="outer">
+                    &lt;div class="inner">&lt;/div>
+                &lt;/div>
+            &lt;/body
+
+            <span class="vue-g">//Результат</span>
+        </pre>
+        <div class="outer">
+			<div class="inner"></div>
+		</div>
+    </div>
+    <p><b>Способ 1</b></p>
+    <p>Берём простой квадрат из самого верхнего примера, заливаем его градиентом, затем внутреннему элементу задаём позицию абсолют, уменьшаем немного, закругляем соответственно, задам белый фон и сдвигаем по горизонтали и вертикали на половину от уменьшенного размера. Ну и добавляем картинку, также ей делаем все те же свойства , что и для элемента с белым фоном. Если картинка без прозрачного фона, то элемент с белым фоном можно вообще убрать.</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-g">//css</span>
+            :root{
+                --size1: 200px;
+                --size2: 200px;
+            }
+            div.outer2{
+                margin: 400px auto;
+                width: var(--size1);
+                height: var(--size2);
+                background-color: #fff;
+                border-radius: 50%;
+                position: relative;
+            }
+            div.outer2::before{
+                content: '';
+                display: block;
+                position: absolute;
+                top: -5px;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+                z-index: -1;
+                border-radius: 50%;
+                background: linear-gradient(#405de6 0.01%, #833ab4 21.88%, #c13584 47.92%, #e1306c 67.71%, #fd1d1d 84.38%);
+            }
+            div.outer2 img{
+                display: block;
+                width: 100%;
+                border-radius: 50%;
+            }
+
+            <span class="vue-g">//html</span>
+            &lt;div class="outer">
+                &lt;img src="img/Peach.png">
+            &lt;/div>
+
+            <span class="vue-g">//Результат</span>
+        </pre>
+    </div> 
+    <div class="outer2">
+        <img src="img/Peach.png">
+    </div>
+    
+    
+</div>
