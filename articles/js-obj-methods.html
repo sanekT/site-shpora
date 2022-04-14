@@ -1,47 +1,26 @@
 <div class="wrap">
     <h2 class="header-style">Методы oбъектов</h2>
-    
-    <p><span class="tag-style">Object.keys(obj)</span>  -  возвращает массив собственных ключей объекта, свойства прототипа не возвращает и свойства типа Symbol() тоже.</p>
 
-    <p><span class="tag-style">Object.values(obj)</span>  -  возвращает массив значений собственных свойств объекта, игнорирует символьные свойства</p>
+    <p><span class="tag-style">Object.keys(obj)</span> - возвращает массив собственных ключей объекта, свойства прототипа не возвращает и свойства типа Symbol() тоже.</p>
 
-    <p><span class="tag-style">Object.entries(obj)</span>  -  возвращает массив подмассивов собственных пар [ключ, значение], игнорирует символьные свойства</p>
-	
-    <p><span class="tag-style">Object.fromEntries(array)</span>  -  превращает обратно массив в объект и возвращает его</p>
+    <p><span class="tag-style">Object.value(obj)</span> - возвращает массив собственных значений свойств объекта</p>
+
+    <p><span class="tag-style">Object.entries(obj)</span> - возвращает массив собственных пар [ключ, значение]</p>
+
+    <p><span class="tag-style">obj.hasOwnProperty(key)</span> - возвращает true, если у obj есть собственное, не унаследованное, свойство с именем key. Object.keys(obj) его более новый вариант.</p>
+
+    <p><span class="tag-style">Object.getOwnPropertyNames(obj)</span> - возвращает имена собственных свойст объекта</p>
+
+    <p><span class="tag-style">let rabbit = Object.create(proto, [descriptors])</span> – создаёт пустой объект с
+    прототипом proto, и необязательными дескрипторами свойств descriptors</p>
+
+    <p><span class="tag-style">Object.getPrototypeOf(obj)</span> – возвращает прототип объекта obj. Это современный способ получить прототип указанного объекта. Более древний способ это obj.__proto__;. Свойство __proto__ это геттеры и сеттеры для [[Prototype]]. Свойство __proto__ поддерживается во всех средах, не только в браузерах, даже на серверной стороне.</p>
+
+    <p><span class="tag-style">Object.setPrototypeOf(obj, objProto)</span> – устанавливает прототип для объекта obj. Это современный способ, пришедший на замену obj.__proto__ = objProto;. Свойство __proto__ это геттеры и сеттеры для [[Prototype]].</p>
+
+    <p><span class="tag-style">Object.assign(src1, src2, src3...)</span> - копирует в объект src1 свойства и методы из остальных объектов src2, src3 и т.д. Этот метод также копирует и такие свойства как Symbol(). Если принимающий объект (src1) уже имеет свойство с таким именем, оно будет перезаписано. Мы также можем использовать этот метод для клонирования:</p>
     <div class="code-style">
-	<pre>
-		let prices = {
-		  banana: 1,
-		  orange: 2,
-		  meat: 4,
-		};
-
-		let doublePrices = Object.fromEntries(
-		  // преобразовать в массив, затем map, затем fromEntries обратно объект
-		  Object.entries(prices).map(([key, value]) => [key, value * 2])
-		);
-
-		alert(doublePrices.meat); // 8
-	</pre>
-    </div>
-
-    <p><span class="tag-style">obj.hasOwnProperty(key)</span> -  возвращает true, если у obj есть собственное, не унаследованное, свойство с именем key. Object.keys(obj) его более новый вариант.</p>
-   
-    <p><span class="tag-style">Object.getOwnPropertySymbols(obj)</span> -  возвращает массив только символьных ключей</p>
-	
-    <p><span class="tag-style">Reflect.ownKeys(obj)</span> -  возвращает массив всех ключей</p>
-
-    <p><span class="tag-style">Object.getOwnPropertyNames(obj)</span>  -  возвращает имена собственных свойст объекта</p>
-
-    <p><span class="tag-style">let rabbit = Object.create(proto, [descriptors])</span> – создаёт пустой объект с прототипом proto, и необязательными дескрипторами свойств descriptors</p>
-
-    <p><span class="tag-style">Object.getPrototypeOf(obj)</span> – возвращает прототип объекта obj</p>
-
-    <p><span class="tag-style">Object.setPrototypeOf(obj, proto)</span> – устанавливает прототип для объекта obj как proto</p>
-
-    <p><span class="tag-style">Object.assign(src1, src2, src3...)</span>  -  копирует в объект src1 свойства и методы из остальных объектов src2, src3 и т.д. Этот метод также копирует и такие свойства как Symbol(). Если принимающий объект (src1) уже имеет свойство с таким именем, оно будет перезаписано. Мы также можем использовать этот метод для клонирования:</p>
-    <div class="code-style">
-		<pre>
+        <pre>
 			let user = {
 				name: "Иван",
 				age: 30
@@ -52,12 +31,12 @@
     </div>
 
     <p><span class="tag-style">Object.assign({}, src)</span> - клонируем объект src в новый чистый объект{}</p>
-    
+
     <p><span class="tag-style">Object.getOwnPropertyDescriptor(obj, propertyName)</span> - позволяет получить полную информацию о свойстве, <b>obj</b> это объект из которго мы получаем информацию. Его синтаксис: </p>
     <p><b>let descriptor = Object.getOwnPropertyDescriptor(obj, propertyName)</b></p>
     <p></p>
     <div class="code-style">
-    <pre>
+        <pre>
     let user = {
       name: "John"
     };
@@ -73,32 +52,50 @@
     }
     </pre>
     </div>
-    
-    <p><span class="tag-style">Object.defineProperty()</span> - позволяет изменять флаги свойств объекта. Его синтаксис: </p>
+
+
+
+
+    <p><span class="tag-style">Object.defineProperty()</span> - позволяет изменять флаги свойств объекта. Его синтаксис:</p>
     <p><b>Object.defineProperty(obj, propertyName, descriptor)</b></p>
     <p>obj, propertyName - Объект и его свойство, для которого нужно применить дескриптор.</p>
     <p>descriptor - Применяемый дескриптор.</p>
     <p>Если свойство существует, defineProperty обновит его флаги. В противном случае метод создаёт новое свойство с указанным значением и флагами; если какой-либо флаг не указан явно, ему присваивается значение false. Например, здесь создаётся свойство name, все флаги которого имеют значение false:</p>
     <div class="code-style">
-    <pre>
-    let user = {};
+        <pre>
+            let user = {};
 
-    Object.defineProperty(user, "name", {
-      value: "John"
-    });
+            Object.defineProperty(user, "name", {
+                value: "John"
+            });
+            //Тут есть важное замечание. Если так задали св-во и остальные флаги не трогаем, то все флаги становяьтся false, в том числе и configurable, а это значит, что мы теперь не сможем больше изменить это сво-во, ни удальть его, ни изменить, также не сможем больше поменять флаги. Сво-во становится запечатанной константой, как и встроенные сво-ва каких то объектов, например Math.PI
 
-    let descriptor = Object.getOwnPropertyDescriptor(user, 'name');
+            let descriptor = Object.getOwnPropertyDescriptor(user, 'name');
 
-    alert( JSON.stringify(descriptor, null, 2 ) );
-    /*
-    {
-      "value": "John",
-      "writable": false,
-      "enumerable": false,
-      "configurable": false
-    }
-     */
-    </pre>
+            alert( JSON.stringify(descriptor, null, 2 ) );
+            /*
+            {
+                "value": "John",
+                "writable": false,
+                "enumerable": false,
+                "configurable": false
+            }
+            */
+        </pre>
     </div>
-    
+
+
+
+
+    <p><span class="tag-style">Object.defineProperties(obj, descriptor)</span> - позволяет определять множество свойств сразу:</p>
+    <div class="code-style">
+        <pre>
+            Object.defineProperties(user, {
+                name: { value: "John", writable: false },
+                surname: { value: "Smith", writable: false },
+                // ...
+            });
+        </pre>
+    </div>
+
 </div>
