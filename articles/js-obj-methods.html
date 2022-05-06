@@ -12,7 +12,7 @@
     <p><span class="tag-style">Object.getOwnPropertyNames(obj)</span> - возвращает имена собственных свойст объекта</p>
 
     <p><span class="tag-style">let rabbit = Object.create(proto, [descriptors])</span> – создаёт пустой объект с
-    прототипом proto, и необязательными дескрипторами свойств descriptors</p>
+    прототипом proto, и необязательными дескрипторами свойств descriptors. Если указать вместо proto null, то создастся самый простой объект в js, который не будет иметь прототипов и методы этих прототипов, например такой метод как toString станет недоступен, но такие методы как Object.keys(), Object.value() будут доступны, потому что они не лежат в Object.prototype.</p>
 
     <p><span class="tag-style">Object.getPrototypeOf(obj)</span> – возвращает прототип объекта obj. Это современный способ получить прототип указанного объекта. Более древний способ это obj.__proto__;. Свойство __proto__ это геттеры и сеттеры для [[Prototype]]. Свойство __proto__ поддерживается во всех средах, не только в браузерах, даже на серверной стороне.</p>
 
@@ -79,6 +79,22 @@
                 "writable": false,
                 "enumerable": false,
                 "configurable": false
+            }
+            */
+
+            //но если мы не указываем value со значением, а просто хотим поменять какой нибудь флаг, то поменяется только этот флаг, остальные флаги остануться не тронутыми, например:
+            Object.defineProperty(obj, "toString", {
+				enumerable: false
+			});
+            //тут мы сказали, что свойство toString теперь не будет перебираться в цикле for...in, остальные флаги оастались true
+            let descriptor = Object.getOwnPropertyDescriptor(obj, 'toString');
+
+            alert( JSON.stringify(descriptor, null, 2 ) );
+            /*
+            {
+                "writable": true,
+                "enumerable": false,
+                "configurable": true
             }
             */
         </pre>
