@@ -9,7 +9,7 @@
 
     <p><span class="tag-style">obj.hasOwnProperty(key)</span> - возвращает true, если у obj есть собственное, не унаследованное, свойство с именем key. Object.keys(obj) его более новый вариант.</p>
 
-    <p><span class="tag-style">Object.getOwnPropertyNames(obj)</span> - возвращает имена собственных свойст объекта</p>
+    <p><span class="tag-style">Object.getOwnPropertyNames(obj)</span> - возвращает имена собственных свойст объекта в массиве. Основная разница между Object.keys и Object.getOwnPropertyNames в том, что последний также возвращает «неперечисляемые» свойства, те, которые не будут учитываться при работе цикла for in.</p>
 
     <p><span class="tag-style">let rabbit = Object.create(proto, [descriptors])</span> – создаёт пустой объект с
     прототипом proto, и необязательными дескрипторами свойств descriptors. Если указать вместо proto null, то создастся самый простой объект в js, который не будет иметь прототипов и методы этих прототипов, например такой метод как toString станет недоступен, но такие методы как Object.keys(), Object.value() будут доступны, потому что они не лежат в Object.prototype.</p>
