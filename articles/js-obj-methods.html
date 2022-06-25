@@ -11,8 +11,41 @@
 
     <p><span class="tag-style">Object.getOwnPropertyNames(obj)</span> - возвращает имена собственных свойст объекта в массиве. Основная разница между Object.keys и Object.getOwnPropertyNames в том, что последний также возвращает «неперечисляемые» свойства, те, которые не будут учитываться при работе цикла for in.</p>
 
-    <p><span class="tag-style">let rabbit = Object.create(proto, [descriptors])</span> – создаёт пустой объект с
-    прототипом proto, и необязательными дескрипторами свойств descriptors. Если указать вместо proto null, то создастся самый простой объект в js, который не будет иметь прототипов и методы этих прототипов, например такой метод как toString станет недоступен, но такие методы как Object.keys(), Object.value() будут доступны, потому что они не лежат в Object.prototype.</p>
+    <p><span class="tag-style">let obj = Object.create(proto, [descriptors])</span> – создаёт и возвращает объект с
+    прототипом proto, и необязательными дескрипторами свойств descriptors. Оба аргумента являются объектами. Если указать вместо объекта proto - null, то создастся самый простой объект в js, который не будет иметь прототипов и методы этих прототипов, например такой метод как toString из Object.prototype станет недоступен, но такие методы как Object.keys(), Object.value() будут доступны, потому что они не лежат в Object.prototype. Если указать просто пустой объект {} прототипом, то создастся объект от глобального класса Object так же как let obj = new Object(), но с одной разницей, объект созданный через Object.create({}, {}) будет иметь такие настройки как writeable, enumerable и configurable в положении false. А как же задать свойства при таком синтаксисе? Вот так:
+    <div class="code-style">
+        <pre>
+            let people = {
+                go(){
+                    console.log('Иду');
+                }
+            };
+            let person = Object.create(people, {
+                name: {
+                    value: 'Jhon',
+                    writeable: true
+                },
+                age: {
+                    value: 32,
+                    writeable: true,
+                    enumerable: true,
+                    configurable: true
+                },
+                //а вот так записываются геттеры и сеттеры
+                birthYear:{
+                    get(){
+                        ...
+                    },
+                    set(){
+                        ...
+                    }
+                }
+            })
+        </pre>
+    </div>
+    Тут я задал создание объекта person - {name: 'jhon', age: 32}, если не указать настройки writeable, enumerable и configurable в положение true, то в цикле for...in свойства не будут выводиться, так как enumerable - false, также задать свойствам новое значение тоже нельзя, так как writeable - false и удалить свойства нельзя так как configurable - false. Когда объект создаётся через let obj = new Object() или let obj = {};, то там по умолчанию эти настройки стоят в значении true.<br>
+    Теперь немного поговорим про 1й аргумент - proto. В нём можно указать объект, например people и js сам установит в скрытое свойство [[Prototype]] нашего объекта person указанный объект people с его свойствами и методами и теперь нам будут доступны эти свойства и метода в person. Можно сразу указывать в 1м аргументе объект с методами.
+    </p>
 
     <p><span class="tag-style">Object.getPrototypeOf(obj)</span> – возвращает прототип объекта obj. Это современный способ получить прототип указанного объекта. Более древний способ это obj.__proto__;. Свойство __proto__ это геттеры и сеттеры для [[Prototype]]. Свойство __proto__ поддерживается во всех средах, не только в браузерах, даже на серверной стороне.</p>
 
@@ -40,7 +73,7 @@
     let user = {
       name: "John"
     };
-    let descriptor = Object.getOwnPropertyDescriptor(user, "name");
+    let descriptor = Object.getOwnPropertyDescriptor(obj, "name");
     //Возвращаемое значение это объект, который содержит значения свойств и все его флаги.
     console.log(JSON.stringify(descriptor, null,2));
     //ответ
