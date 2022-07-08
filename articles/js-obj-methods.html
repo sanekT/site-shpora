@@ -5,7 +5,9 @@
 
     <p><span class="tag-style">Object.value(obj)</span> - возвращает массив собственных значений свойств объекта</p>
 
-    <p><span class="tag-style">Object.entries(obj)</span> - возвращает массив собственных пар [ключ, значение]</p>
+    <p><span class="tag-style">let arr = Object.entries(obj)</span> - возвращает массив состоящий из подмассивов собственных свойств obj в виде [[ключ, значение], [ключ, значение]]</p>
+
+    <p><span class="tag-style">obj = Object.fromEntries(arr)</span> - обратно преобразует массив с парами [[ключ, значение], [ключ, значение]] в объект с этими ключями и значениями</p>
 
     <p><span class="tag-style">obj.hasOwnProperty(key)</span> - возвращает true, если у obj есть собственное, не унаследованное, свойство с именем key. Object.keys(obj) его более новый вариант.</p>
 
