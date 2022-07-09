@@ -1,53 +1,220 @@
 <div class="wrap">
    
     <h2 class="header-style">AJAX</h2>
-    <h3 class="header-style2">Основы ajax приложений</h3>
+    <p><b>Хорошая статья про AJAX - <a href="https://good-code.ru/ajax-zapros/">тут</a></b></p>
+    <ul class="list">
+        <li><a href="#1">Стутус кодов пришедших от сервера</a></li>
+        <li><a href="#2">Основы ajax на чистом js</a></li>
+        <li><a href="#3">Пример отправки формы без перезагрузки страницы методом POST</a></li>
+        <li><a href="#4">Основы ajax на jQuery</a></li>
+        <li><a href="#5"></a></li>
+    </ul>
+
+
+
+
+
+    <h3 class="header-style2" id="1">Стутус кодов пришедших от сервера</h3>
+    <ul class="list">
+        <li><b>401</b> - отсутствие авторизации</li>
+        <li><b>404</b> - html не найден(страница не найдена)</li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <h3 class="header-style2" id="2">Основы ajax на чистом js</h3>
     <p>Ajax это не только использование браузерного объекта XMLHttpRequest, но это и :</p>
     <ul class="list">
         <li>Динамическое создание дочерних фреймов</li>
         <li>Динамическое создание элемента &lt;script></li>
-        <li>Динамическое создание элемента < img></li>
+        <li>Динамическое создание элемента &lt;img></li>
     </ul>
     <p>Потому как веб-сокеты используют тот же способ соединения с сервером, но они это делают без объекта XMLHttpRequest.</p>
     <p>Как работает Ajax? Браузер загрузил страницу и всё, он отдыхает, а вот посылами ajax запросов уже занимается js.</p>
     <p><b>Методы</b></p>
     <div class="code-style">
-    <pre>
-        let request = new XMLHttpRequest();
-        
-        request.<span class=vue-g>open</span>('method', 'url', false); //этот метод подготавливает соединение с сервером
-        //method - это способ отправки запроса, например, GET или POST
-        //url - это адрес, по которому мы хотим получить html файл с ответом
-        //false - говорит нам о том , что запрос синхронный
-        
-        request.<span class=vue-g>send</span>(null);// этот метод уже отправляет запрос на сервер, в параметрах стоит null, потому что ушёл GET запрос, если бы был POST, то вместо null мы бы писали бы тело POST запроса.
-    </pre>
+        <pre>
+            let request = new XMLHttpRequest();
+            
+            //<span class="vue-b">этот метод подготавливает соединение с сервером</span>
+            request.<span class=vue-g>open</span>('method', 'url', false); 
+            //<span class="vue-b">method - это способ отправки запроса, например, GET или POST</span>
+            //<span class="vue-b">url - это адрес, по которому мы хотим получить html файл с ответом</span>
+            //<span class="vue-b">false - говорит нам о том , что запрос синхронный</span>
+
+            <span class="vue-b">указываем, чтобы приедший ответ в виде json строки сразу распарсился</span>
+            request.responseType = 'json';
+            
+            request.<span class=vue-g>send</span>(null);// этот метод уже отправляет запрос на сервер, в параметрах стоит null, потому что ушёл GET запрос, если бы был POST, то вместо null мы бы писали бы тело POST запроса.
+        </pre>
     </div>
     <p>Ajax есть <b>асинхронный</b> и <b>синхронный</b>. Чем они отличаются? Кода интерпритатор читает код и доходит до строки request.send(), то при синхронном запросе идёт посыл запроса и js на время замирает и код дальше не выполняется, пока не придёт ответ от сервера. Как только пришёл ответ, интерпритатор дальше  исполнять код.</p>
     <p>Когда используют синхронный запрос? Тогда когда нам нужно быть уверенными, что данные пришли с сервера, потому что нижележащий js код зависит от этих данных.</p>
     <p>При <b>асинхронном</b> запросе, данные когда придут тогда и придут. Для этого есть такое событие как <b>onreadystatechange</b>. Когда данные прийдут и сработает это событие, то запустится функция, которая что то там сделает:</p>
     <div class="code-style">
-    <pre>
-        request.<span class="vue-g">onreadystatechange</span> = function(){};
-    </pre>
+        <pre>
+            request.<span class="vue-g">onreadystatechange</span> = function(){};
+
+            //<span class="vue-b">также можно отловить приход ответа по событию onload</span><span class="vue-b"></span>
+            request.<span class="vue-g"></span>onload</span> = function(){};
+        </pre>
     </div>
     <p>А как событие поймёт что нужно сработать? Для этого у объекта XMLHttpRequest есть 4 этапа посыла и возвращение запроса. Отвечает за эти этапы свойство <b>readyState</b>, котрое будет иметь одно из 4х значений это 1, 2, 3 или 4. Первый этап это послыка данных, второй это сервер принял, третий это данные идут обратно и четвёртый - данные пришли.</p>
-    <p>Когда прийдёт ответ от сервера, то текст этого ответа положится в свойство <b>request.responseText</b>. Но в ответе также есть и заголовки ответа(<b>request.getAllResponseHeaders()</b>) и можно получить какой нибудь 1 заголовок ответа(<b>request.getResponseHeader('Last-Modified')</b>) и статус ответа(<b>request.status</b>) и  текст статуса ответа(<b>request.statusText</b>).:</p>
+    <p>Когда прийдёт ответ от сервера, то текст этого ответа положится в свойство <b>request.responseText</b>. Но в ответе также есть и заголовки ответа(<b>request.getAllResponseHeaders()</b>) и можно получить какой нибудь 1 заголовок ответа(<b>request.getResponseHeader('Last-Modified')</b>) и статус кода ответа(<b>request.status</b>) и  текст статуса кода ответа(<b>request.statusText</b>).:</p>
     <div class="code-style">
-    <pre>
-        let request = new XMLHttpRequest();
-        request.<span class="vue-g">onreadystatechange</span> = function(){
-            if(request.readyState === 4){
-                console.log(request.responseText);
-                console.log(request.status);// покажет число статуса ответа - 200 404 и т.д.
-                console.log(request.getAllResponseHeaders());
-                console.log(request.getResponseHeader('Last-Modified'));
-                console.log(request.statusText);
+        <pre>
+            let request = new XMLHttpRequest();
+            request.<span class="vue-g">onreadystatechange</span> = function(){
+                if(request.readyState === 4){
+
+                    //<span class="vue-b">2 эти строки кода возвращают ответ в виде строки, чем они отличаются пока не знаю</span>
+                    //<span class="vue-b">обычно приходит json строка с объектом внутри, чтобы достать объект из строки мы его парсим JSON.parse(request.responseText)</span>
+                    //<span class="vue-b">но можно сразу указать тип ответа, например после строки кода с request.open() укажем такую строку - xhr.responseType = 'json'</span>
+                    //<span class="vue-b">и нам сразу придёт распарсеный объект</span>
+                    console.log(request.<span class="vue-g">response</span>);
+                    console.log(request.<span class="vue-g">responseText</span>);
+
+                    //<span class="vue-b">покажет число статуса ответа - 200 404 и т.д.</span>
+                    console.log(request.<span class="vue-g">status</span>);
+
+                    //<span class="vue-b">вывести все заголовки ответа</span>
+                    console.log(request.<span class="vue-g">getAllResponseHeaders</span>());
+
+                    //<span class="vue-b">вывести указанный заголовок ответа</span>
+                    console.log(request.<span class="vue-g">getResponseHeader</span>('Last-Modified'));
+
+                    //<span class="vue-b">пока не знаю</span>
+                    console.log(request.<span class="vue-g">statusText</span>);
+                }
+            };
+            request.<span class="vue-g">open</span>('method', 'url', true);
+            request.<span class="vue-g">send</span>(null);
+        </pre>
+    </div>
+    <p>Чтобы отлавливать ошибки мы также воспользуемся событием "onload" или "onreadystatechange", а также "onerror". Внутри этих событий делаем проверки на пришедший код статуса и в соответствии с этим кодом решаем что делать:</p>
+    <div class="code-style">
+        <pre>
+            //<span class="vue-b">тут обрабатываешь статус коды</span>
+            request.<span class="vue-g"></span>onload</span> = function(){
+                if(request.<span class="vue-g">status</span> >= 400){
+                    //<span class="vue-b">тут обрабатываем ошибку</span>
+                }
+            };
+
+            //<span class="vue-b">а тут обрабатываем ошибки другие, какие уточню как узнаю</span>
+            request.<span class="vue-g">onerror</span> = function(){
+
+            };
+        </pre>
+    </div>
+
+    <p>Чтобы работать нормально с асинхронным кодом, то мы создадим функцию и вернём промис:</p>
+    <div class="code-style">
+        <pre>
+            const requestUrl = 'https://yandex.ru';
+            //в эту переменную в объект заполняем данные из формы
+            const bodyPost = {
+                name: 'Jhon',
+                age: 23,
+            };
+
+            function sendRequest(method, url, body = null){
+                return new Promis(function(resolve, reject){
+                    const xhr = new XMLHttpRequest();
+
+                    xhr.open(method, url);
+                    xhr.responseType = 'json';
+                    xhr.onload = function(){
+                        if(xhr.status >= 400){
+                            reject(xhr.response);
+                        }else{
+                            resolve(xhr.response);
+                        }
+                    };
+                    xhr.onload = function(){
+                        reject(xhr.response);
+                    };
+
+                    xhr.send(JSON.stringify(body));
+                });
             }
-        };
-        request.open('method', 'url', true);
-        request.send(null);
-    </pre>
+
+            sendRequest('POST', requestUrl, bodyPost)
+                //если успех то выполняется эта функция
+                .then(data => console.log(data))
+                //если ошибка то эта
+                .catch(err => console.log(err))
+        </pre>
     </div>
     <p><b>Маленькое замечание про безопасность</b>. Есть такая штука как origin-policy. Это значит что мы можем сделать запрос только в рамках сайта, на котором и лежит наш скрипт, если в запросе в url не совпадут протокол или домен сайта или порт, то будет ошибка. Данную опцию можно отключить, но делается это на стороне сервера.</p>
+
+
+
+
+
+
+
+
+
+    <p>Статья на доработке, ещё не описал толком как отсылать файл через ажакс. Обязательно разабраться что за класс FormData</p>
+    <h3 class="header-style2" id="2">Пример отправки формы с помощью AJAX методом POST. В форме будут как обычные инпуты, так и с файлом</h3>
+    <div class="code-style">
+        <pre>
+            //форма в html файле
+            &lt;form id="test-form">
+                &lt;p>Простое текстовое поле: &lt;input type="text" id="testfield" name="testfield" value="Тестовый ввод">&lt;/p>
+                &lt;p>Выберите файл для отправки: &lt;input type="file" id="testfile" name="testfile" accept="image/*">&lt;/p>
+                &lt;p>&lt;input type="submit" value="Отправить" onclick="sendForm();return false;">&lt;/p>
+            &lt;/form>
+            //обратим внимание на то что input type="file" имеет атрибут accept, в котором указываем форматы файлов допустимые для загрузки
+            //можно указать как показанно выше, а можно перечислить форматы так - accept=".png,.jpeg,.jpg"
+            //чтобы можно было выбрать несколько файлов, нужно указать атрибут - multiple у input type="file"
+
+            let	id_product = 321;
+            let qty_product = 2;
+
+            // Создаем экземпляр класса XMLHttpRequest
+            const request = new XMLHttpRequest();
+
+            // Указываем путь до файла на сервере, который будет обрабатывать наш запрос 
+            const url = "ajax_quest.php";
+            
+            // Так же как и в GET составляем строку с данными, но уже без пути к файлу 
+            const params = "id_product=" + id_product+ "&qty_product=" + qty_product;
+            
+            /* Указываем что соединение	у нас будет POST, говорим что путь к файлу в переменной url, и что запрос у нас
+            асинхронный, по умолчанию так и есть не стоит его указывать, еще есть 4-й параметр пароль авторизации, но этот
+                параметр тоже необязателен.*/ 
+            request.open("POST", url, true);
+            
+            //В заголовке говорим что тип передаваемых данных закодирован.
+            //Я так понимаю, чтобы передать файлы, то указываем 2м параметром 'multipart/form-data' 
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            
+            request.addEventListener("readystatechange", () => {
+
+                if(request.readyState === 4 && request.status === 200) {       
+                    console.log(request.responseText);
+                }
+            });
+            
+            //	Вот здесь мы и передаем строку с данными, которую формировали выше. И собственно выполняем запрос. 
+            request.send(params);
+        </pre>
+    </div>
+
+
+
+
+
+
+
+
+
+    <h3 class="header-style2" id="3">Основы ajax на jQuery</h3>
+    <p>https://snipp.ru/jquery/ajax-jquery</p>
+    <p>https://it-blog.ru/php/forma-obratnoj-svyazi-na-php-i-ajax/</p>
+    <p>http://яжпрограммист.рф/blog/otpravka-faylov-cherez-ajax/</p>
 </div>
