@@ -82,9 +82,9 @@ table td{
 }
 .code-style{
     width: 96%;
-    background-color: aliceblue;
+    background: #f9f9f9 url(../img/bg-for-code.png);
     font-family: monospace;
-    padding: 20px 10px 10px 0;
+    padding: 10px 0;
     border-radius: 6px;
     overflow: scroll;
     margin: 15px 0;
@@ -171,7 +171,7 @@ table td{
 }
 .mainbar p {
     margin: 10px 0 0 10px;
-    line-height: 2;
+    line-height: 1.7;
 }
 .mainbar .list {
     line-height: 1.7;
