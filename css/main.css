@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'PT Mono';
+    src: url('../font/PT Mono.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -8,7 +16,8 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    font-family: 'Ubuntu', sans-serif;
+    /* font-family: 'Ubuntu', sans-serif; */
+    font-family: 'PT Mono', sans-serif;
 }
 
 hr{
@@ -37,7 +46,8 @@ table td{
     background-color: rgba(222, 232, 251, 0.9);
 }
 .header-style{
-    font-family: 'Ubuntu', cursive;
+    /* font-family: 'Ubuntu', cursive; */
+    font-family: 'PT Mono', cursive;
     color: sienna;
     text-align: center;
     margin-top: 20px;
@@ -46,10 +56,12 @@ table td{
     margin-top: 20px;
     margin-bottom: 30px;
     text-align: center;
-    font-family: "Ubuntu", sans-serif;
+    /* font-family: "Ubuntu", sans-serif; */
+    font-family: "PT Mono", sans-serif;
 }
 .tag-style{
-    font-family: 'Ubuntu', sans-serif;
+    /* font-family: 'Ubuntu', sans-serif; */
+    font-family: 'PT Mono', sans-serif;
     color: #2973b7;
     font-size: 19px;
 }
@@ -153,13 +165,13 @@ table td{
     width: 68%;
     margin-left: 2%;
     padding: 10px;
-    font-family: 'Ubuntu', sans-serif;
+    /* font-family: 'Ubuntu', sans-serif; */
     color: #304455;
     
 }
 .mainbar p {
     margin: 10px 0 0 10px;
-    line-height: 1.2;
+    line-height: 2;
 }
 .mainbar .list {
     line-height: 1.7;
@@ -212,7 +224,8 @@ iframe{
 /*для списка .list*/
 .list{
     margin-left: 45px;
-    font-family: "Ubuntu", sans-serif;
+    /* font-family: "Ubuntu", sans-serif; */
+    font-family: "PT Mono", sans-serif;
 }
 
 
@@ -252,6 +265,7 @@ iframe{
     border-left:10px solid #339966;
     padding: 10px 0 10px 20px;
     margin: 20px 0;
+    line-height: 2;
 }
 
 /*для битрикс функций*/
