@@ -2,6 +2,33 @@
 
 let ul = document.querySelector('.sidebar__list');
 let mainbar = document.querySelector('.mainbar');
+const sidebarIndex = document.querySelector('.sidebar__index');
+
+/*
+    на кнопку "На главную" вешаю событие клик, по которому получаю html из страницы index.html
+    и через регулярку нахожу тот участок html, который отображается на главной странице
+*/
+sidebarIndex.addEventListener('click', function(){
+    let url = `http://site-shpargalka/index.html`;
+    let request = new XMLHttpRequest();
+
+    request.onreadystatechange = function(){
+        if(request.readyState == 4){
+            outputResponse(request.response)
+        }
+    };
+
+    request.open('GET', url, false);
+    request.send(null);
+
+    
+});
+
+function outputResponse(response){
+    const pattern = /<section class="mainbar total-block">(.*?)<\/section>/s;
+    const result = response.match(pattern);
+    mainbar.innerHTML = result[1];
+}
 
 ul.onclick = function(e){
     let target = e.target.closest('li');
@@ -42,7 +69,7 @@ ul.onclick = function(e){
         let arc = target.dataset.arc;
         
         //тут для получения url можно было использовать location.href, который вернул бы http://site-shpargalka
-        let url = `https://sanekt.github.io/site-shpora/articles/${tech}-${arc}.html`;
+        let url = `http://site-shpargalka/articles/${tech}-${arc}.html`;
         let request = new XMLHttpRequest();
         request.open('GET', url, false);
         request.send(null);
