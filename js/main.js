@@ -69,10 +69,10 @@ ul.onclick = function(e){
         let arc = target.dataset.arc;
         
         //тут для получения url можно было использовать location.href, который вернул бы http://site-shpargalka
-        let url = `https://site-shpargalka/articles/${tech}-${arc}.html`;
+        let url = `https://sanekt.github.io/site-shpora/articles/${tech}-${arc}.html`;
         let request = new XMLHttpRequest();
-        request.open('POST', url);
-        request.send();
+        request.open('GET', url);
+        request.send(null);
         mainbar.innerHTML = request.responseText;
         
         ul2.style.display = 'none';
