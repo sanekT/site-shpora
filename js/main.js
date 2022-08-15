@@ -9,7 +9,7 @@ const sidebarIndex = document.querySelector('.sidebar__index');
     и через регулярку нахожу тот участок html, который отображается на главной странице
 */
 sidebarIndex.addEventListener('click', function(){
-    let url = `https://site-shpargalka/index.html`;
+    let url = `https://sanekt.github.io/`;
     let request = new XMLHttpRequest();
 
     request.onreadystatechange = function(){
@@ -20,8 +20,6 @@ sidebarIndex.addEventListener('click', function(){
 
     request.open('GET', url, false);
     request.send(null);
-
-    
 });
 
 function outputResponse(response){
