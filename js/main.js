@@ -9,7 +9,7 @@ const sidebarIndex = document.querySelector('.sidebar__index');
     и через регулярку нахожу тот участок html, который отображается на главной странице
 */
 sidebarIndex.addEventListener('click', function(){
-    let url = `http://site-shpargalka/index.html`;
+    let url = `https://site-shpargalka/index.html`;
     let request = new XMLHttpRequest();
 
     request.onreadystatechange = function(){
@@ -69,7 +69,7 @@ ul.onclick = function(e){
         let arc = target.dataset.arc;
         
         //тут для получения url можно было использовать location.href, который вернул бы http://site-shpargalka
-        let url = `http://site-shpargalka/articles/${tech}-${arc}.html`;
+        let url = `https://site-shpargalka/articles/${tech}-${arc}.html`;
         let request = new XMLHttpRequest();
         request.open('GET', url, false);
         request.send(null);
