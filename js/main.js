@@ -71,9 +71,13 @@ ul.onclick = function(e){
         //тут для получения url можно было использовать location.href, который вернул бы http://site-shpargalka
         let url = `https://sanekt.github.io/site-shpora/articles/${tech}-${arc}.html`;
         let request = new XMLHttpRequest();
+        request.onreadystatechange = function(){
+            if(request.readyState == 4){
+                mainbar.innerHTML = request.response;
+            }
+        };
         request.open('GET', url);
         request.send(null);
-        mainbar.innerHTML = request.responseText;
         
         ul2.style.display = 'none';
     }
