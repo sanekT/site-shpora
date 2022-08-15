@@ -71,8 +71,8 @@ ul.onclick = function(e){
         //тут для получения url можно было использовать location.href, который вернул бы http://site-shpargalka
         let url = `https://site-shpargalka/articles/${tech}-${arc}.html`;
         let request = new XMLHttpRequest();
-        request.open('GET', url, false);
-        request.send(null);
+        request.open('POST', url);
+        request.send();
         mainbar.innerHTML = request.responseText;
         
         ul2.style.display = 'none';
