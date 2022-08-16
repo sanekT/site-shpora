@@ -18,7 +18,7 @@ sidebarIndex.addEventListener('click', function(){
         }
     };
 
-    request.open('GET', url, false);
+    request.open('GET', url);
     request.send(null);
 });
 
