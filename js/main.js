@@ -25,7 +25,9 @@ sidebarIndex.addEventListener('click', function(){
 function outputResponse(response){
     const pattern = /<section class="mainbar total-block">(.*?)<\/section>/s;
     const result = response.match(pattern);
-    mainbar.innerHTML = result[1];
+    setTimeout(function(){
+        mainbar.innerHTML = result[1];
+    }, 500);
 }
 
 ul.onclick = function(e){
