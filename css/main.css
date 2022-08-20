@@ -417,4 +417,7 @@ div.inner{
     figcaption {
         width: 98%;
     }
+    p.note{
+        margin-left: 0;
+    }
 }
