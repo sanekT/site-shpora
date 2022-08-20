@@ -419,5 +419,7 @@ div.inner{
     }
     p.note{
         margin-left: 0;
+        border-left: 3px solid #339966;
+        padding: 10px 6px;
     }
 }
