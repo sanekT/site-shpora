@@ -21,69 +21,69 @@
 
 
     <h3 class="header-style2">Тут опишу отзывчивый подход(резиновый)</h3>
-    <p>Опишу как показывал Даврик в этом видео - <a href="https://www.youtube.com/watch?v=_g4NnnZdTxQ">тут</a>.</p>
+    <p>Опишу как показывал Лаврик в этом видео - <a href="https://www.youtube.com/watch?v=_g4NnnZdTxQ">тут</a>.</p>
     <p>У нас есть контейнер, внутри контейнера есть обёртка карточек товаров. Ну и внутри обёртки ну пусть 12 карточек. Адаптируем эти карточки под все точки сжатия экрана. Пропишем обёртке карточек display: flex; flex-wrap: wrap;. Карточки выс троились в ряд, укажем любую высоту и теперь надо указать ширину карточкам. Также пропишем box-sizing: border-box;, чтобы в ширину учитывались падинги и бордеры. Ширину будем указывать в %, как высчитать % для ширины, ну и плюс ещё маржины нужны. Очень просто, смотрим сколько у нас на десктопе в ряд карточек стоит. Например 4, значит 100% / 4 получаем 25%, но надо ещё маржинам задать %, давайте зададим маржинам по 2% со всех сторон, значит от каждой карточки от 25% надо отнять ещё 4%(маржин слева и справа), получаем надо задать карточке width: 21%; margin: 2%;. Всё, карточки встали по 4 в ряду. При сжимании экрана карточки не перенесутся на другой ряд, сколько бы мы их не сжимали. Чтобы они начали переноситься, выбираем точку экрана для мелиа запроса, на которой мы переопределим им ширину. Например 900px, пишем медиа запрос, что как только экран сожмётся до 900px мы берём карточку и пересчитываем её ширину. Нам нужно теперь уместить по 3 карточки в ряду, значит 100% / 3 = 33.33% выходит одна карточка, также вычитаем маржины от неё 33.33% - 4% = 29.33%. Всё, что теперь нужно прописать с медиа запросе это ширина карточки width: 29.33%. И так далее, на 776px пересчитываем и получаем ширину 46%, и карточки становятся по 2 в ряд и на 450px ширину ставим 96% и карточка становится по 1й в ряд. Я попробовал, мне очень понравилась такая резиновая вёрстка. Да и ещё забыл сказать, что обёртке карточек задаём по бокам отрицательные маржины, чтобы карточки не отступали по краям.  Вот пример кода с такой вёрсткой:</p>
     <div class="code-style">
         <pre>
-            //CSS
-            .wraper{
-				max-width: 1200px;
-				margin: 0 auto;
-				border: 1px solid red;
-				background-color: #ccc;
-			}
-			.wrap-items{
-				display: flex;
-				flex-wrap: wrap;
-				margin-left: -2%;
-				margin-right: -2%;
-				border: 1px solid blue;
-			}
+		//CSS
+		.wraper{
+			max-width: 1200px;
+			margin: 0 auto;
+			border: 1px solid red;
+			background-color: #ccc;
+		}
+		.wrap-items{
+			display: flex;
+			flex-wrap: wrap;
+			margin-left: -2%;
+			margin-right: -2%;
+			border: 1px solid blue;
+		}
+		.item{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 21%;
+			height: 300px;
+			margin: 2%;
+			border: 1px solid black;
+			background-color: pink;
+		}
+
+		@media screen and (max-width: 1000px){
 			.item{
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				width: 21%;
-				height: 300px;
-				margin: 2%;
-				border: 1px solid black;
-				background-color: pink;
+				width: 29.33%;
 			}
-			
-			@media screen and (max-width: 1000px){
-				.item{
-					width: 29.33%;
-				}
+		}
+		@media screen and (max-width: 776px){
+			.item{
+				width: 46%;
 			}
-			@media screen and (max-width: 776px){
-				.item{
-					width: 46%;
-				}
+		}
+		@media screen and (max-width: 450px){
+			.item{
+				width: 96%;
 			}
-			@media screen and (max-width: 450px){
-				.item{
-					width: 96%;
-				}
-			}
+		}
 
 
-            //HTML
-            &lt;div class="wraper">
-				&lt;div class="wrap-items">
-					&lt;div class="item">1&lt;/div>
-					&lt;div class="item">2&lt;/div>
-					&lt;div class="item">3&lt;/div>
-					&lt;div class="item">4&lt;/div>
-					&lt;div class="item">5&lt;/div>
-					&lt;div class="item">6&lt;/div>
-					&lt;div class="item">7&lt;/div>
-					&lt;div class="item">8&lt;/div>
-					&lt;div class="item">9&lt;/div>
-					&lt;div class="item">10&lt;/div>
-					&lt;div class="item">11&lt;/div>
-					&lt;div class="item">12&lt;/div>
-				&lt;/div>
+		//HTML
+		&lt;div class="wraper">
+			&lt;div class="wrap-items">
+				&lt;div class="item">1&lt;/div>
+				&lt;div class="item">2&lt;/div>
+				&lt;div class="item">3&lt;/div>
+				&lt;div class="item">4&lt;/div>
+				&lt;div class="item">5&lt;/div>
+				&lt;div class="item">6&lt;/div>
+				&lt;div class="item">7&lt;/div>
+				&lt;div class="item">8&lt;/div>
+				&lt;div class="item">9&lt;/div>
+				&lt;div class="item">10&lt;/div>
+				&lt;div class="item">11&lt;/div>
+				&lt;div class="item">12&lt;/div>
 			&lt;/div>
+		&lt;/div>
         </pre>
     </div>   
     <p>Будет новая информация по этому подходу допишу.</p>
