@@ -20,73 +20,185 @@
 
 
 
+	<h3 class="header-style2">Мета тег viewport</h3>
+	<p>Если не написать этот тег в теге head, то телефоны будут стараться отобразить сайт целиком, потому что разрешение современных телефонов позволяет это сделать, хотя физическая ширина равна у кого 360px, у кого 380px и т.д. И этот тег говорит, чтобы сайт отображался на ширину устройства, на котором открыт в данный момент сайт. Если у телефона физ. ширина 360px, то и сайт должен маштабироваться до такой ширины.</p>
+	<p>Ещё у тега viewport в атрибуте content бывает пишут user-scalable=no, что запрещает масштабирование пальцами на экране телефона, по умолчанию разрешено я так полагаю. Вот так надо написать тег, чтобы запретить масштабирование - &lt;meta name="viewport" content="width=device-width, initial-scale=1.0">  или так - &lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">. Хотя при первом варианте у меня всё масштабируется, а при втором варианте нет.</p>
+	<p>initial-scale можно менять, например можно задать не 1.0, а 0.6, это значит, что если физ. ширина экрана равна 360px , то делим эту ширину на на заданные 0.6 и получаем уже масштаб 600px, т.е. на физ. ширине 360px сайт будет отображён по ширине 600px</p>
+
+
+
+
+
+
     <h3 class="header-style2">Тут опишу отзывчивый подход(резиновый)</h3>
     <p>Опишу как показывал Лаврик в этом видео - <a href="https://www.youtube.com/watch?v=_g4NnnZdTxQ">тут</a>.</p>
+	<p><b>1й вариант</b></p>
+	<p>Этот вариант с использованием flexbox, % и медиа запросов</p>
     <p>У нас есть контейнер, внутри контейнера есть обёртка карточек товаров. Ну и внутри обёртки ну пусть 12 карточек. Адаптируем эти карточки под все точки сжатия экрана. Пропишем обёртке карточек display: flex; flex-wrap: wrap;. Карточки выс троились в ряд, укажем любую высоту и теперь надо указать ширину карточкам. Также пропишем box-sizing: border-box;, чтобы в ширину учитывались падинги и бордеры. Ширину будем указывать в %, как высчитать % для ширины, ну и плюс ещё маржины нужны. Очень просто, смотрим сколько у нас на десктопе в ряд карточек стоит. Например 4, значит 100% / 4 получаем 25%, но надо ещё маржинам задать %, давайте зададим маржинам по 2% со всех сторон, значит от каждой карточки от 25% надо отнять ещё 4%(маржин слева и справа), получаем надо задать карточке width: 21%; margin: 2%;. Всё, карточки встали по 4 в ряду. При сжимании экрана карточки не перенесутся на другой ряд, сколько бы мы их не сжимали. Чтобы они начали переноситься, выбираем точку экрана для мелиа запроса, на которой мы переопределим им ширину. Например 900px, пишем медиа запрос, что как только экран сожмётся до 900px мы берём карточку и пересчитываем её ширину. Нам нужно теперь уместить по 3 карточки в ряду, значит 100% / 3 = 33.33% выходит одна карточка, также вычитаем маржины от неё 33.33% - 4% = 29.33%. Всё, что теперь нужно прописать с медиа запросе это ширина карточки width: 29.33%. И так далее, на 776px пересчитываем и получаем ширину 46%, и карточки становятся по 2 в ряд и на 450px ширину ставим 96% и карточка становится по 1й в ряд. Я попробовал, мне очень понравилась такая резиновая вёрстка. Да и ещё забыл сказать, что обёртке карточек задаём по бокам отрицательные маржины, чтобы карточки не отступали по краям.  Вот пример кода с такой вёрсткой:</p>
     <div class="code-style">
         <pre>
-		//CSS
-		.wraper{
-			max-width: 1200px;
-			margin: 0 auto;
-			border: 1px solid red;
-			background-color: #ccc;
-		}
-		.wrap-items{
-			display: flex;
-			flex-wrap: wrap;
-			margin-left: -2%;
-			margin-right: -2%;
-			border: 1px solid blue;
-		}
-		.item{
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 21%;
-			height: 300px;
-			margin: 2%;
-			border: 1px solid black;
-			background-color: pink;
-		}
-
-		@media screen and (max-width: 1000px){
-			.item{
-				width: 29.33%;
+			//CSS
+			.wraper{
+				max-width: 1200px;
+				margin: 0 auto;
+				border: 1px solid red;
+				background-color: #ccc;
 			}
-		}
-		@media screen and (max-width: 776px){
-			.item{
-				width: 46%;
+			.wrap-items{
+				display: flex;
+				flex-wrap: wrap;
+				margin-left: -2%;
+				margin-right: -2%;
+				border: 1px solid blue;
 			}
-		}
-		@media screen and (max-width: 450px){
 			.item{
-				width: 96%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 21%;
+				height: 300px;
+				margin: 2%;
+				border: 1px solid black;
+				background-color: pink;
 			}
-		}
+
+			@media screen and (max-width: 1000px){
+				.item{
+					width: 29.33%;
+				}
+			}
+			@media screen and (max-width: 776px){
+				.item{
+					width: 46%;
+				}
+			}
+			@media screen and (max-width: 450px){
+				.item{
+					width: 96%;
+				}
+			}
 
 
-		//HTML
-		&lt;div class="wraper">
-			&lt;div class="wrap-items">
-				&lt;div class="item">1&lt;/div>
-				&lt;div class="item">2&lt;/div>
-				&lt;div class="item">3&lt;/div>
-				&lt;div class="item">4&lt;/div>
-				&lt;div class="item">5&lt;/div>
-				&lt;div class="item">6&lt;/div>
-				&lt;div class="item">7&lt;/div>
-				&lt;div class="item">8&lt;/div>
-				&lt;div class="item">9&lt;/div>
-				&lt;div class="item">10&lt;/div>
-				&lt;div class="item">11&lt;/div>
-				&lt;div class="item">12&lt;/div>
+			//HTML
+			&lt;div class="wraper">
+				&lt;div class="wrap-items">
+					&lt;div class="item">1&lt;/div>
+					&lt;div class="item">2&lt;/div>
+					&lt;div class="item">3&lt;/div>
+					&lt;div class="item">4&lt;/div>
+					&lt;div class="item">5&lt;/div>
+					&lt;div class="item">6&lt;/div>
+					&lt;div class="item">7&lt;/div>
+					&lt;div class="item">8&lt;/div>
+					&lt;div class="item">9&lt;/div>
+					&lt;div class="item">10&lt;/div>
+					&lt;div class="item">11&lt;/div>
+					&lt;div class="item">12&lt;/div>
+				&lt;/div>
 			&lt;/div>
-		&lt;/div>
         </pre>
     </div>   
-    <p>Будет новая информация по этому подходу допишу.</p>
-    
+    <p>Мне очень понравилась резиновая вёрстка для карточек, буду её пока пробовать.</p>
+	<p><b>2й вариант</b></p>
+	<p>Пробовал делать отзывчивый немного по другому. Например убрать совсем медиа запросы и чтобы карточки начали сами переносится без медиа запросов, задал общее свойство flex: 1 1 200px;, а если задаётся свойство flex-basis, то оно автоматом перебивает width, значит width: 21%; уже не будет работать, значит убираем его. Говорим карточкам, что они все могут расшириться на всё свободное простанство(flex-grow: 1) и они расширились, вроде бы здорово, не надо высчитывать проценты для них. Когда начал сжимать экран, то карточки сжимались до базового размера в 200px и переносились и опять занимали освободившееся свободное пространство и так далее. Всё заработало точно также как и при %, но только медиа запросы вообще не писал. Но у этого подхода есть один минус, самые нижние карточки растягиваются, если их в ряду меньше, чем в ряду выше, что не красиво. Ну такой вариант наверно подойдёт для особых случаев, когда карточки будут одинакого распределяться. Вот код этого варианта, карточек 9, чтобы наглядно было видно, как нижняя карточка растягивается:</p>
+    <div class="code-style">
+        <pre>
+			//CSS
+			.wraper{
+				max-width: 1200px;
+				margin: 0 auto;
+				border: 1px solid red;
+				background-color: #ccc;
+			}
+			.wrap-items{
+				display: flex;
+				flex-wrap: wrap;
+				margin-left: -2%;
+				margin-right: -2%;
+				border: 1px solid blue;
+			}
+			.item{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex: 1 1 200px;
+				height: 300px;
+				margin: 2%;
+				border: 1px solid black;
+				background-color: pink;
+			}
+
+
+			//HTML
+			&lt;div class="wraper">
+				&lt;div class="wrap-items">
+					&lt;div class="item">1&lt;/div>
+					&lt;div class="item">2&lt;/div>
+					&lt;div class="item">3&lt;/div>
+					&lt;div class="item">4&lt;/div>
+					&lt;div class="item">5&lt;/div>
+					&lt;div class="item">6&lt;/div>
+					&lt;div class="item">7&lt;/div>
+					&lt;div class="item">8&lt;/div>
+					&lt;div class="item">9&lt;/div>
+				&lt;/div>
+			&lt;/div>
+        </pre>
+    </div>
+
+	<p><b>3й вариант</b></p>
+	<p>Этот вариант построен чисто на flexbox на px без % и без медиа запросов.</p>
+	<p>Его смысл заключается в том, что мы делаем всё также как и выше, только карточкам вмесо % задаём max-width: 260px, но они не растянутся почему то на эту ширину, поэтому задаю ещё width: 100%, чтобы задать растягивание карточки на весь ряд, но ограничить её 260px и в результате получим карточку шириной 260px. Далее зададим им маржины тоже в px, например 15px. Задавать ли при этом варианте отрицательные маржины родителю справа и слева не знаю, наверно не надо, потому что при таком варианте чтобы карточки прилегали к краям, надо задать justify-content: space-between;, но при сжимании карточки будут переноситься и так как карточки у нас не растягиваются, между ними образуется большое пространство и смотрится это не очень, поэтому самым, на мой взгляд, нормальным вариантов будет задать justify-content: space-evenly;, когда равномерно карточки располагаются в ряду. Этот вариант мне тоже показался не плохим. Отличие от первого варианта, здесь мы не используем %, медиа запросы и ну самая нижняя карточка когда она одна внизу, то будет стоять по центру, а при первом варианте слева. При этом варинте будет больше пространства между карточками, в то время как при первом варинте это пространство будет заполняться карточками. Вот код для этого варианта:</p>
+	<div class="code-style">
+        <pre>
+			//CSS
+			.wraper{
+				max-width: 1200px;
+				margin: 0 auto;
+				border: 1px solid red;
+				background-color: #ccc;
+			}
+			.wrap-items{
+				display: flex;
+				flex-wrap: wrap;
+				border: 1px solid blue;
+			}
+			.item{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				max-width: 260px;
+				width: 100%;
+				height: 300px;
+				margin: 8px;
+				border: 1px solid black;
+				background-color: pink;
+			}
+
+
+			//HTML
+			&lt;div class="wraper">
+				&lt;div class="wrap-items">
+					&lt;div class="item">1&lt;/div>
+					&lt;div class="item">2&lt;/div>
+					&lt;div class="item">3&lt;/div>
+					&lt;div class="item">4&lt;/div>
+					&lt;div class="item">5&lt;/div>
+					&lt;div class="item">6&lt;/div>
+					&lt;div class="item">7&lt;/div>
+					&lt;div class="item">8&lt;/div>
+					&lt;div class="item">9&lt;/div>
+				&lt;/div>
+			&lt;/div>
+        </pre>
+    </div>
+
+
+
+
+	<p>Этот вариант хочу попробывать с единицами измерения vh, vw. Хотя наврятли с ними получится, ведь они берут отсчёт от всей ширины/высоты экрана, а % от ширины родителя.</p>
+
+
+
     
 </div>
