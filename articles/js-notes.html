@@ -96,16 +96,16 @@
    <p>Кстати допишу тут про то, что будет, если в метод addEventListener передать обработчиком стрелочную функцию и в этой функции вывести в консоль this. Выведется скорее всего объект Window(ну или тот объект, в методе которого и создана стрелочная функция), а вот если обработчиком передать старую добрую функцию, то выведется тот объект, который и вызывает метод addEventListener. Почему то метод addEventListener передаёт в функцию-обработчик, написанную по старому через слово function, текущий контекст this, а вот в стрелочную не передаёт. Хоть эти 2е функции созданы в глобальной области видимости, т.е в объекте Window(или в др. объекте), но одной передаётся контекст от метода addEventListener, а стрелочной нет, поэтому стрелочная идёт вверх и ищет переменную this в лексическом окружении той функции, в которой она была создана.</p>
     <div class="code-style">
         <pre>
-            let item1 = document.querySelector('.wrap-items div:first-child');
-			
-			let obj = {};
-			
-			obj.abc = function(){
-				item1.addEventListener('click', () => console.log(this)); // => this = obj
-				item1.addEventListener('click', function(){console.log(this)}); // => this = item1
-			};
-			
-			obj.abc();
+		let item1 = document.querySelector('.wrap-items div:first-child');
+
+		let obj = {};
+
+		obj.abc = function(){
+			item1.addEventListener('click', () => console.log(this)); // => this = obj
+			item1.addEventListener('click', function(){console.log(this)}); // => this = item1
+		};
+
+		obj.abc();
         </pre>
     </div>
    </div>
