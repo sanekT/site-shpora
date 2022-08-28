@@ -104,146 +104,146 @@
 	</p>
 	<p>Стили:</p>
 	<div class="code-style">
-		<pre>
-			.container{
-				padding-top: 5rem;
-				width: 800px;
-				margin: 0 auto;
-			}
-			.block{
-				width: 100px;
-				height: 50px;
-				background: pink;
-				border-radius: 6px;
-				padding: 1rem;
-				margin-top: 50px;
-			}
-			.fa-leave{
-				opacity: 0;
-			}
-			.fa-leave-active{
-				transition: opacity 1s;
-			}
-			.fa-leave-to{
-				
-			}
-			.fa-enter{
-				opacity: 0;
-			}
-			.fa-enter-active{
-				transition: opacity 1s;
-			}
-			.fa-enter-to{
-				
-			}
-    		</pre>
+	<pre>
+	.container{
+		padding-top: 5rem;
+		width: 800px;
+		margin: 0 auto;
+	}
+	.block{
+		width: 100px;
+		height: 50px;
+		background: pink;
+		border-radius: 6px;
+		padding: 1rem;
+		margin-top: 50px;
+	}
+	.fa-leave{
+		opacity: 0;
+	}
+	.fa-leave-active{
+		transition: opacity 1s;
+	}
+	.fa-leave-to{
+
+	}
+	.fa-enter{
+		opacity: 0;
+	}
+	.fa-enter-active{
+		transition: opacity 1s;
+	}
+	.fa-enter-to{
+
+	}
+	</pre>
 	</div>
 	<p>HTML:</p>
 	<div class="code-style">
-		<pre>
-			&lt;div class="container">
-				&lt;button type="button" class="btn-hide">Скрыть&lt;/button>
-				&lt;button type="button" class="btn-show">Показать&lt;/button>
-				&lt;div class="block">&lt;/div>
-				&lt;hr>
-				&lt;p>Текст&lt;/p>
-			&lt;/div>
-    		</pre>
+	<pre>
+	&lt;div class="container">
+		&lt;button type="button" class="btn-hide">Скрыть&lt;/button>
+		&lt;button type="button" class="btn-show">Показать&lt;/button>
+		&lt;div class="block">&lt;/div>
+		&lt;hr>
+		&lt;p>Текст&lt;/p>
+	&lt;/div>
+	</pre>
 	</div>
 	<p>JS:</p>
 	<div class="code-style">
-		<pre>
-			'use strict';
+	<pre>
+	'use strict';
 
-			const btnHide = document.querySelector('.btn-hide');
-			const btnShow = document.querySelector('.btn-show');
-			const elem = document.querySelector('.block');
+	const btnHide = document.querySelector('.btn-hide');
+	const btnShow = document.querySelector('.btn-show');
+	const elem = document.querySelector('.block');
 
-			function handlerHideElem(){
-				elem.classList.add('fa-leave');
-				elem.classList.add('fa-leave-active');
-				elem.addEventListener('transitionend', handlerTransitionEnd, {once: true});
-			}
+	function handlerHideElem(){
+		elem.classList.add('fa-leave');
+		elem.classList.add('fa-leave-active');
+		elem.addEventListener('transitionend', handlerTransitionEnd, {once: true});
+	}
 
-			function handlerShowElem(){
-				elem.style.display = 'block';
-				elem.classList.add('fa-enter');
-				setTimeout(function(){
-					elem.classList.add('fa-enter-active');
-					elem.classList.remove('fa-enter');
-				}, 100);
-			}
+	function handlerShowElem(){
+		elem.style.display = 'block';
+		elem.classList.add('fa-enter');
+		setTimeout(function(){
+			elem.classList.add('fa-enter-active');
+			elem.classList.remove('fa-enter');
+		}, 100);
+	}
 
-			function handlerTransitionEnd(){
-				elem.style.display = 'none';
-				elem.classList.remove('fa-leave');
-				elem.classList.remove('fa-leave-active');
-			}
+	function handlerTransitionEnd(){
+		elem.style.display = 'none';
+		elem.classList.remove('fa-leave');
+		elem.classList.remove('fa-leave-active');
+	}
 
-			btnHide.addEventListener('click', handlerHideElem);
-			btnShow.addEventListener('click', handlerShowElem);
-    		</pre>
+	btnHide.addEventListener('click', handlerHideElem);
+	btnShow.addEventListener('click', handlerShowElem);
+	</pre>
 	</div>
 	<p>Но использование setTimeout() уже не нужно. Эту роль хорошо и быстрее выполняет метод  <b>window.requestAnimationFrame()</b>. Вообще этот метод делали для анимаций на canvas, но и тут он нормально отрабатывает. Как работает этот метод? Он срабатывает только тогда когда браузер закончил отрисовку предыдущего кода. Вообще для гарантии этот метод запускают 2 раза, бывает хватает и 1 раза, но делают 2. В фреймворке Vue.js так и используется:</p>
 	<div class="code-style">
-		<pre>
-			function raf(fn){
-				window.requestAnimationFrame(function(){
-					window.requestAnimationFrame(function(){
-						fn();
-					}
-				});
+	<pre>
+	function raf(fn){
+		window.requestAnimationFrame(function(){
+			window.requestAnimationFrame(function(){
+				fn();
 			}
-		</pre>
+		});
+	}
+	</pre>
 	</div>
 	<p>И вот теперь эту функцию raf() мы будем использовать вместо setTimeout():</p>
 	<div class="code-style">
-		<pre>
-			function handlerShowElem(){
-				elem.style.display = 'block';
-				elem.classList.add('fa-enter');
-				//<span class="vue-g">вот тут мы запускаем эту функцию вместо setTimeout</span>
-				//<span class="vue-g">т.е. код внутри raf() выполнится только когда предыдущий код( elem.classList.add('fa-enter') ) браузер выполнит и применит(отрисует)</span>
-				<span class="vue-r">raf</span>(function(){
-					elem.classList.add('fa-enter-active');
-					elem.classList.remove('fa-enter');
-				});
-			}
+	<pre>
+	function handlerShowElem(){
+		elem.style.display = 'block';
+		elem.classList.add('fa-enter');
+		//<span class="vue-g">вот тут мы запускаем эту функцию вместо setTimeout</span>
+		//<span class="vue-g">т.е. код внутри raf() выполнится только когда предыдущий код( elem.classList.add('fa-enter') ) браузер выполнит и применит(отрисует)</span>
+		<span class="vue-r">raf</span>(function(){
+			elem.classList.add('fa-enter-active');
+			elem.classList.remove('fa-enter');
+		});
+	}
 
-			function raf(fn){
-				window.requestAnimationFrame(function(){
-					window.requestAnimationFrame(function(){
-						fn();
-					});
-				});
-			}
-		</pre>
+	function raf(fn){
+		window.requestAnimationFrame(function(){
+			window.requestAnimationFrame(function(){
+				fn();
+			});
+		});
+	}
+	</pre>
 	</div>
 	<p>Классы .fa-enter и .fa-leave используются для указания типа действия над элементом - opacity, transform ещё что-то. Классы .fa-leave-active и .fa-enter-active используются для указания transition для тех действий указанных в классах .fa-enter и .fa-leave, например мы хотим не только чтобы элемент плавно пропадал, но при этом ещё сдвигался в сторону, зададим вот такие классы и код в js трогать не будем, теперь у нас элемент плавно исчезает и уходит вправо и плавно появляется выезжая слева:</p>
 	<div class="code-style">
-		<pre>
-			//CSS
-			.fa-leave{
-				opacity: 0;
-				transform: translateX(100px);
-			}
-			.fa-leave-active{
-				transition: opacity 1s, transform 1s;
-			}
-			.fa-leave-to{
-				
-			}
-			.fa-enter{
-				opacity: 0;
-				transform: translateX(-100px);
-			}
-			.fa-enter-active{
-				transition: opacity 1s, transform 1s;
-			}
-			.fa-enter-to{
-				
-			}
-		</pre>
+	<pre>
+	//CSS
+	.fa-leave{
+		opacity: 0;
+		transform: translateX(100px);
+	}
+	.fa-leave-active{
+		transition: opacity 1s, transform 1s;
+	}
+	.fa-leave-to{
+
+	}
+	.fa-enter{
+		opacity: 0;
+		transform: translateX(-100px);
+	}
+	.fa-enter-active{
+		transition: opacity 1s, transform 1s;
+	}
+	.fa-enter-to{
+
+	}
+	</pre>
 	</div>
 
 	<p></p>
