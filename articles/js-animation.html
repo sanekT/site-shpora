@@ -333,7 +333,7 @@
 
 
 
-	<h3 class="header-style2" id="2">Как сегодня пишутся анимации на js + css через animation</h3>
+	<h3 class="header-style2" id="3">Как сегодня пишутся анимации на js + css через animation</h3>
 	<p>Стираем все классы и пишем кейфреймы, добывляем эти анимации в .fa-enter-active и в .fa-leave-active, в js коде ничего не меняем. Всё работает с одним маленьким косяком, при появляении элемент быстро появляется и исчезает и уже потом начинается анимация, это из за того, что класс задающий opacity: 0 при почвлении пуст, вот заполняем его - .fa-enter{opacity: 0} и всё работает хорошо. Ну и не забываем теперь заменить событие transitionend на animationend:</p>
 	<div class="code-style">
 		<pre>
@@ -448,6 +448,66 @@
 	<p>Смысл этих 3х классов такой, что использовать сразу все 3 класса не обязательно. Как показал этот пример, достаточно вообще одного класса для добавления анимации и плюс задействовали .fa-enter для исправления мелькания блока в начале появления.</p>
 
 
+	
+	
+	
+	
+	
+	<h3 class="header-style2" id="4">Анимирование элементов при добавлении их в DOM дерево</h3>
+	<p>Мы уже получили немного знаний выше как анимировать элементы. Теперь стоит задача заанимировать элементы при добавлении в DOM дерево. Например возьмём тег ul и внего будем добавлять пункты. В принципе особо код менять не надр, нужно всего лишь убрать строку с добавлением элементу dispaly: block и всё:</p>
+	<div class="code-style">
+		<pre>
+			//<span class="vue-b">CSS</span>
+			.container{
+				max-width: 1000px;
+				margin: 0 auto;
+			}
+			.block{
+				width: 100px;
+				height: 50px;
+				border: 1px solid black;
+				display: none;
+			}
+			.fa-enter{
+				opacity: 0;
+				transform: translateX(40px) scale(0.5);
+			}
+			.fa-enter-active{
+				transition: opacity 1s, transform 1s;
+			}
+			
+			//<span class="vue-b">HTML</span>
+			&lt;div class="container">
+				&lt;button class="btn-add">Добавить&lt;/button>
+				&lt;hr>
+				&lt;ul>
+				&lt;/ul>
+			&lt;/div>
+			
+			//<span class="vue-b">JS</span>
+			let btn = document.querySelector('.btn-add');
+			let ul = document.querySelector('ul');
+
+			btn.addEventListener('click', function(){
+				let li = document.createElement('li');
+				li.innerHTML = Math.random();
+				ul.append(li);
+
+				li.classList.add('fa-enter');
+				raf(function(){
+					li.classList.add('fa-enter-active');
+					li.classList.remove('fa-enter');
+				});
+
+			});
+
+			function raf(fn){
+				window.requestAnimationFrame(function(){
+					fn();
+				});
+			}
+		</pre>
+	</div>
 
 
 
@@ -455,7 +515,7 @@
 
 
 
-	<h3 class="header-style2" id="3">Проблемы и решения события transitionend</h3>
+	<h3 class="header-style2" id="5">Проблемы и решения события transitionend</h3>
 	<ol class="list">
 		<li>Было такое. Подгружал карточки товаров от сервера и висело событие клика на родителе этих карточек. По клику
 			на карточку родитель отлавливал клик и я проверял на чём я кликнул, если карточка то идём дальше. У карточки
