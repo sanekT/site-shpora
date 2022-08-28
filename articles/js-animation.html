@@ -20,61 +20,61 @@
 		плавность. Теперь смысла нет использовать setInterval() для плавности переходов, уже есть transition. Примерно
 		так выглядел код:</p>
 	<div class="code-style">
-		<pre>
-			window.onload = function(){
-				var btnHide = document.querySelector('.btnHide');
-				var btnShow = document.querySelector('.btnShow');
-				var elem = document.querySelector('.elem');
+	<pre>
+	window.onload = function(){
+		var btnHide = document.querySelector('.btnHide');
+		var btnShow = document.querySelector('.btnShow');
+		var elem = document.querySelector('.elem');
 
-				btnHide.addEventListener('click', function(){
-					fadeOut(elem, 1000);
-				});
+		btnHide.addEventListener('click', function(){
+			fadeOut(elem, 1000);
+		});
 
+	}
+
+	function fadeOut(elem, t, f){
+		//кадров в секунду(по умолчанию 50)
+		var fps = f || 50;
+
+		//время работы анимации(по умолчанию 500мс)
+		var time = t || 500;
+
+		//сколько всего покажем кадров
+		var steps = parseInt(time / (1000 / fps));
+
+		//текущее значение opacity - изначально 0
+		var op = 1;
+
+		//изменение прозрачности за один кадров
+		var d0 = op / steps;
+
+		//установим время тикания для setInterval
+		var ms = 1000 / fps;
+
+		//устанавливаем интервал (1000 / fps)
+		//например, 50fpd -> 1000 / 50 = 20мс
+		var timer = setInterval(function(){
+			//уменьшаем текущее значение opacity
+			op -= d0;
+
+			//устанавливаем opacity элементу document
+			elem.style.opacity = op;
+
+			//уменьшаем кол-во оставшихся шагов анимации
+			stepd--;
+
+			//если шаги закончились
+			if(steps &lt;= 0){
+			//останавливаем setInterval
+			clearInterval(timer);
+
+			//и убираем элемент из потока документа
+			elem.style.display = 'none';
+			elem.style.opacity = 0;
 			}
-
-			function fadeOut(elem, t, f){
-				//кадров в секунду(по умолчанию 50)
-				var fps = f || 50;
-
-				//время работы анимации(по умолчанию 500мс)
-				var time = t || 500;
-
-				//сколько всего покажем кадров
-				var steps = parseInt(time / (1000 / fps));
-
-				//текущее значение opacity - изначально 0
-				var op = 1;
-
-				//изменение прозрачности за один кадров
-				var d0 = op / steps;
-
-				//установим время тикания для setInterval
-				var ms = 1000 / fps;
-
-				//устанавливаем интервал (1000 / fps)
-				//например, 50fpd -> 1000 / 50 = 20мс
-				var timer = setInterval(function(){
-					//уменьшаем текущее значение opacity
-					op -= d0;
-
-					//устанавливаем opacity элементу document
-					elem.style.opacity = op;
-
-					//уменьшаем кол-во оставшихся шагов анимации
-					stepd--;
-
-					//если шаги закончились
-					if(steps &lt;= 0){
-					//останавливаем setInterval
-					clearInterval(timer);
-
-					//и убираем элемент из потока документа
-					elem.style.display = 'none';
-					elem.style.opacity = 0;
-					}
-				}, ms);
-			}
-		</pre>
+		}, ms);
+	}
+	</pre>
 	</div>
 	<p>И когда в те времена появилась jQuery, то там появились такие методы как fadeOut и fadeIn, и они делали анимацию
 		вот по такому способу как я описал выше. Сегодня скорее всего эти методы переписаны и уже по современному
