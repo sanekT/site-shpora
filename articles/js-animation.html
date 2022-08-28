@@ -4,9 +4,9 @@
 
 	<ul class="list">
 		<li><a href="#1">Как раньше делали анимации на чистом js</a></li>
-		<li><a href="#2">Как сегодня пишутся анимации на js + css</a></li>
-		<li><a href="#3">Проблемы и решения события transitionend</a></li>
-		<li><a href="#4"></a></li>
+		<li><a href="#2">Как сегодня пишутся анимации на js + css через transition</a></li>
+		<li><a href="#3">Как сегодня пишутся анимации на js + css через animation</a></li>
+		<li><a href="#4">Проблемы и решения события transitionend</a></li>
 	</ul>
 
 
@@ -20,61 +20,61 @@
 		плавность. Теперь смысла нет использовать setInterval() для плавности переходов, уже есть transition. Примерно
 		так выглядел код:</p>
 	<div class="code-style">
-	<pre>
-	window.onload = function(){
-		var btnHide = document.querySelector('.btnHide');
-		var btnShow = document.querySelector('.btnShow');
-		var elem = document.querySelector('.elem');
+		<pre>
+			window.onload = function(){
+				var btnHide = document.querySelector('.btnHide');
+				var btnShow = document.querySelector('.btnShow');
+				var elem = document.querySelector('.elem');
 
-		btnHide.addEventListener('click', function(){
-			fadeOut(elem, 1000);
-		});
-
-	}
-
-	function fadeOut(elem, t, f){
-		//кадров в секунду(по умолчанию 50)
-		var fps = f || 50;
-
-		//время работы анимации(по умолчанию 500мс)
-		var time = t || 500;
-
-		//сколько всего покажем кадров
-		var steps = parseInt(time / (1000 / fps));
-
-		//текущее значение opacity - изначально 0
-		var op = 1;
-
-		//изменение прозрачности за один кадров
-		var d0 = op / steps;
-
-		//установим время тикания для setInterval
-		var ms = 1000 / fps;
-
-		//устанавливаем интервал (1000 / fps)
-		//например, 50fpd -> 1000 / 50 = 20мс
-		var timer = setInterval(function(){
-			//уменьшаем текущее значение opacity
-			op -= d0;
-
-			//устанавливаем opacity элементу document
-			elem.style.opacity = op;
-
-			//уменьшаем кол-во оставшихся шагов анимации
-			stepd--;
-
-			//если шаги закончились
-			if(steps &lt;= 0){
-			//останавливаем setInterval
-			clearInterval(timer);
-
-			//и убираем элемент из потока документа
-			elem.style.display = 'none';
-			elem.style.opacity = 0;
+				btnHide.addEventListener('click', function(){
+					fadeOut(elem, 1000);
+				});
+				
 			}
-		}, ms);
-	}
-	</pre>
+
+			function fadeOut(elem, t, f){
+				//кадров в секунду(по умолчанию 50)
+				var fps = f || 50;
+
+				//время работы анимации(по умолчанию 500мс)
+				var time = t || 500;
+
+				//сколько всего покажем кадров
+				var steps = parseInt(time / (1000 / fps));
+
+				//текущее значение opacity - изначально 0
+				var op = 1;
+
+				//изменение прозрачности за один кадров
+				var d0 = op / steps;
+
+				//установим время тикания для setInterval
+				var ms = 1000 / fps;
+
+				//устанавливаем интервал (1000 / fps)
+				//например, 50fpd -> 1000 / 50 = 20мс
+				var timer = setInterval(function(){
+					//уменьшаем текущее значение opacity
+					op -= d0;
+
+					//устанавливаем opacity элементу document
+					elem.style.opacity = op;
+
+					//уменьшаем кол-во оставшихся шагов анимации
+					stepd--;
+
+					//если шаги закончились
+					if(steps &lt;= 0){
+					//останавливаем setInterval
+					clearInterval(timer);
+
+					//и убираем элемент из потока документа
+					elem.style.display = 'none';
+					elem.style.opacity = 0;
+					}
+				}, ms);
+			}
+      </pre>
 	</div>
 	<p>И когда в те времена появилась jQuery, то там появились такие методы как fadeOut и fadeIn, и они делали анимацию
 		вот по такому способу как я описал выше. Сегодня скорее всего эти методы переписаны и уже по современному
@@ -87,7 +87,7 @@
 
 
 
-	<h3 class="header-style2" id="2">Как сегодня пишутся анимации на js + css</h3>
+	<h3 class="header-style2" id="2">Как сегодня пишутся анимации на js + css через transition</h3>
 	<p>Тут мы разберём как уже сегодня пишутся анимации без setInterval().</p>
 	<p>В этом примере показано как плавно скрыть и показать элемент с помощью js и css. Казалось бы что тут сложного, но
 		сложности есть. Например мы сделали в css класс (.fa-leave), в котором <b>opacity: 0;</b> и класс (.fa-leave-active) с свойством <b>transition: opasity 1s;</b>. Затем в js находим нужный нам элемент и по клику добавляем ему эти классы. После добывления этих классов всё работает и элемент по клику плавно становится прозрачным. И тут первая проблема как убрать физически элемент из потока. Мы можем добавить <b>display: none;</b>, но как узнать через сколько времени его надо убрать. Можно конечно глянуть в css и посмотреть сколько там секунд идёт анимация и потом в js с помощью setTimeout() убрать
@@ -104,158 +104,349 @@
 	</p>
 	<p>Стили:</p>
 	<div class="code-style">
-	<pre>
-	.container{
-		padding-top: 5rem;
-		width: 800px;
-		margin: 0 auto;
-	}
-	.block{
-		width: 100px;
-		height: 50px;
-		background: pink;
-		border-radius: 6px;
-		padding: 1rem;
-		margin-top: 50px;
-	}
-	.fa-leave{
-		opacity: 0;
-	}
-	.fa-leave-active{
-		transition: opacity 1s;
-	}
-	.fa-leave-to{
-
-	}
-	.fa-enter{
-		opacity: 0;
-	}
-	.fa-enter-active{
-		transition: opacity 1s;
-	}
-	.fa-enter-to{
-
-	}
-	</pre>
+		<pre>
+			.container{
+				padding-top: 5rem;
+				width: 800px;
+				margin: 0 auto;
+			}
+			.block{
+				width: 100px;
+				height: 50px;
+				background: pink;
+				border-radius: 6px;
+				padding: 1rem;
+				margin-top: 50px;
+			}
+			.fa-leave{
+				opacity: 0;
+			}
+			.fa-leave-active{
+				transition: opacity 1s;
+			}
+			.fa-leave-to{
+				
+			}
+			.fa-enter{
+				opacity: 0;
+			}
+			.fa-enter-active{
+				transition: opacity 1s;
+			}
+			.fa-enter-to{
+				
+			}
+    	</pre>
 	</div>
 	<p>HTML:</p>
 	<div class="code-style">
-	<pre>
-	&lt;div class="container">
-		&lt;button type="button" class="btn-hide">Скрыть&lt;/button>
-		&lt;button type="button" class="btn-show">Показать&lt;/button>
-		&lt;div class="block">&lt;/div>
-		&lt;hr>
-		&lt;p>Текст&lt;/p>
-	&lt;/div>
-	</pre>
+		<pre>
+			&lt;div class="container">
+				&lt;button type="button" class="btn-hide">Скрыть&lt;/button>
+				&lt;button type="button" class="btn-show">Показать&lt;/button>
+				&lt;div class="block">&lt;/div>
+				&lt;hr>
+				&lt;p>Текст&lt;/p>
+			&lt;/div>
+    	</pre>
 	</div>
 	<p>JS:</p>
 	<div class="code-style">
-	<pre>
-	'use strict';
+		<pre>
+			'use strict';
 
-	const btnHide = document.querySelector('.btn-hide');
-	const btnShow = document.querySelector('.btn-show');
-	const elem = document.querySelector('.block');
+			const btnHide = document.querySelector('.btn-hide');
+			const btnShow = document.querySelector('.btn-show');
+			const elem = document.querySelector('.block');
 
-	function handlerHideElem(){
-		elem.classList.add('fa-leave');
-		elem.classList.add('fa-leave-active');
-		elem.addEventListener('transitionend', handlerTransitionEnd, {once: true});
-	}
+			function handlerHideElem(){
+				elem.classList.add('fa-leave');
+				elem.classList.add('fa-leave-active');
+				elem.addEventListener('transitionend', handlerTransitionEnd, {once: true});
+			}
 
-	function handlerShowElem(){
-		elem.style.display = 'block';
-		elem.classList.add('fa-enter');
-		setTimeout(function(){
-			elem.classList.add('fa-enter-active');
-			elem.classList.remove('fa-enter');
-		}, 100);
-	}
+			function handlerShowElem(){
+				elem.style.display = 'block';
+				elem.classList.add('fa-enter');
+				setTimeout(function(){
+					elem.classList.add('fa-enter-active');
+					elem.classList.remove('fa-enter');
+				}, 100);
+			}
 
-	function handlerTransitionEnd(){
-		elem.style.display = 'none';
-		elem.classList.remove('fa-leave');
-		elem.classList.remove('fa-leave-active');
-	}
+			function handlerTransitionEnd(){
+				elem.style.display = 'none';
+				elem.classList.remove('fa-leave');
+				elem.classList.remove('fa-leave-active');
+			}
 
-	btnHide.addEventListener('click', handlerHideElem);
-	btnShow.addEventListener('click', handlerShowElem);
-	</pre>
+			btnHide.addEventListener('click', handlerHideElem);
+			btnShow.addEventListener('click', handlerShowElem);
+    	</pre>
 	</div>
 	<p>Но использование setTimeout() уже не нужно. Эту роль хорошо и быстрее выполняет метод  <b>window.requestAnimationFrame()</b>. Вообще этот метод делали для анимаций на canvas, но и тут он нормально отрабатывает. Как работает этот метод? Он срабатывает только тогда когда браузер закончил отрисовку предыдущего кода. Вообще для гарантии этот метод запускают 2 раза, бывает хватает и 1 раза, но делают 2. В фреймворке Vue.js так и используется:</p>
 	<div class="code-style">
-	<pre>
-	function raf(fn){
-		window.requestAnimationFrame(function(){
-			window.requestAnimationFrame(function(){
-				fn();
+		<pre>
+			function raf(fn){
+				window.requestAnimationFrame(function(){
+					window.requestAnimationFrame(function(){
+						fn();
+					});
+				});
 			}
-		});
-	}
-	</pre>
+		</pre>
 	</div>
 	<p>И вот теперь эту функцию raf() мы будем использовать вместо setTimeout():</p>
 	<div class="code-style">
-	<pre>
-	function handlerShowElem(){
-		elem.style.display = 'block';
-		elem.classList.add('fa-enter');
-		//<span class="vue-g">вот тут мы запускаем эту функцию вместо setTimeout</span>
-		//<span class="vue-g">т.е. код внутри raf() выполнится только когда предыдущий код( elem.classList.add('fa-enter') ) браузер выполнит и применит(отрисует)</span>
-		<span class="vue-r">raf</span>(function(){
-			elem.classList.add('fa-enter-active');
-			elem.classList.remove('fa-enter');
-		});
-	}
+		<pre>
+			function handlerShowElem(){
+				elem.style.display = 'block';
+				elem.classList.add('fa-enter');
+				//<span class="vue-g">вот тут мы запускаем эту функцию вместо setTimeout</span>
+				//<span class="vue-g">т.е. код внутри raf() выполнится только когда предыдущий код( elem.classList.add('fa-enter') ) браузер выполнит и применит(отрисует)</span>
+				<span class="vue-r">raf</span>(function(){
+					elem.classList.add('fa-enter-active');
+					elem.classList.remove('fa-enter');
+				});
+			}
 
-	function raf(fn){
-		window.requestAnimationFrame(function(){
-			window.requestAnimationFrame(function(){
-				fn();
-			});
-		});
-	}
-	</pre>
+			function raf(fn){
+				window.requestAnimationFrame(function(){
+					window.requestAnimationFrame(function(){
+						fn();
+					});
+				});
+			}
+		</pre>
 	</div>
-	<p>Классы .fa-enter и .fa-leave используются для указания типа действия над элементом - opacity, transform ещё что-то. Классы .fa-leave-active и .fa-enter-active используются для указания transition для тех действий указанных в классах .fa-enter и .fa-leave, например мы хотим не только чтобы элемент плавно пропадал, но при этом ещё сдвигался в сторону, зададим вот такие классы и код в js трогать не будем, теперь у нас элемент плавно исчезает и уходит вправо и плавно появляется выезжая слева:</p>
+	<p>Классы .fa-enter и .fa-leave используются для указания типа действия над элементом - opacity, transform ещё что-то, т.е. задают какое то начальное состояние элемента. Классы .fa-leave-active и .fa-enter-active используются для указания transition для тех действий указанных в классах .fa-enter и .fa-leave, например мы хотим не только чтобы элемент плавно пропадал, но при этом ещё сдвигался в сторону, зададим вот такие классы и код в js трогать не будем, теперь у нас элемент плавно исчезает и уходит вправо и плавно появляется выезжая слева:</p>
 	<div class="code-style">
-	<pre>
-	//CSS
-	.fa-leave{
-		opacity: 0;
-		transform: translateX(100px);
-	}
-	.fa-leave-active{
-		transition: opacity 1s, transform 1s;
-	}
-	.fa-leave-to{
-
-	}
-	.fa-enter{
-		opacity: 0;
-		transform: translateX(-100px);
-	}
-	.fa-enter-active{
-		transition: opacity 1s, transform 1s;
-	}
-	.fa-enter-to{
-
-	}
-	</pre>
+		<pre>
+			//CSS
+			.fa-leave{
+				opacity: 0;
+				transform: translateX(100px);
+			}
+			.fa-leave-active{
+				transition: opacity 1s, transform 1s;
+			}
+			.fa-leave-to{
+				
+			}
+			.fa-enter{
+				opacity: 0;
+				transform: translateX(-100px);
+			}
+			.fa-enter-active{
+				transition: opacity 1s, transform 1s;
+			}
+			.fa-enter-to{
+				
+			}
+		</pre>
 	</div>
+	<p>Есть более продвинутые возможности с добавлением 3го класса это .fa-leave-to и fa-enter-to. Они задают конечное состояние элемента. Эти классы не обязательны. В том же Vue.js очень долго были только 2 класса, но в последних версиях этот 3й класса решили добавить. Вот такой у меня получился пример, когда элемент появляется то он выдвигает и прозрачость у него 0.5, как только он выдвинулся и переход закончился то сработает событие transitionend и удаляю все классы и элемент резко становится opacity: 1. Какую роль тут сиграли все 3 класса при появлении. 1й задал прозрачность 0 и transform, потому как при появлении он становится dispaly: block, поэтому ему надо задать прозрачность 0, 2й класс задал транзишин, 3й класс задал прозрачность на половину. т.е. элемент выезжет на с прозрачностью на половину и по срабатывании всех классов резко становится opacity: 1. Лаврик как то в обработчике появления элемента зачем то использует тоже функцию raf() и в то же время засунул transform во 2й класс, хотя сам говорил, что нужно в 1м классе задавать начальные состояния, короче не понял я его как он делает, просто сказал что должна анимация быть такой, вот я её на свой манер сделал, может это не правильно, хз. Такая анимация требуется редко. Дпже во Vue этот 3 класс добавили для каких то специфических задач. Вот пример, html тот же:</p>
+	<div class="code-style">
+		<pre>
+			//<span class="vue-b">CSS</span>
+			.fa-leave{
+				opacity: 0.5;
+				transform: translateX(100px);
+			}
+			.fa-leave-active{
+				transition: opacity 1s, transform 1s;
+			}
+			.fa-leave-to{
+				opacity: 0;
+			}
+			.fa-enter{
+				opacity: 0;
+				transform: translateX(-100px);
+			}
+			.fa-enter-active{
+				transition: opacity 1s, transform 1s;
+			}
+			.fa-enter-to{
+				opacity: 0.4;
+				transform: translateX(0px);
+			}
 
-	<p></p>
+			//<span class="vue-b">JS</span>
+			const btnHide = document.querySelector('.btn-hide');
+			const btnShow = document.querySelector('.btn-show');
+			const elem = document.querySelector('.block');
+			
+			function handlerHideElem(){
+				elem.addEventListener('transitionend', handlerTransitionEndHide, {once: true});
+				elem.classList.add('fa-leave');
+				elem.classList.add('fa-leave-active');
+			}
+			
+			function handlerShowElem(){
+				elem.addEventListener('transitionend', handlerTransitionEndShow, {once: true});
+				elem.style.display = 'block';
+				elem.classList.add('fa-enter');
+				raf(function(){
+					elem.classList.add('fa-enter-active');
+					elem.classList.add('fa-enter-to');
+				});
+			}
+			
+			function handlerTransitionEndHide(){
+				elem.style.display = 'none';
+				elem.classList.remove('fa-leave-active');
+				elem.classList.remove('fa-leave');
+			}
+			function handlerTransitionEndShow(){
+				elem.classList.remove('fa-enter');
+				elem.classList.remove('fa-enter-active');
+				elem.classList.remove('fa-enter-to');
+			}
+			
+			btnHide.addEventListener('click', handlerHideElem);
+			btnShow.addEventListener('click', handlerShowElem);
+			
+			function raf(fn){
+				window.requestAnimationFrame(function(){
+					window.requestAnimationFrame(function(){
+						fn();
+					});
+				});
+			}
+		</pre>
+	</div>
+	<hr>
+	<p>Возникает такой вопрос - "Почему не задать transition сразу элементу, а не через классы к нему добавляющиеся"?. Ответ, мы эти классы используем как модули, которые можно задать любому другому элементу, а не только этому.</p>
 
 	<p>Кстати был вопрос в чате как сделать так чтобы снизу стоящий блок плавно поъезжал вверх при скрытии нашего элемента. Лаврик сказал что это ресурсозатратная задача, потому что анимация в браузере выполняется перерисовкой элементов задействованных анимацией и когда наш блок снизу будет плавно подниматься вверх, то будут перерисовываться все нижестоящие блоки. Поэтому так в основном не делают. Можно конечно так делать с абсолютно спозиционированным элементом, когда он вырван из потока и ему можно делать плавное поднимание опускание. Хотя у меня в одном из примеров в портфолио есть сайт где мобильное меню выползает и толкает весь контент вниз и обратно, смотрится прикольно, не очень понимаю чем это для сайта затратно, ведь ресурсы у клиента затрачиваются. Поэтому надо больше поузнать про это.</p>
 	<iframe src="articles/iframe/js-animate1/js-animate1.html" frameborder="1" width="730" height="400"></iframe>
-	<p>Мы сначала добавляем классы с прозрачностью 0 и сдвигом влево на 100px и потом в этой функции мы убираем эти
-		классы и блок возвращается в свои состояния по умолчанию - это прозрачность 1 и позиция на 0 по X. А смысл этой
-		функции в том, что она даёт время браузеру на отрисовку состояний прозрачности в 0 и сдвигает влево на 100px и
-		как только браузер это отрисует функция выполняется и удаляются эти классы и блок плавно возвращается в
-		состояния по умолчанию. Если бы всё делалось без этой функции, то браузер не успел бы сдвинуть влево и
-		прозрачность добавить 0, а cразу бы блок был уже в прозрачности 1 и на своём месте в позиции 0 по X.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<h3 class="header-style2" id="2">Как сегодня пишутся анимации на js + css через animation</h3>
+	<p>Стираем все классы и пишем кейфреймы, добывляем эти анимации в .fa-enter-active и в .fa-leave-active, в js коде ничего не меняем. Всё работает с одним маленьким косяком, при появляении элемент быстро появляется и исчезает и уже потом начинается анимация, это из за того, что класс задающий opacity: 0 при почвлении пуст, вот заполняем его - .fa-enter{opacity: 0} и всё работает хорошо. Ну и не забываем теперь заменить событие transitionend на animationend:</p>
+	<div class="code-style">
+		<pre>
+			//<span class="vue-b">CSS</span>
+			body{
+				background: #666;
+				font-family: Verdana, sans-serif;
+			}
+			
+			.container{
+				padding-top: 5rem;
+				padding-left: 40px;
+				width: 800px;
+				margin: 0 auto;
+			}
+			.block{
+				width: 100px;
+				height: 50px;
+				background: pink;
+				border-radius: 6px;
+				padding: 1rem;
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			.fa-leave{
+				
+			}
+			.fa-leave-active{
+				animation: niceOut 0.5s linear;
+			}
+			.fa-leave-to{
+				
+			}
+			.fa-enter{
+				opacity: 0;
+			}
+			.fa-enter-active{
+				animation: niceIn 0.5s linear;
+			}
+			.fa-enter-to{
+				
+			}
+			
+			
+			@keyframes niceIn{
+				0%{
+					transform: translateX(-100px) scale(0.8);
+					opacity: 0;
+				}
+				100%{
+					transform: translateX(0px) scale(1);
+					opacity: 1;
+				}
+			}
+			
+			
+			@keyframes niceOut{
+				from{
+					transform: translateX(0px) scale(1);
+					opacity: 1;
+				}
+				to{
+					transform: translateX(100px) scale(0.8);
+					opacity: 0;
+				}
+			}
+
+			//<span class="vue-b">JS</span>
+			const btnHide = document.querySelector('.btn-hide');
+			const btnShow = document.querySelector('.btn-show');
+			const elem = document.querySelector('.block');
+			
+			function handlerHideElem(){
+				elem.addEventListener('animationend', handlerAnimEndHide, {once: true});
+				elem.classList.add('fa-leave');
+				elem.classList.add('fa-leave-active');
+			}
+			
+			function handlerShowElem(){
+				elem.addEventListener('animationend', handlerAnimEndShow, {once: true});
+				elem.style.display = 'block';
+				elem.classList.add('fa-enter');
+				raf(function(){
+					elem.classList.add('fa-enter-active');
+					elem.classList.add('fa-enter-to');
+				});
+			}
+			
+			function handlerAnimEndHide(){
+				elem.style.display = 'none';
+				elem.classList.remove('fa-leave-active');
+				elem.classList.remove('fa-leave');
+			}
+			function handlerAnimEndShow(){
+				elem.classList.remove('fa-enter');
+				elem.classList.remove('fa-enter-active');
+				elem.classList.remove('fa-enter-to');
+			}
+			
+			btnHide.addEventListener('click', handlerHideElem);
+			btnShow.addEventListener('click', handlerShowElem);
+			
+			function raf(fn){
+				window.requestAnimationFrame(function(){
+					window.requestAnimationFrame(function(){
+						fn();
+					});
+				});
+			}
+		</pre>
+	</div>
+	<p>Смысл этих 3х классов такой, что использовать сразу все 3 класса не обязательно. Как показал этот пример, достаточно вообще одного класса для добавления анимации и плюс задействовали .fa-enter для исправления мелькания блока в начале появления.</p>
+
 
 
 
