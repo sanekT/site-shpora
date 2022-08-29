@@ -1,0 +1,33 @@
+<div class="wrap">
+   
+    <h2 class="header-style">Подключение  Vue.js</h2>
+
+
+    <h3 class="header-style2">Подключение прям в странице index.html</h3>
+    <p>В отличии от Angular и React, Vue легко подключить прям в странице index.html. Для этого как обычно внизу после тега body в теге script атрибута src прописываем удалённый путь до Vue, ну или скачиваем его в файл и подключаем этот файл. Есть версия для разработки и продакш версия. Подключаем для разработки пока и 2ю версию(3ю пока не трогаю) - &lt;script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js">&lt;/script>. Далее нужно чтобы в html был тег div с id="app":</p>
+    <div class="code-style">
+        <pre>
+            &lt;body>
+	
+                &lt;div id="app">
+                    &lt;input type="text" v-model="name">
+                    &lt;hr>
+                    &lt;h2>Привет, {{ name }}&lt;/h2>
+                &lt;/div>
+                
+        
+                &lt;script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js">&lt;/script>
+                &lt;script>
+                    new Vue({
+                        el: '#app',
+                        data: {
+                            name: ''
+                        }
+                    });
+                &lt;/script>
+            &lt;/body>
+        </pre>
+    </div>
+    <p>Вот небольшой кусок кода, который при вводе имени в инпут тут же его выводит в шаблон {{ }}. Так подключать Vue на страницу не надо, потому что сделать такое может и jQuery и плюс для SEO это не очень из-за наличия таких атрибутов как v-model или шаблона {{ }}. Используется ли Vue хоть где нибудь с вот таким подключением пока не знаю. Вообще такое подключение задумывалось для того, чтобы попробовать что из себя представляет Vue.</p>
+
+</div>
