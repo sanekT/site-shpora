@@ -1,0 +1,70 @@
+<div class="wrap">
+   
+    <h2 class="header-style">Разные заметки по Vue</h2>
+
+    <ul class="list">
+        <li><a href="#1">Как работает реактивность во Vue</a></li>
+    </ul>
+
+
+    <h3 class="header-style2" id="1">Как работает реактивность во Vue</h3>
+    <p>реактивность основана на геттерах и сеттерах. Когда мы передаём объект с данными в конструктор класса Vue, там примерно происходит то, что показано в примере ниже:</p>
+    <div class="code-style">
+        <pre>
+            //HTML
+            &lt;div id="app">
+                &lt;input type="text" v-model="name">
+                &lt;hr>
+                &lt;h2>Привет, {{ name }}&lt;/h2>
+                &lt;p>Мы вам направили письмо, {{ name }}&lt;/p>
+            &lt;/div>
+
+            //JS1
+            class MyVue{
+				constructor(settings){
+					this.el = document.querySelector(settings.el);
+					this.data = {};
+					this.$data = settings.data;
+					this.template = this.el.innerHTML;
+					
+					for(let key in this.$data){
+						Object.defineProperty(this, key, {
+							get(){
+								return this.$data[key];
+							},
+							set(value){
+								this.$data[key] = value;
+								this.render();
+							}
+						})
+					}
+					this.render();
+				}
+				
+				render(){
+					let pattern = /{{(.*)}}/g;
+					let myVue = this;
+					let res = this.template.replace(pattern, function(match, name){
+						let key = name.trim();
+						if(myVue[key] !== undefined){
+							return myVue[key];
+						}else{
+							return match;
+						}
+					});
+					this.el.innerHTML = res;
+				}
+			}
+
+            //JS2
+            let myvue = new MyVue({
+				el: '#app',
+				data: {
+					name: 'Владислав'
+				}
+			});
+        </pre>
+    </div>
+    <p>Т.е. переменные , которые мы передаём в объекте data становятся свойствами объекта класса Vue, и затем ищется по html шаблоны {{}} и заменяется на значение соответствующих свойств перерисовывая полностью, как в примере выше весь div#app, вставляя в него уже обновлённый html со вставленными переменными в шаблоны. У меня тут берётся полностью весь html из div#app, помещается в template и по нему происходит поиск, но в реальности это не правильно, не надо перерисовывать весь блок #app, это слишком затратно. Например мы поменяли только одну переменную в каком то мини блоке, а перерисовался весь блок. В настоящем же Vue есть такое понятие как "виртуальный DOM", это те мозги, которые при перерисовке высчитывают какой тег нужно обновить не затрагивая другие теги и многое другое. Например в jQuery если мы динамически меняем содержимое каких то тегов, то мы переписываем все эти теги, а во Vue по другому и быстрее это всё происходит.</p>
+
+</div>
