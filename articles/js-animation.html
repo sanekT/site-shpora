@@ -453,8 +453,8 @@
 	
 	
 	
-	<h3 class="header-style2" id="4">Анимирование элементов при добавлении их в DOM дерево</h3>
-	<p>Мы уже получили немного знаний выше как анимировать элементы. Теперь стоит задача заанимировать элементы при добавлении в DOM дерево. Например возьмём тег ul и внего будем добавлять пункты. В принципе особо код менять не надр, нужно всего лишь убрать строку с добавлением элементу dispaly: block и всё:</p>
+	<h3 class="header-style2" id="4">Анимирование элементов при добавлении и удалении их в/из DOM дерева</h3>
+	<p>Мы уже получили немного знаний выше как анимировать элементы. Теперь стоит задача заанимировать элементы при добавлении и удалении их в/из DOM дерева. Например возьмём тег ul и в него будем плавно добавлять пункты. а потом также плавно удалять их:</p>
 	<div class="code-style">
 		<pre>
 			//<span class="vue-b">CSS</span>
@@ -475,6 +475,13 @@
 			.fa-enter-active{
 				transition: opacity 1s, transform 1s;
 			}
+			.fa-leave{
+				opacity: 0;
+				transform: translateX(-40px);
+			}
+			.fa-leave-active{
+				transition: opacity 1s, transform 1s;
+			}
 			
 			//<span class="vue-b">HTML</span>
 			&lt;div class="container">
@@ -488,10 +495,12 @@
 			let btn = document.querySelector('.btn-add');
 			let ul = document.querySelector('ul');
 
+			//добавляем лишки
 			btn.addEventListener('click', function(){
 				let li = document.createElement('li');
 				li.innerHTML = Math.random();
 				ul.append(li);
+				li.addEventListener('transitionend', handler1, {once: true});
 
 				li.classList.add('fa-enter');
 				raf(function(){
@@ -500,14 +509,33 @@
 				});
 
 			});
+			
+			//удаляем лишки
+			ul.addEventListener('click', function(e){
+				const target = e.target;
+				if(target.tagName != "LI") return;
+				target.addEventListener('transitionend', handler2, {once: true});
+				
+				target.classList.add('fa-leave');
+				target.classList.add('fa-leave-active');
+			});
 
 			function raf(fn){
 				window.requestAnimationFrame(function(){
 					fn();
 				});
 			}
+			
+			function handler1(){
+				this.classList.remove('fa-enter-active');
+			}
+			function handler2(){
+				this.remove();
+			}
 		</pre>
 	</div>
+	<p>Во Vue эти действия делают 2 компонента transition и transitiongroup. Пишу на слух, как сказал Лаврик, са я пока не знаю этих компонентов.</p>
+	<p>Вот в этом видео - https://www.youtube.com/watch?v=0TLnIQbk5qo  - Лаврик с 01:25:00 рассказывает про свою библиотеку DLAnimate, которая написана через класс и делает всё то же самое что мы делали выше, только намного короче с этой библиотекой.</p>
 
 
 
