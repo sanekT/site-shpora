@@ -4,8 +4,18 @@
 
     <ul class="list">
         <li><a href="#1">Как работает реактивность во Vue</a></li>
-        <li><a href="#2">Как подключаются и выводятся компонеты</a></li>
+        <li><a href="#2">Как создаются, подключаются и выводятся компонеты. Также узнаём как используется vue в разных случаях разработки.</a></li>
+        <li><a href="#3">Как подключить BootstrapVue к нам в проект.</a></li>
+        <li><a href="#4">Что такое предотрисовка или отрисовка на стороне сервера(SSR - Server Side Rendering).</a></li>
     </ul>
+
+
+
+
+
+
+
+
 
 
     <h3 class="header-style2" id="1">Как работает реактивность во Vue</h3>
@@ -21,7 +31,7 @@
             &lt;/div>
 
             //JS1
-            class MyVue{
+			class MyVue{
 				constructor(settings){
 					this.el = document.querySelector(settings.el);
 					this.data = {};
@@ -57,8 +67,8 @@
 				}
 			}
 
-            //JS2
-            let myvue = new MyVue({
+			//JS2
+			let myvue = new MyVue({
 				el: '#app',
 				data: {
 					name: 'Владислав'
@@ -73,8 +83,55 @@
 
 
 
-	<h3 class="header-style2" id="1">Как подключаются и выводятся компонеты</h3>
-	<p>Копонеты подключаются глобально и локально. глобальные отличаются тем что их можно использовать внутри друг друга без проблем, а локальные только внутри того блока, к которому мы их подключили. Глобальные подключаются в главном файле main.js:</p>
+
+
+
+
+
+
+
+	<h3 class="header-style2" id="2">Как создаются, подключаются и выводятся компонеты</h3>
+	<p><b>Если мы используем Vue как библиотеку, т.е. подключаем её прям на страницу через CDN или выкачиваем и подключаем через файл</b></p>
+	<p>В этом случае компоненты регистрируются и подключаются вот так:</p>
+	<div class="code-style">
+		<pre>
+			//<span class="vue-g">HTML</span>
+			&lt;div id="app">
+				//первый вариант вывода компонента
+				&lt;app-component>&lt;/app-component>
+
+				//второй способ вывода компонента
+				&lt;div is="app-component">&lt;/div>
+			&lt;/div>
+
+			//<span class="vue-g">JS</span>
+			//для начала надо подключить тут Vue
+			//затем идёт скрипт с этим кодом
+			Vue.component('app-component', {
+				template: `
+					&lt;div class="root">
+						&lt;input type="text" v-model="name">
+						&lt;hr>
+						&lt;p>Привет, {{ name }}&lt;/p>
+						&lt;p>Мы вам направили письмо, {{ name }}&lt;/p>
+					&lt;/div>
+				`,
+				data(){
+					return{
+						name: 'Владислав'
+					}
+				}
+			});
+			
+			new Vue({
+				el: '#app'
+			});
+		</pre>
+	</div>
+	<p>Когда мы выносим почти весь html компонента в переменную template, то получается, что в файле index.html только родительский элемент #app присутствует, что упрощает прохождение валидации html кода на сайте W3C, потому что отсутствуют такие атрибуты как v-on, v-bind и т.д.</p>
+
+	<p><b>Если же мы используем Vue почти как фреймворк(но ещё не совсем) и разрабатываем через сборщик webpack и Vue CLI</b></p>
+	<p>То тут компонеты подключаются глобально и локально. Глобальные отличаются тем что их можно использовать внутри друг друга без проблем, а локальные только внутри того блока, к которому мы их подключили. Глобальные подключаются в главном файле main.js:</p>
 	<div class="code-style">
 		<pre>
 			 //<span class="vue-b">main.js</span>
@@ -92,40 +149,186 @@
 			 // new Vue ....
 		</pre>
 	</div>
-	<p>Подключение локально внутри файла App.vue. Это значит что компонеты будут доступны только в этом файле:</p>
+	<p>Подключение локально внутри файла App.vue. Это значит что компонет NameComponent.vue будет доступен только для компонента App.vue:</p>
 	<div class="code-style">
 		<pre>
 			//<span class="vue-b">App.vue</span>
 
-			// в теге script
-			// &lt;script>
-			// 		вот тут подключается компонент локально
-			// 		<span class="vue-r">import NameComponent from './components/NameComponent.vue';</span>
+			//в теге script
+			//&lt;script>
+			//вот тут подключается компонент локально
+			//<span class="vue-r">import NameComponent from './components/NameComponent.vue';</span>
 
-			//      export default{
-            //          name: 'App',
-			//          тут регистрируется компонент
-			//          components: {
-			//               NameComponent
-			//			}
-			//		}
-			// &lt;/script>
+			//export default{
+            //   name: 'App',
+			//      тут регистрируется компонент
+			//      components: {
+			//         NameComponent
+			//	    }
+			//}
+			//&lt;/script>
 		</pre>
 	</div>
-
-	<p>Ну и есстественно для 2х этих случаев создаём компонент в папке components и в каждом компоненте в теге script указываем имя компонента.</p>
-	<p>Как происходит подключение компонента уже в шаблон html? Например, если мы подключили локально в файл App.vue, то в этом файле в теге template указываем имя компонента в теге: либо так - &lt;name-component>, либо так - &lt;NameComponent></p>
-	<p>Отображать компоненты в шаблоне template можно разными способами. Первый это через директиву <b>v-if</b>:</p>
+	<p>App.vue это тоже самый главный компонент, который встраиваеn втнутри себя другие компоненты и затем встраивается сам внутрь тега #app. Втнутри компоненты состоят из 3х частей: тегов template, script, style. В template содержим весь html код, в скриптах логику ну и в стилях стили. Если хочу перенести из самого первого примера весь код, то то что там содержится в переменной template переносим сюда в тег template, затем всё что там начинается после переменной template переносим в тег script. Например у нас есть один главный компонент App:</p>
 	<div class="code-style">
 		<pre>
-			// &lt;name-component v-if="status">&lt;/name-component>
-			// &lt;name-component v-elseif="status">&lt;/name-component>
-			// &lt;name-component v-else>&lt;/name-component>
+			//в файле main.js всё то же самое, подключён только App.vue
+			// import Vue from 'vue';
+			// import App from './App.vue';
 
-			<span class="vue-b">в зависимости от переменной status будет отображаться тот или иной компонент</span>
+			// Vue.config.productionTip = false;
+
+			// new Vue ....
 		</pre>
 	</div>
-	<p>Второй вариант это через тег <b>component</b>. Подставляем просто имя компонента и он отобразится. Точно синтаксис пока не знаю, узнаю, допишу.</p>
-	<p>3й способ это использование директивы <b>v-show</b>. При ней компонент выключается с помощью display: none. При <b>v-if</b> компонент удаляется из DOM дерева.</p>
+	<p>Затем сам компонент App.vue. Одно уточнение, <b>у всех помпонентов должен быть корневой элемент</b>:</p>
+	<div class="code-style">
+		<pre>
+			&lt;template>
+				&lt;div class="root">
+					&lt;input type="text" v-model="name">
+					&lt;hr>
+					&lt;p>Привет, {{ name }}&lt;/p>
+					&lt;p>Мы вам направили письмо, {{ name }}&lt;/p>
+				&lt;/div>
+			&lt/template
 
+			&lt;script>
+				export default{
+					data(){
+						return{
+							name: 'Имя'
+						}
+					}
+				}
+			&lt;/script>
+
+			&lt;style scoped>
+
+			&lt;/sctyle>
+		</pre>
+	</div>
+	<p>Разработали что то таким способом, затем после команды <b>npm run build</b> мы получим несколько файлов js, которые уже содержат и наш код и Vue. Встраиваем эти файлы на сайт и укажем для main.js ещё на стадии разработки элемент на сайте, в который будем встраивать наш компонент. Если не понятно как куда и какие файлы встраивать на сайт, то смотрим в папке dist в файл index.html, как и куда там вставленны собранные js файлы. Этот способ разработки считается, что мы использовали Vue на половину как библотеку.</p>
+	
+	<p><b>Если же использовать Vue как полноценный фреймворк, то мы должны весь сайт превратить в SPA и разрабатывать все компоненты сайта на Vue</b></p>
+
+
+
+
+
+
+
+
+
+
+	<h3 class="header-style2" id="3">Как подключить BootstrapVue к нам в проект.</h3>
+	<p>Ну во-первых вот сайт BootstrapVue - https://bootstrap-vue.org/. Там в принципе всё описанно, но повторю тут. Устанавливаем через консоль, находясь в папке проекта, командой <b>npm i bootstrap-vue --save</b> локально. Затем в файле main.js пишем так:</p>
+	<div class="code-style">
+		<pre>
+			import Vue from 'vue';
+			import App from './App.vue';
+
+			import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+
+			// Import Bootstrap and BootstrapVue CSS files (order is important)
+			import 'bootstrap/dist/css/bootstrap.css';
+			import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+			// Make BootstrapVue available throughout your project
+			Vue.use(BootstrapVue);
+			// Optionally install the BootstrapVue icon components plugin
+			Vue.use(IconsPlugin);
+
+			Vue.config.productionTip = false;
+
+			new Vue ....
+		</pre>
+	</div>
+	<p>Но так мы пишем, если подключаем весь полностью BootstrapVue и его иконки. Даже можно подключть только 2 строки с файлами css и всё, бустрап стили будут работать:</p>
+	<div class="code-style">
+		<pre>
+			import Vue from 'vue';
+			import App from './App.vue';
+
+			// Import Bootstrap and BootstrapVue CSS files (order is important)
+			import 'bootstrap/dist/css/bootstrap.css';
+			import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+			Vue.config.productionTip = false;
+
+			new Vue ....
+		</pre>
+	</div>
+	<p>В чём разница подключения вот таким способом бутстрапа? Ведь мы можем зайти в файл index.html и там в теге head подключить через CDN обычный бутсрап? Разница в том, что обычный использует в js файлах - jQuery, а этот уже использует Vue.</p>
+	<p>Как пользоваться этим бутстрапом? Заходим на сайт, который я выше написал, жмём на кнопку GetStarted и слева как и у обычного бустрапа у нас меню из разных плюшек, заходим в компоненты и выбираем Modal, прокручиваем в самый низ страницу и там описано как подключить к нам в разработку только этот модуль Modal, там будет написано:</p>
+	<div class="code-style">
+		<pre>
+			import Vue from 'vue';
+			import App from './App.vue';
+			import { BModal } from 'bootstrap-vue';
+
+			import 'bootstrap/dist/css/bootstrap.css';
+			import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+			Vue.component('b-modal', BModal)
+
+			Vue.config.productionTip = false
+
+			new Vue({
+				render: h => h(App),
+			}).$mount('#app')
+		</pre>
+	</div>
+	<p>Как видно тут мы подключаем только 1 модуль из всего BootstrapVue</p>
+	<p>Вставляем этот код к нам в файл main.js. Всё, теперь у нас в распоряжении есть компонент модального окна. Не нужно самому его изобретать. Идём в наш компонент App.vue и где нибудь внизу пишем тег для этого нового компонента</p>
+	<div class="code-style">
+		<pre>
+			&lt;template>
+				&lt;div class="root">
+					&lt;input type="text" v-model="name">
+					&lt;hr>
+					&lt;p>Привет, {{ name }}&lt;/p>
+					&lt;p>Мы вам направили письмо, {{ name }}&lt;/p>
+					&lt;button type="button" class="btn btn-success"
+						v-on:click="confirmForm = !confirmForm">
+						Модальное окно
+					&lt;/button>
+					<span class="vue-g">&lt;b-modal id="modal-1" title="BootstrapVue" v-model="confirmForm">
+						&lt;p>Я внутри компонента b-modal&lt;/p>
+					&lt;/b-modal></span>
+				&lt;/div>
+			&lt/template
+
+			&lt;script>
+				export default{
+					data(){
+						return{
+							confirmForm: false,
+							name: 'Имя'
+						}
+					}
+				}
+			&lt;/script>
+
+			&lt;style scoped>
+
+			&lt;/sctyle>
+		</pre>
+	</div>
+	<p>По клику на кнопку мы меняем значение переменной confirmForm на true и видим модальное окно. Почему мы отображаем окно через директиву v-model я пока не знаю. Обычно эта директива делает двунаправленную связь переменной с такими элементами как input, textarea, select.</p>
+
+
+
+
+
+
+
+
+
+
+	<h3 class="header-style2" id="4">Что такое предотрисовка или отрисовка на стороне сервера(SSR - Server Side Rendering)</h3>
+	<p>Предположим мы написали интернет магазин полностью на Vue, всё хорошо, мы не мучаем пользователя разными переходами по страницам, всё открывается красиво на одной странице. Переходим на страницу товара с помощью Vue-rooter, открываем исходный код(Правая кнопка мыши - Посмотреть код страницы) и видим в теле страницы body только корневой элемент #app и больше ничего. Роботам поисковиков нечего индексировать, это одна из проблем SPA приложений. Есть 3 выхода из такой ситуации: 1. это забить на SEO и индексацию, 2. предотрисовка содержимого, 3. отрисовка содержимого на стороне сервера.</p>
+	<p>1. <b>Забить на SEO</b> для инренет магазина нельзя. Когда же можно это сделать, тогда когда интернет магазин написан нормально как обычный сайт, а вот его админка или что то в этом роде написана на Vue. Индексировать личный кабинет в принципе не надо.</p>
+	<p>2. <b>Предотрисовка содержимого(prerendering)</b>. Представим у нас есть сайт из 5 страниц сделанный как SPA и на этом сайте не планируется менять содержимое часто. В таком случае используется предотрисовка, это специальный плагин webpack, который компилирует эти 5 страниц в реальные 5 html файлов, т.е. сборщик у себя где то в памяти выполнил сборку всех компонентов, выполнил весь js код и превратил всё это в чистые html файлы. Всё это делается на сервере, имитируются 5 файлов Html, происходит их индексация и эти файлы снова перезатираются через Vue. Пока для меня это трудно понять, как это всё происходит. Как вообще на стороне сервера работает webpack, если это сборщик в ноде. Короче узнаю подробней, допишу. А дальше немного дослушал и Лаврик говорит, что предотрисовка нормально будет работать только если сервер на Node.js и эту отрисовку можно как то включить в webpack, чтобы они отрисовывала на сервере. Но это всё будет работать если данные в сайте меняются редко.</p>
+	<p>3. <b>Отрисовка на стороне сервера(SSR)</b>. И тут есть одна большая подстава. Нужен сервак с установленным на нём Node.js, ведь также нужно как и в предыдущем примере(хотя чем они отличаются пока не понятно) скомпилировать в html файлы содержимое запакованное в webpack.</p>
 </div>
