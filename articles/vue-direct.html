@@ -831,18 +831,18 @@
         <pre>
             HTML:
                 &lt;select v-model="selected">
-                &lt;option disabled value="">Выберите один из вариантов&lt;/option>
-                &lt;option>А&lt;/option>
-                &lt;option>Б&lt;/option>
-                &lt;option>В&lt;/option>
+                    &lt;option disabled value="">Выберите один из вариантов&lt;/option>
+                    &lt;option>А&lt;/option>
+                    &lt;option>Б&lt;/option>
+                    &lt;option>В&lt;/option>
                 &lt;/select>
                 &lt;span>Выбрано: {{ selected }}&lt;/span>
             JS:
                 new Vue({
-                el: '...',
-                data: {
-                    selected: ''
-                }
+                    el: '...',
+                    data: {
+                        selected: ''
+                    }
                 })
         </pre>
     </div>
@@ -862,18 +862,18 @@
         <pre>
             HTML:
                 &lt;select v-model="selected" multiple>
-                &lt;option>А&lt;/option>
-                &lt;option>Б&lt;/option>
-                &lt;option>В&lt;/option>
+                    &lt;option>А&lt;/option>
+                    &lt;option>Б&lt;/option>
+                    &lt;option>В&lt;/option>
                 &lt;/select>
                 &lt;br>
                 &lt;span>Выбрано: {{ selected }}&lt;/span>
             JS:
                 new Vue({
-                el: '...',
-                data: {
-                    selected: []
-                }
+                    el: '...',
+                    data: {
+                        selected: []
+                    }
                 })
         </pre>
     </div>
@@ -885,22 +885,22 @@
         <pre>
             HTML:
                 &lt;select v-model="selected">
-                &lt;option v-for="option in options" v-bind:value="option.value">
-                    {{ option.text }}
-                &lt;/option>
+                    &lt;option v-for="option in options" v-bind:value="option.value">
+                        {{ option.text }}
+                    &lt;/option>
                 &lt;/select>
                 &lt;span>Выбрано: {{ selected }}&lt;/span>
             JS:
                 new Vue({
-                el: '...',
-                data: {
-                    selected: 'А',
-                    options: [
-                    { text: 'Один', value: 'А' },
-                    { text: 'Два', value: 'Б' },
-                    { text: 'Три', value: 'В' }
-                    ]
-                }
+                    el: '...',
+                    data: {
+                        selected: 'А',
+                        options: [
+                        { text: 'Один', value: 'А' },
+                        { text: 'Два', value: 'Б' },
+                        { text: 'Три', value: 'В' }
+                        ]
+                    }
                 })
     </pre>
     </div>
