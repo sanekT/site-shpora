@@ -120,31 +120,79 @@
 
     <h3 class="header-style2">Методы-наблюдатели(слежение)</h3>
     <p>Хотя в большинстве случаев лучше использовать вычисляемые свойства, иногда необходимы пользовательские методы-наблюдатели. Поэтому Vue предоставляет более общий способ реагирования на изменения в данных через опцию watch. Эта возможность полезна для «дорогих» или асинхронных операций, выполняемых в ответ на изменение данных.</p>
-    <p>Свойство watch отслеживает изменения в выбранном свойстве, например есть select с опциями, через v-model мы записываем в свойство prop значения выбранной опции. И теперь будем отслеживать свойство prop через watch и выводить на экран то что лежит в prop. Для этого надо отслеживаемое свойство сделать методом: </p>
+    <p>Свойство watch отслеживает изменения в выбранном свойстве(модели), например есть select с опциями, через v-model мы записываем в свойство prop значения выбранной опции. И теперь будем отслеживать свойство prop через watch и выводить на экран то что лежит в prop. Для этого надо отслеживаемое свойство сделать методом: </p>
     <div class="code-style">
     <pre>
+    &lt;template>
         &lt;div class="wrapper">
-          &lt;select v-model="prop">
-			&lt;option value="all">Все&lt;/option>
-			&lt;option value="compieted">Завершённые&lt;/option>
-			&lt;option value="not-completed">Не завершённые&lt;/option>
-		  &lt;/select>
+            &lt;select v-model="valueOption">
+                &lt;option value="all">Все&lt;/option>
+                &lt;option value="compieted">Завершённые&lt;/option>
+                &lt;option value="not-completed">Не завершённые&lt;/option>
+            &lt;/select>
         &lt;/div>
-       
+    &lt;/template>
 
-        new Vue({
-            el: '.wrapper',
-            data: {
-                prop: 'all'
-            },
-            watch: {
-                prop(value){
-                    console.log(value);
-                }
+    &lt;script>
+    export default{
+        data() {
+            return {
+                valueOption: 'all'
             }
-        });
+        },
+        watch: {
+            //при отслеживании модели valueOption нам внутри метода доступны 2 параметра: newValue и oldValue. В них соответственно лежит
+            //новое значение и старое
+            prop(newValue){
+                console.log(newValue);
+            }
+        }
+    }
+    &lt;/script>
     </pre>
     </div>
+    <p>Как отслеживать объекты, внутри которых изменяются поля. Если мы будем следить за объектом и менять внутри него поля, то наблюдение не будет срабатывать, потому как меняется не сам объект, а его внутренности. Для этого есть такой синтаксис, при котором наша отслеживаемая модель становится не функцией, а объектом, внутри которой объявляем метод handler, этот метод и будет выполняться при изменении модели, и поле deep со значением true, котрое говорит, что нужно глубоко отслеживать изменения в модели:</p>
+    <div class="code-style">
+    <pre>
+    &lt;template>
+        &lt;div id="app">
+            &lt;button @click="writeTitle">Записать в заголовок&lt;/button>
+            &lt;button @click="writeBody">Записать в описание&lt;/button>
+            &lt;div>{{obj.title}}&lt;/div>
+        &lt;/div>
+    &lt;/template>
+
+    &lt;script>
+    export default{
+        data() {
+            return {
+                obj: {
+                    title: '',
+                    body: ''
+                }
+            }
+        },
+        methods: {
+            writeTitle(){
+                this.obj.title = Date.now();
+            },
+            writeBody(){
+                this.obj.body = Date.now();
+            }
+        },
+        watch: {
+            obj: {
+                handler(newValue){
+                    console.log(newValue)
+                },
+                deep: true
+            }
+        }
+    }
+    &lt;/script>
+    </pre>
+    </div>
+    <p>Теперь когда мы будем менять в модели obj любое его поле, хоть title, хоть body нажимая по соответствующим кнопкам, то у нас в консоль будет выводиться примерно такое - Proxy {title: 1664992265877, body: 1664992262629}, т.е. будет выводится вся модель obj обёрнутая в Proxy</p>
 
 
 
