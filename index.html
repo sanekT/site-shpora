@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Шпаргалка</title>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
@@ -25,10 +25,20 @@
         
 <!--           SIDEBAR-->
             <section class="sidebar total-block">
-		<span class="sidebar__index">На главную</span>
+                <span class="sidebar__index">На главную</span>
                 <ul class="sidebar__list">
+                    <li data-tech="1c"><span class="sidebar__folder-close"></span><div class="v-aligne">1С</div>
+                        <ul class="sidebar__list2">
+                            <li data-arc="base-propramm">Основы программирования</li>
+                        </ul>
+                    </li>
+
+
+
+
                     <li data-tech="html"><span class="sidebar__folder-close"></span><div class="v-aligne">HTML</div>
                         <ul class="sidebar__list2">
+                            <li data-arc="fonts">Виды шрифтов и их подключения</li>
                             <li data-arc="semantic-tags">Семантические теги</li>
                             <li data-arc="meta-info">Meta информация</li>
                             <li data-arc="file-reference">Тег &lt;a&gt;, ссылка на файл, ссылка-якорь</li>
@@ -56,20 +66,20 @@
                             <li data-arc="portfolio">Советы по портфолио</li>
                         </ul>
                     </li>
-			
-			
-		    <li data-tech="adaptive"><span class="sidebar__folder-close"></span><div class="v-aligne">Адаптив сайта</div>
+
+
+                    <li data-tech="adaptive"><span class="sidebar__folder-close"></span><div class="v-aligne">Адаптив сайта</div>
                         <ul class="sidebar__list2">
                             <li data-arc="info">Заметки о адаптивной и резиновой вёрстке</li>
                         </ul>
                     </li>
-			
-			
-		    <li data-tech="git"><span class="sidebar__folder-close"></span><div class="v-aligne">Git</div>
+
+
+                    <li data-tech="git"><span class="sidebar__folder-close"></span><div class="v-aligne">Git</div>
                         <ul class="sidebar__list2">
                             <li data-arc="base">Основы git</li>
                         </ul>
-                    </li>			
+                    </li>
                     
                     
                     <li data-tech="flex"><span class="sidebar__folder-close"></span><div class="v-aligne">Flexbox</div>
@@ -112,11 +122,12 @@
                     
                     <li data-tech="js"><span class="sidebar__folder-close"></span><div class="v-aligne">JavaScript</div>
                         <ul class="sidebar__list2">
-                           <li data-arc="es6">ES6. Что нового?</li>
-			   <li data-arc="notes">Заметки по HTML, JS, CSS</li>
-                           <li data-arc="info">Базовые моменты из JS</li>
-                           <li data-arc="string">Строки</li>
-                           <li data-arc="obj-methods">Методы объектов</li>
+                            <li data-arc="inner-class">Разные встроенные классы JS и браузера</li>
+                            <li data-arc="es6">ES6. Смысл, фишки и подвохи</li>
+                            <li data-arc="notes">Заметки по HTML, JS, CSS</li>
+                            <li data-arc="info">Базовые моменты из JS</li>
+                            <li data-arc="string">Строки</li>
+                            <li data-arc="obj-methods">Методы объектов</li>
                             <li data-arc="arr-methods">Методы массивов</li>
                             <li data-arc="obj-to-primitive">Преобразование объектов в примитивы</li>
                             <li data-arc="task-solution">Решения различных задач</li>
@@ -137,16 +148,16 @@
                             <li data-arc="menu">Создание 3х уровневого меню на JS и CSS</li>
                         </ul>
                     </li>
-			
-			
-			
-			
-		    <li data-tech="vue"><span class="sidebar__folder-close"></span><div class="v-aligne">Vue.js</div>
+
+
+
+
+                    <li data-tech="vue"><span class="sidebar__folder-close"></span><div class="v-aligne">Vue.js</div>
                         <ul class="sidebar__list2">
-			    <li data-arc="include">Подключение Vue</li>
-			    <li data-arc="info">Разная инфа о Vue</li>
+                            <li data-arc="include">Подключение Vue.js</li>
+                            <li data-arc="info">Разная инфа о Vue</li>
                             <li data-arc="direct">Директивы</li>
-                            <li data-arc="computed-prop">Вычисляемые свойства и слежение</li>
+                            <li data-arc="computed-prop">Вычисляемые свойства, свойство computed</li>
                             <li data-arc="filter-prop">Работа с фильтрами, свойство filters</li>
                             <li data-arc="animation">Анимация во Vue</li>
                             <li data-arc="problems">Решения различных проблем, возникающие при разработке</li>
@@ -175,7 +186,7 @@
                     </li>
                     
                     
-                    <li data-tech="plugin"><span class="sidebar__folder-close"></span><div class="v-aligne">Плагины</div>
+                    <li data-tech="plugin"><span class="sidebar__folder-close"></span><div class="v-aligne">Плагины JS</div>
                         <ul class="sidebar__list2">
                            <li data-arc="plugins">Плагины</li>
                         </ul>
@@ -260,7 +271,7 @@
                         </ul>
                     </li>
                     
-                   
+                    
                     
                      <li data-tech="wp"><span class="sidebar__folder-close"></span><div class="v-aligne">Wordpress</div>
                         <ul class="sidebar__list2">
@@ -331,8 +342,8 @@
             
 <!--            MAINBAR-->
             <section class="mainbar total-block">
-		    
-		<p class="note">Если нужно на стороне сервера сделать небольшую задержку, то в php есть функция <b>sleep(4)</b>, она на 4 секунда задержит ответ.</p>
+            
+                <p class="note">Если нужно на стороне сервера сделать небольшую задержку, то в php есть функция <b>sleep(4)</b>, она на 4 секунда задержит ответ.</p>
              
                 <p class="note">Когда делал свой слайдер, то при частом клике по кнопкам вправо/влево сбивались подсчёты сдвига слайдов, потому что ещё не закончилась анимация сдвига слайда кликал снова и подсчёты нарушались. Исправил тем, что задал флаг для анимации и поставил его в false, при клике по кнопке я проверяю, чтобы фдаг был false, значит можно выполнить действия, выполнял действия и ставил флаг в положение true. Затем вешаем событие transitionend на тот блок, который анимируется, в моём случае это обёртка слайдов и в обработчике этого события обратно ставим флаг в положение false, это значит что кликая много раз на кнопку ничего не произойдёт, пока анимация не закончится, как только она закончилать флаг меняется и снова можно произвести действия по клику.</p>
 
@@ -345,7 +356,7 @@
                <p class="note">Meta теги, которые учитывает Google - <a href="https://developers.google.com/search/docs/advanced/crawling/special-tags?visit_id=637462475475641367-4005245714&rd=1">тут</a></p>
                <p class="note">У slick слайдера есть событие afterChange, вот тут его <a href="https://github.com/kenwheeler/slick#events">описание</a>. Без разницы как прокручивается слайдер, по клику на стрелки или перетаскиванием мыши, обработчик этого события предоставляет нам переменные текущего слайда, следущего слайда, варианты разные. Записываю это, потому что нужно было чтобы при прокрутке сладера, получить информацию из текущего элемента и дальше уже использовать эту информацию в своих целях.</p>
                <p class="note">Посмотреть и разобраться со слайдером swiper на чистом js. <a href="https://swiperjs.com/">Тут</a></p>
-               <p class="note">Чтобы подключить шрифты гугл по cdn, то вот <a href="https://fonts.google.com/">тут</a>(<b>google fonts</b>). Чтобы скачать шрифты в проект то <a href="https://google-webfonts-helper.herokuapp.com/fonts">тут</a>(<b>google fonts helper</b>). Также у гугл есть шрифтовые иконки по типу FontAwesome, чтобы их подключить пишем в теге head html файла такую ссылку &lt;link href="https://fonts. googleapis.com/icon?family=Material+Icons" rel="stylesheet">, можно перейти на их сайт - https://fonts.google.com/ icons?selected=Material+Icons и там выбрать иконки, справа от иконок будет показан тег span и при выборе иконки будт показан класс для этого тега и слово, которое надо вписать в этот тег.</p>
+               <p class="note">Чтобы подключить шрифты гугл по cdn, то вот <a href="https://fonts.google.com/">тут</a>(<b>google fonts</b>). Чтобы скачать шрифты в проект то <a href="https://google-webfonts-helper.herokuapp.com/fonts">тут</a>(<b>google fonts helper</b>). Также у гугл есть шрифтовые иконки по типу FontAwesome, чтобы их подключить пишем в теге head html файла такую ссылку &lt;link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">, можно перейти на их сайт - https://fonts.google.com/icons?selected=Material+Icons и там выбрать иконки, справа от иконок будет показан тег span и при выборе иконки будт показан класс для этого тега и слово, которое надо вписать в этот тег.</p>
                <p class="note">Когда я пытался сделать для мобильного меню плавное заезжание и выезжание, т.е. плавное изменение высоты списка ul, то высота менялась у списка, а пункты меню не скрывались. Надо просто когда меняю высоту у списка, задать этому списку <b>overflow: hidden</b> и ещё убирать padding, иначе они мешают. А добавлять падинги уже через js.</p>
                <p class="note">Посмотреть у Минина видео о плагине Quokka, он ускоряет разработку на js.</p>
                <p class="note">Посмотреть у Минина 4х часовое видео о графиках на Canvas</p>
