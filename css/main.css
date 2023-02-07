@@ -69,10 +69,10 @@ table td{
     padding-left: 40px;
 }
 .vue-b{
-    color: #2973b7;
+    color: #258BD3;
 }
 .vue-r{
-    color: red;
+    color: #D24C15;
 }
 .vue-g{
     color: forestgreen;
@@ -80,8 +80,11 @@ table td{
 .vue-or{
     color: orange;
 }
+.vue-bl{
+    color: #818181;
+}
 .code-style{
-    width: 96%;
+    width: 100%;
     background: #f9f9f9 url(../img/bg-for-code.png);
     font-family: monospace;
     padding: 10px 0;
@@ -178,7 +181,8 @@ table td{
 }
 .mainbar p {
     margin: 10px 0 0 10px;
-    line-height: 1.7;
+    line-height: 1.3;
+    font-size: 14px;
 }
 .mainbar .list {
     line-height: 1.7;
@@ -233,6 +237,23 @@ iframe{
     margin-left: 45px;
     /* font-family: "Ubuntu", sans-serif; */
     font-family: "PT Mono", sans-serif;
+    font-size: 14px;
+}
+.list > li{
+    line-height: 1.3;
+}
+.list2{
+    margin-left: 45px;
+    font-family: "PT Mono", sans-serif;
+    font-size: 12px;
+}
+.list2 > li > a{
+    padding: 0px 10px;
+    background-color: #73d9fb;
+    margin: 3px;
+}
+.list2 > li > a:hover{
+    background-color: #77b7cc;
 }
 
 
@@ -241,8 +262,6 @@ iframe{
 .screen{
     display: block;
     margin: 6px auto 40px auto;
-    border: 7px solid grey;
-    border-radius: 5px;
     width: 95%;
 }
 /*для скриншотов которые меньше ширины контейнера*/
@@ -252,6 +271,12 @@ iframe{
     border: 7px solid grey;
     border-radius: 5px;
     width: auto;
+}
+.screen-3{
+    display: block;
+    margin: 0 auto;
+    margin-left: 78px;
+    width: 96%;
 }
 
 
