@@ -80,17 +80,31 @@ table td{
 .vue-or{
     color: orange;
 }
+.vue-d-b{
+    color: #00a59d;
+    font-weight: 600;
+}
+.vue-lg{
+    color: #2ab119;
+}
 .vue-bl{
     color: #818181;
 }
 .code-style{
     width: 100%;
     background: #f9f9f9 url(../img/bg-for-code.png);
-    font-family: monospace;
+    /* font-family: monospace; */
+    font-family: 'PT Mono' !important;
     padding: 10px 0;
     border-radius: 6px;
     overflow: scroll;
     margin: 15px 0;
+    font-size: 14px;
+    line-height: 1.7;
+}
+.code-style > pre{
+    font-family: 'PT Mono' !important; 
+    margin-left: -80px;
 }
 
 
@@ -255,6 +269,9 @@ iframe{
 .list2 > li > a:hover{
     background-color: #77b7cc;
 }
+.list-row > li{
+    display: inline-block;
+}
 
 
 
@@ -268,8 +285,6 @@ iframe{
 .screen-2{
     display: block;
     margin: 6px auto 40px auto;
-    border: 7px solid grey;
-    border-radius: 5px;
     width: auto;
 }
 .screen-3{
@@ -329,6 +344,12 @@ iframe{
     border: 1px solid black;
 }
 
+/*для мальких заголовков*/
+.mainbar .title-size16{
+    font-size: 16px;
+    margin-top: 20px;
+    text-align: center;
+}
 
 
 /*FOOTER*/
@@ -433,6 +454,12 @@ div.inner{
 @media (max-width: 483px) {
     .mainbar{
         width: 360px;
+    }
+    .code-style{
+        font-size: 11px;
+    }
+    .code-style > pre{
+        margin-left: -65px;
     }
 }
 @media (max-width: 405px) {
