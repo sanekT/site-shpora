@@ -6,7 +6,17 @@
 
     <h3 class="header-style2"></h3>
     <ul class="list">
-        <li><a href="#tab-doc"><b>Табличный документ</b>. Программная работа с табличным документом</a></li>
+        <li><a href="#tab-doc"><b>Табличный документ</b>. Программная работа с табличным документом</a>
+            <ul class="list2">
+                <li><a href="#1">Получение ячеек/ячейки для дальнейшей работы с ними</a></li>
+                <li><a href="#2">Устанавливаем рамку для ячеек</a></li>
+                <li><a href="#3">Устанавливаем отступы для ячейки</a></li>
+                <li><a href="#4">Устанавливаем цвет фона, рамки, текста, узора для ячейки</a></li>
+                <li><a href="#5">Устанавливаем шрифт ячейке</a></li>
+                <li><a href="#6">Устанавливаем ширину ячеек по содержимому</a></li>
+                <li><a href=""></a></li>
+            </ul>
+        </li>
         <li><a href=""><b></b></a></li>
         <li><a href=""><b></b></a></li>
         <li><a href=""><b></b></a></li>
@@ -20,7 +30,7 @@
 
     <h3 class="header-style2" id="tab-doc">Табличный документ</h3>
     <p>Есть реквизит формы "ТабДок" с типом данных "Табличный документ", с ним и будет работать.</p>
-    <p><b>Получение ячеек/ячейки для дальнейшей работы с ними</b></p>
+    <p><b id="1">Получение ячеек/ячейки для дальнейшей работы с ними</b></p>
     <p>Получить ячейку или ячейки табличного документа можно несколькими способами, мне известными:</p>
     <div class="code-style">
         <pre>
@@ -29,8 +39,8 @@
             //Эта область ячеек может содержать и всего одну ячейку. Возвращаемый тип - 
             //Есть две разновидности синтаксиса. Получение по имени и получение по адресу.
             //<span class="vue-v"><b>Получение по имени</b></span></span>
-            ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">&lt;Имя области></span><span class="vue-r">);</span>
-            <span class="vue-bl-2">Параметр: <span class="vue-r">&lt;Имя области></span> - обязательный. Нужно подставить имя области или адрес в виде "R1C1:R2C2",
+            ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span>&lt;Имя области><span class="vue-r">);</span>
+            <span class="vue-bl-2">Параметр: <span class="vue-b">&lt;Имя области></span> - обязательный. Нужно подставить имя области или адрес в виде "R1C1:R2C2",
             где ":"(двоеточие) разделяет координаты верхнего левого и правого нижнего угла области. В качестве имени области
             можно передавать пересечение двух областей - "&lt;Имя области 1>|&lt;Имя области 2>"
             Возвращаемый тип: <span class="vue-r">"ОбластьЯчеекТабличногоДокумента"</span>, <span class="vue-r">"РисунокТабличногоДокумента"</span></span>
@@ -45,7 +55,7 @@
 
             <span class="vue-g">//<span class="vue-v"><b>По адресу</b></span>. Не буду расписывать этот метод
             //потому, что ни разу не видел его применение, если понадобится, то в помошнике посмотреть</span>
-            ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">&lt;НомерПервойСтроки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;НомерПервойКолонки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;НомерПоследнейСтроки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;НомерПоследнейКолонки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;ФорматСтрок></span><span class="vue-r">);</span>
+            ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-b">&lt;НомерПервойСтроки></span><span class="vue-r">,</span><span class="vue-b">&lt;НомерПервойКолонки></span><span class="vue-r">,</span><span class="vue-b">&lt;НомерПоследнейСтроки></span><span class="vue-r">,</span><span class="vue-b">&lt;НомерПоследнейКолонки></span><span class="vue-r">,</span><span class="vue-b">&lt;ФорматСтрок></span><span class="vue-r">);</span>
 
 
 
@@ -72,7 +82,7 @@
         </pre>
     </div>
 
-    <p><b>Устанавливаем рамку для ячеек</b>.</p>
+    <p><b id="2">Устанавливаем рамку для ячеек</b>.</p>
     <div class="code-style">
         <pre>
             <span class="vue-b"><span class="vue-g">//Чтобы установить рамку для ячейки есть 4 свойства:
@@ -82,19 +92,87 @@
             //Объект класса Линия предназначен для определения и хранения параметров линии. Используется для определения
             //типов линии, используемых в объектах: <span class="vue-r">ОбластьЯчеекТабличногоДокумента</span>, <span class="vue-r">РисунокТабличногоДокумента</span>,
             //<span class="vue-r">ОбластьПостроенияДиаграммы</span>, а также в элементах графической схемы(свойства Рамка и Линия)
+
             //Сначала опишем как создать объект от класса Линия. Есть 2 конструктора: 
             //Для линии табличного документа:</span>
-            <span class="vue-r">Новый</span> Линия<span class="vue-r">(</span>&lt;ТипЛинии><span class="vue-r">,</span> &lt;Толщина><span class="vue-r">,</span> &lt;Отступ><span class="vue-r">);</span>
-            <span class="vue-bl-2">Параметр: <span class="vue-r">&lt;ТипЛинии</span> - обязательный. Тип линии. Тип параметра зависит от того, в каком объекте будет использоваться линия. Если выбран тип "ТипЛинииЯчейкиТабличногоДокумента", то толщина линии может быть только 1. 
-            Тип: <span class="vue-r">"ТипЛинииЯчейкиТабличногоДокумента"</span></span>
+            <span class="vue-r">Новый</span> Линия<span class="vue-r">(</span><span class="vue-b">&lt;ТипЛинии></span><span class="vue-r">,</span> <span class="vue-b">&lt;Толщина></span><span class="vue-r">,</span> <span class="vue-b">&lt;Отступ></span><span class="vue-r">);</span>
+            <span class="vue-bl-2">Параметр: <span class="vue-b">&lt;ТипЛинии></span> - обязательный. Тип линии. Тип параметра зависит от того, в каком объекте будет
+            использоваться линия. Если выбран тип "ТипЛинииЯчейкиТабличногоДокумента", то
+            толщина линии может быть только 1. 
+            Тип: <span class="vue-r">"ТипЛинииЯчейкиТабличногоДокумента"</span> - как я
+            понимаю это объект, который содержит несколько значений типов линий
+            ("БольшойПунктир", "Двойная", "НетЛинии"(по умолчанию), "РедкийПунктир",
+             "Сплошная", "Точечная", "ЧастыйПунктир")
+            Параметр: <span class="vue-b">&lt;Толщина></span> - необязательный. Если в параметре
+            <span class="vue-b">&lt;ТипЛинии></span> указано значение "НетЛинии", то наибольшая толщина линии - 1.
+            Тип: <span class="vue-r">Число</span>
+            Параметр: <span class="vue-b">&lt;Отступ></span> - необязательный. Отступ линии. Значение по умолчанию Ложь. При Истинарамка сдвигается внутр ячейки и углы становлятся с просветами. Прикольный вид у ячейки получается.</span>
+            <span class="vue-g">//Пример</span>
+            Ячейка <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R2C2"</span><span class="vue-r">);</span>
+            Линия <span class="vue-r">= Новый</span> Линия<span class="vue-r">(</span>ТипЛинииЯчейкиТабличногоДокумента<span class="vue-r">.</span>Сплошная<span class="vue-r">,</span> 1<span class="vue-r">,</span> <span class="vue-r">Истина);</span>
+            Ячейка<span class="vue-r">.</span>ГраницаСверху <span class="vue-r">=</span> Линия<span class="vue-r">;</span>
 
+            <span class="vue-g">//2й конструктор - Заданного типа и толщины</span>
+            <span class="vue-r">Новый</span> Линия<span class="vue-r">(</span><span class="vue-b">&lt;ТипЛинии></span><span class="vue-r">,</span> <span class="vue-b">&lt;Толщина></span><span class="vue-r">);</span>
+            <span class="vue-bl-2">Параметр: <span class="vue-b">&lt;ТипЛинии></span> - обязательный. Тип линии. Тип параметра зависит от того, в каком объекте будет
+            использоваться линия. Если выбран тип "ТипЛинииЯчейкиТабличногоДокумента", то
+            толщина линии может быть только 1. 
+            Тип: <span class="vue-r">"ТипЛинииРисункаТабличногоДокумента"</span>, <span class="vue-r">"ТипЛинииДиаграммы"</span>,
+            <span class="vue-r">"ТипЛинииГеографическойСхемы"</span>.
+            У объекта с типом "ТипЛинииРисункаТабличногоДокумента" есть следующие значения:
+            "НетЛинии", "Пунктир", "ПунктирТочка", "ПунктиТочкаТочка", "Сплошная", "Точечная". 
+            У остальных объектов точно такие же значения.</span>
+
+            <span class="vue-g">//общий пример установки границы</span>
+            Ячейка <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R2C2"</span><span class="vue-r">);</span>
+            Линия <span class="vue-r">= Новый</span> Линия<span class="vue-r">(</span>ТипЛинииЯчейкиТабличногоДокумента<span class="vue-r">.</span>Сплошная<span class="vue-r">,</span> 1<span class="vue-r">,</span> <span class="vue-r">Истина</span><span class="vue-r">)</span>;
+            Ячейка<span class="vue-r">.</span>ГраницаСверху <span class="vue-r">=</span> Линия<span class="vue-r">;</span>
+            Ячейка<span class="vue-r">.</span>ГраницаСправа <span class="vue-r">=</span> Линия<span class="vue-r">;</span>
+            Ячейка<span class="vue-r">.</span>ГраницаСнизу <span class="vue-r">=</span> Линия<span class="vue-r">;</span>
+            Ячейка<span class="vue-r">.</span>ГраницаСлева <span class="vue-r">=</span> Линия<span class="vue-r">;</span>
 
 
             </span>
         </pre>
     </div>
 
-    <p><b>Устанавливаем ширину ячеек по содержимому</b>.</p>
+    <p><b id="3">Устанавливаем отступ для ячейки</b>.</p>
+    <p>Тут всё просто:</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b">Ячейка <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R1C1"</span><span class="vue-r">);</span>
+            
+            <span class="vue-g">//свойство Отступ это как красная строкая для начала абзаца, 
+            //это свойство, в одинковом значении со свойством ОтступСлева, чуть меньше</span>
+            Ячейка<span class="vue-r">.</span>Отступ <span class="vue-r">=</span> 1<span class="vue-r">;</span>
+            Ячейка<span class="vue-r">.</span>ОтступСверху <span class="vue-r">=</span> 3<span class="vue-r">;</span>
+            Ячейка<span class="vue-r">.</span>ОтступСправа <span class="vue-r">=</span> 3<span class="vue-r">;</span>
+            Ячейка<span class="vue-r">.</span>ОтступСнизу <span class="vue-r">=</span> 3<span class="vue-r">;</span>
+            Ячейка<span class="vue-r">.</span>ОтступСлева <span class="vue-r">=</span> 3<span class="vue-r">;</span></span>
+        </pre>
+    </div>
+
+    <p><b id="4">Устанавливаем цвет фона, рамки, текста, узора для ячейки</b>.</p>
+    <p>Для установки цветов есть 4 одноимённых свойства. Эти свойства как читают так и устанавливают цвет. Чтобы установить цвет, нужен объект от класса Цвет.</p>
+    <p>Есть 2 конструктора для создания объекта от класса Цвет. Один по умолчанию(Новый Цвет()), который по умолчанию установит белый цвет и второй по значениям(Новый Цвет(&lt;Красный>, &lt;Зелёный>, &lt;Синий>)).</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b"><span class="vue-g">//установка цветов рамки, фона, текста, узора</span>
+            Ячейка<span class="vue-r">.</span>ЦветРамки <span class="vue-r">= Новый</span> Цвет<span class="vue-r">(</span>255<span class="vue-r">,</span> 255<span class="vue-r">,</span> 255<span class="vue-r">);</span>
+            Ячейка<span class="vue-r">.</span>ЦветТекста <span class="vue-r">= Новый</span> Цвет<span class="vue-r">(</span>50<span class="vue-r">,</span> 50<span class="vue-r">,</span> 50<span class="vue-r">);</span>
+            Ячейка<span class="vue-r">.</span>ЦветФона <span class="vue-r">= Новый</span> Цвет<span class="vue-r">();</span>
+            Ячейка<span class="vue-r">.</span>ЦветУзора <span class="vue-r">= Новый</span> Цвет<span class="vue-r">(</span>180<span class="vue-r">,</span> 180<span class="vue-r">,</span> 180<span class="vue-r">);</span>
+            КакойЦвет <span class="vue-r">=</span> Ячейка<span class="vue-r">.</span>ЦветТекста<span class="vue-r">;</span>
+            <span class="g">//Переменная КакойЦвет теперь содержит объект класса Цвет
+            //и имеет 4 свойства: Вид, Красный, Зеленый, Синий</span>
+            </span>
+        </pre>
+    </div>
+
+    <p><b id="5">Устанавливаем шрифт</b>.</p>
+    <p>Для установки шрифта ячейке есть свойство Шрифт. Не буду описывать его, можно в помошнике почитать, вроде всё там понятно написанно.</p>
+
+    <p><b id="6">Устанавливаем ширину ячеек по содержимому</b>.</p>
     <p>Я пока не нашёл как из коробки 1С сделать так, чтобы ячейка растягивалась по содержимому в ней тексту. Поэтому написал свою логику как растягивать ячейки. Смысл логики в том, что считаются символы в тексте и по количеству символов устанавливается ширина ячейки.</p>
     <div class="code-style">
         <pre>
