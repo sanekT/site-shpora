@@ -1,0 +1,106 @@
+<div class="wrap">
+   
+    <h2 class="header-style">Общие объекты в 1С</h2>
+
+    <p>Тут буду по возможности описывать общие объекты 1С</p>
+
+    <h3 class="header-style2"></h3>
+    <ul class="list">
+        <li><a href="#tab-doc"><b>Табличный документ</b>. Программная работа с табличным документом</a></li>
+        <li><a href=""><b></b></a></li>
+        <li><a href=""><b></b></a></li>
+        <li><a href=""><b></b></a></li>
+        <li><a href=""><b></b></a></li>
+        <li><a href=""><b></b></a></li>
+
+    </ul>
+
+
+
+
+    <h3 class="header-style2" id="tab-doc">Табличный документ</h3>
+    <p>Есть реквизит формы "ТабДок" с типом данных "Табличный документ", с ним и будет работать.</p>
+    <p><b>Получение ячеек/ячейки для дальнейшей работы с ними</b></p>
+    <p>Получить ячейку или ячейки табличного документа можно несколькими способами, мне известными:</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b"><span class="vue-g">Первый способ.
+            //у ТД есть метод <span class="vue-v"><b>Область()</b></span>. Он возвращает область ячеек, либо рисунок в указанным именем.
+            //Эта область ячеек может содержать и всего одну ячейку. Возвращаемый тип - 
+            //Есть две разновидности синтаксиса. Получение по имени и получение по адресу.
+            //<span class="vue-v"><b>Получение по имени</b></span></span>
+            ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">&lt;Имя области></span><span class="vue-r">);</span>
+            <span class="vue-bl-2">Параметр: <span class="vue-r">&lt;Имя области></span> - обязательный. Нужно подставить имя области или адрес в виде "R1C1:R2C2",
+            где ":"(двоеточие) разделяет координаты верхнего левого и правого нижнего угла области. В качестве имени области
+            можно передавать пересечение двух областей - "&lt;Имя области 1>|&lt;Имя области 2>"
+            Возвращаемый тип: <span class="vue-r">"ОбластьЯчеекТабличногоДокумента"</span>, <span class="vue-r">"РисунокТабличногоДокумента"</span></span>
+            <span class="vue-g">//Примеры</span>
+            ИменованнаяОбласть <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"Шапка"</span><span class="vue-r">);</span>
+            Ячейка <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R2C5"</span><span class="vue-r">);</span>
+            ПрямоугольнаяОбластьЯчеек <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R2C2:R3C5"</span><span class="vue-r">);</span>
+            ОбластьСтрока <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R2"</span><span class="vue-r">);</span>
+            ОбластьСтрок <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R2:R4"</span><span class="vue-r">);</span>
+            ОбластьКолонка <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"C4"</span><span class="vue-r">);</span>
+            ОбластьКолонок <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"C4:C5"</span><span class="vue-r">);</span>
+
+            <span class="vue-g">//<span class="vue-v"><b>По адресу</b></span>. Не буду расписывать этот метод
+            //потому, что ни разу не видел его применение, если понадобится, то в помошнике посмотреть</span>
+            ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">&lt;НомерПервойСтроки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;НомерПервойКолонки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;НомерПоследнейСтроки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;НомерПоследнейКолонки></span><span class="vue-r">,</span> <span class="vue-bl">&lt;ФорматСтрок></span><span class="vue-r">);</span>
+
+
+
+
+            <span class="vue-g">Второй способ.
+            //можно получить активную текущую область из табличного документа с 
+            //помощью свойства <span class="vue-v"><b>ТекущаяОбласть</b></span>. 
+            //Свойство может и читать и записывать. Тип: <span class="vue-r">"ОбластьЯчеекТабличногоДокумента"</span></span>
+            ТекущаяОбласть <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ТекущаяОбласть<span class="vue-r">;</span>
+            ТабДок<span class="vue-r">.</span>ТекущаяОбласть <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>Область<span class="vue-r">(</span><span class="vue-bl">"R1C1"</span><span class="vue-r">);</span>
+
+
+
+
+            <span class="vue-g">Третий способ.
+            //Этот способ по синтаксису такой же как метод Область(), только возвращает 
+            //тип "ТабличныйДокумент", а не "ОбластьЯчеекТабличногоДокумента" 
+            //используется метод <span class="vue-v"><b>ПолучитьОбласть()</b></span> 
+            //Описывать синтаксис не буду, там тоже самое, что и для метода Область() 
+            //Пример: </span>
+            Макет <span class="vue-r">=</span> Документы<span class="vue-r">.</span>РасходнаяНакладная<span class="vue-r">.</span>ПолучитьМакет<span class="vue-r">(</span><span class="vue-bl">"Накладная"</span><span class="vue-r">);</span>
+            Шапка <span class="vue-r">=</span> Макет<span class="vue-r">.</span>ПолучитьОбласть<span class="vue-r">(</span><span class="vue-bl">"Шапка"</span><span class="vue-r">);</span>    
+            </span>
+        </pre>
+    </div>
+
+    <p><b>Устанавливаем рамку для ячеек</b>.</p>
+    <div class="code-style">
+        <pre>
+            <span class="vue-b"><span class="vue-g">//Чтобы установить рамку для ячейки есть 4 свойства:
+            //<span class="vue-v"><b>ГраницаСверху</b></span>, <span class="vue-v"><b>ГраницаСправа</b></span>, <span class="vue-v"><b>ГраницаСнизу</b></span>, <span class="vue-v"><b>ГраницаСлева</b></span>
+            //Эти свойства как устанавливают границу, так и возвращают. Возвращаемый тип: <span class="vue-r">Линия</span>
+            //Чтобы установить границу, нужно создать объект от класса <span class="vue-v"><b>Линия</b></span> и присвоить этот объект свойству
+            //Объект класса Линия предназначен для определения и хранения параметров линии. Используется для определения
+            //типов линии, используемых в объектах: <span class="vue-r">ОбластьЯчеекТабличногоДокумента</span>, <span class="vue-r">РисунокТабличногоДокумента</span>,
+            //<span class="vue-r">ОбластьПостроенияДиаграммы</span>, а также в элементах графической схемы(свойства Рамка и Линия)
+            //Сначала опишем как создать объект от класса Линия. Есть 2 конструктора: 
+            //Для линии табличного документа:</span>
+            <span class="vue-r">Новый</span> Линия<span class="vue-r">(</span>&lt;ТипЛинии><span class="vue-r">,</span> &lt;Толщина><span class="vue-r">,</span> &lt;Отступ><span class="vue-r">);</span>
+            <span class="vue-bl-2">Параметр: <span class="vue-r">&lt;ТипЛинии</span> - обязательный. Тип линии. Тип параметра зависит от того, в каком объекте будет использоваться линия. Если выбран тип "ТипЛинииЯчейкиТабличногоДокумента", то толщина линии может быть только 1. 
+            Тип: <span class="vue-r">"ТипЛинииЯчейкиТабличногоДокумента"</span></span>
+
+
+
+            </span>
+        </pre>
+    </div>
+
+    <p><b>Устанавливаем ширину ячеек по содержимому</b>.</p>
+    <p>Я пока не нашёл как из коробки 1С сделать так, чтобы ячейка растягивалась по содержимому в ней тексту. Поэтому написал свою логику как растягивать ячейки. Смысл логики в том, что считаются символы в тексте и по количеству символов устанавливается ширина ячейки.</p>
+    <div class="code-style">
+        <pre>
+
+        </pre>
+    </div>
+
+
+</div>
