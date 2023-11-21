@@ -463,55 +463,139 @@
 
 
     <h2 class="header-style" id="xlsx">Читаем файл Excel</h2>
+    <p><b>Пример 1</b></p>
     <p>Существует также несколько способов читать excel файл. Мы рассмотрим только один способ, который использует для чтения файла класс встроенного языка - ТабличныйДокумент. У класса есть метод <span class="vue-b">Прочитать()</span>, который позволяет прочитать данные в том числе и из формата excel. <span class="vue-r">Особенность этого метода в том, что он доступен только на сервере</span>.</p>
     <p>Также у класса есть метод - <span class="vue-b">ПолучитьОбласть()</span>, который получает данные табличного документа по указанному адресу, например, "R1C2" - 1я строка, 2я колонка.</p>
     <p>Есть свойство <span class="vue-b">ВысотаТаблицы</span>, которое позволяет получить количество строк в считанном файле.</p>
     <div class="code-style">
         <pre>
-            &НаКлиенте
-            Процедура ПрочитатьФайлXLSX()
-                //примером файла Excel будет Список контрагентов.xlsx.
-                ПрочитатьФайлXLSXНаСервере();	
+            <span class="vue-b"><span class="vue-r">&НаКлиенте
+            Процедура</span> ПрочитатьФайлXLSX<span class="vue-r">()</span>
+                <span class="vue-g">//примером файла Excel будет Список контрагентов.xlsx.</span>
+                ПрочитатьФайлXLSXНаСервере<span class="vue-r">();	
             КонецПроцедуры
 
             &НаСервере
-            Процедура ПрочитатьФайлXLSXНаСервере()
-                ТабДок = Новый ТабличныйДокумент;
+            Процедура</span> ПрочитатьФайлXLSXНаСервере<span class="vue-r">()</span>
+                ТабДок <span class="vue-r">= Новый</span> ТабличныйДокумент<span class="vue-r">;</span>
 
-                //чтобы при чтении файла исключить вылет ошибок обернём чтение в Попытка..Исключение
-                Попытка
-                    //из табличного файла данные можно считывать 2мя способами.Либо по типам значений - число считывается как число, строка как строка,
-                    //либо всё считывать как текст, т.е. всё будет считываться как строки.
-                    ТабДок.Прочитать(Объект.ПутьКФайлу, СпособЧтенияЗначенийТабличногоДокумента.Значение);
-                Исключение
-                    //ОписаниеОшибки() это метод Глобального контекста, который вернёт текст ошибки
-                    Сообщение = Новый СообщениеПользователю;
-                    Сообщение.Текст = "Не удалось прочитать указанный файл по причине " + ОписаниеОшибки();
-                    Сообщение.Сообщить();
-                    Возврат;
-                КонецПопытки;
+                <span class="vue-g">//чтобы при чтении файла исключить вылет ошибок обернём чтение в Попытка..Исключение</span>
+                <span class="vue-r">Попытка</span>
+                    <span class="vue-g">//из табличного файла данные можно считывать 2мя способами.Либо по типам значений - число считывается как число, строка как строка,
+                    //либо всё считывать как текст, т.е. всё будет считываться как строки.</span>
+                    ТабДок<span class="vue-r">.</span>Прочитать<span class="vue-r">(</span>Объект<span class="vue-r">.</span>ПутьКФайлу<span class="vue-r">,</span> СпособЧтенияЗначенийТабличногоДокумента<span class="vue-r">.</span>Значение<span class="vue-r">);</span>
+                <span class="vue-r">Исключение</span>
+                    <span class="vue-g">//ОписаниеОшибки() это метод Глобального контекста, который вернёт текст ошибки</span>
+                    Сообщение <span class="vue-r">= Новый</span> СообщениеПользователю<span class="vue-r">;</span>
+                    Сообщение<span class="vue-r">.</span>Текст <span class="vue-r">=</span> <span class="vue-bl">"Не удалось прочитать указанный файл по причине "</span> <span class="vue-r">+</span> ОписаниеОшибки<span class="vue-r">();</span>
+                    Сообщение<span class="vue-r">.</span>Сообщить<span class="vue-r">();</span>
+                    Возврат<span class="vue-r">;
+                КонецПопытки;</span>
 
-                //если ошибок нет, то можем двигаться дальше и нам нужно получить количество строк в табличном файле
-                КоличествоСтрок = ТабДок.ВысотаТаблицы;
+                <span class="vue-g">//если ошибок нет, то можем двигаться дальше и нам нужно получить количество строк в табличном файле</span>
+                КоличествоСтрок <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ВысотаТаблицы<span class="vue-r">;</span>
 
-                //и далее в цикле будем считывать построчно табличный файл, начинать будем
-                //со 2й строки, потому что в 1й строке шапка
-                Для НомерСтроки = 2 По КоличествоСтрок Цикл
-                    //в табличную часть добавляем новую строку
-                    //и колонкам этой строки задаём части массива
-                    НоваяСтрока = Объект.ДанныеФайла.Добавить(); 
+                <span class="vue-g">//и далее в цикле будем считывать построчно табличный файл, начинать будем
+                //со 2й строки, потому что в 1й строке шапка</span>
+                <span class="vue-r">Для</span> НомерСтроки <span class="vue-r">=</span> 2 <span class="vue-r">По</span> КоличествоСтрок <span class="vue-r">Цикл</span>
+                    <span class="vue-g">//в табличную часть добавляем новую строку
+                    //и колонкам этой строки задаём части массива</span>
+                    НоваяСтрока <span class="vue-r">=</span> Объект<span class="vue-r">.</span>ДанныеФайла<span class="vue-r">.</span>Добавить<span class="vue-r">();</span> 
 
-                    //метод ПолучитьОбласть() вернёт объект типа ТабличныйДокумент, нам же нужно получить содержимое ячейки
+                    <span class="vue-g">//метод ПолучитьОбласть() вернёт объект типа ТабличныйДокумент, нам же нужно получить содержимое ячейки
                     //у вернувшегося объекта есть подобъект ТекущаяОбласть, а унего есть свойство Текст, которое нам и даст
-                    //содержимое ячейки 
-                    НоваяСтрока.КраткоеНаименование = ТабДок.ПолучитьОбласть("R" + Формат(НомерСтроки, "ЧГ=0") + "C1").ТекущаяОбласть.Текст;
-                    НоваяСтрока.ПолноеНаименование = ТабДок.ПолучитьОбласть("R" + Формат(НомерСтроки, "ЧГ=0") + "C2").ТекущаяОбласть.Текст;
-                    НоваяСтрока.УНП = ТабДок.ПолучитьОбласть("R" + Формат(НомерСтроки, "ЧГ=0") + "C3").ТекущаяОбласть.Текст;
+                    //содержимое ячейки </span>
+                    НоваяСтрока<span class="vue-r">.</span>КраткоеНаименование <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ПолучитьОбласть<span class="vue-r">(</span><span class="vue-bl">"R"</span> <span class="vue-r">+</span> Формат<span class="vue-r">(</span>НомерСтроки<span class="vue-r">,</span> <span class="vue-bl">"ЧГ=0"</span><span class="vue-r">) +</span> <span class="vue-bl">"C1"</span><span class="vue-r">).</span>ТекущаяОбласть<span class="vue-r">.</span>Текст<span class="vue-r">;</span>
+                    НоваяСтрока<span class="vue-r">.</span>ПолноеНаименование <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ПолучитьОбласть<span class="vue-r">(</span><span class="vue-bl">"R"</span> <span class="vue-r">+</span> Формат<span class="vue-r">(</span>НомерСтроки<span class="vue-r">,</span> <span class="vue-bl">"ЧГ=0"</span><span class="vue-r">) +</span> <span class="vue-bl">"C2"</span><span class="vue-r">).</span>ТекущаяОбласть<span class="vue-r">.</span>Текст<span class="vue-r">;</span>
+                    НоваяСтрока<span class="vue-r">.</span>УНП <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ПолучитьОбласть<span class="vue-r">(</span><span class="vue-bl">"R"</span> <span class="vue-r">+</span> Формат<span class="vue-r">(</span>НомерСтроки<span class="vue-r">,</span> <span class="vue-bl">"ЧГ=0"</span><span class="vue-r">) +</span> <span class="vue-bl">"C3"</span><span class="vue-r">).</span>ТекущаяОбласть<span class="vue-r">.</span>Текст<span class="vue-r">;
                 КонецЦикла;	
-            КонецПроцедуры
+            КонецПроцедуры</span></span>
         </pre>
     </div>
     <p>Этот код чтения файла сработает только в структуре, когда БД находится на одном компьюторе вместе с клиентом. Если же сервер будет на другом компьюторе удалённо, то такого пути до файла там просто не будет, а потому будет ошибка.</p>
+
+    <p><b>Пример 2</b></p>
+    <p>Допустим мы хотим из файла эксель выбрать данные и записать их в регистр сведений. Вот так выглядит файл Контрагенты.xlsx:</p>
+    <img src="../img/1С-1/2023-10-28_08-24-29.png" class="screen-2" alt="">
+    <p>И вот так должен выглядеть регистр с уже записанными данными:</p>
+    <img src="../img/1С-1/2023-10-28_08-26-13.png" class="screen" alt="">
+    <p>В регистре ресурс это только "Значение", остальное измерение. Создадим обработку, с полемм вода для ввода пути к файлу и кнопкой для записи данных в регистр. Вот обработчик этой кнопки:</p>
+    <div class="code-style">
+        <pre>
+            --модуль формы обработки
+            <span class="vue-b"><span class="vue-r">&НаСервере
+            Процедура</span> ЗагрузитьДанныеИзФайлаНаСервере<span class="vue-r">()</span>
+                ТабДок <span class="vue-r">= Новый</span> ТабличныйДокумент<span class="vue-r">;</span>
+
+                <span class="vue-g">//чтобы при чтении файла исключить вылет ошибок обернём чтение в Попытка..Исключение</span>
+                <span class="vue-r">Попытка</span>
+                    <span class="vue-g">//из табличного файла данные можно считывать 2мя способами.Либо по типам значений - число считывается как число, строка как строка,
+                    //либо всё считывать как текст, т.е. всё будет считываться как строки.</span>
+                    ТабДок<span class="vue-r">.</span>Прочитать<span class="vue-r">(</span>ПутьКФайлу<span class="vue-r">,</span> СпособЧтенияЗначенийТабличногоДокумента<span class="vue-r">.</span>Значение<span class="vue-r">);</span>
+                <span class="vue-r">Исключение</span>
+                    <span class="vue-g">//ОписаниеОшибки() это метод Глобального контекста, который вернёт текст ошибки</span>
+                    Сообщение <span class="vue-r">= Новый</span> СообщениеПользователю<span class="vue-r">;</span>
+                    Сообщение<span class="vue-r">.</span>Текст <span class="vue-r">=</span> <span class="vue-bl">"Не удалось прочитать указанный файл по причине "</span> <span class="vue-r">+</span> ОписаниеОшибки<span class="vue-r">();</span>
+                    Сообщение<span class="vue-r">.</span>Сообщить<span class="vue-r">();</span>
+                    Возврат<span class="vue-r">;
+                КонецПопытки;</span>
+
+                <span class="vue-g">//если ошибок нет, то можем двигаться дальше и нам нужно 
+                //получить количество строк и колонок в табличном файле</span>
+                КоличествоСтрок <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ВысотаТаблицы<span class="vue-r">;</span>  
+                КоличествоКолонок <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ШиринаТаблицы<span class="vue-r">;</span>
+
+                <span class="vue-g">//создаём пустой набор записей и делаем запись пустого набора для очистки ранее записанного</span>
+                НаборЗаписей <span class="vue-r">=</span> РегистрыСведений<span class="vue-r">.</span>ДанныеФайла<span class="vue-r">.</span>СоздатьНаборЗаписей<span class="vue-r">();</span>
+                НаборЗаписей<span class="vue-r">.</span>Записать<span class="vue-r">();</span>
+
+                <span class="vue-g">//в цикле считываем построчно табличный файл</span>
+                <span class="vue-r">Для</span> НомерСтроки = 1 <span class="vue-r">По</span> КоличествоСтрок <span class="vue-r">Цикл </span>
+                    <span class="vue-g">//в цикле считываем поколоночно табличный файл</span>              
+                    <span class="vue-r">Для</span> НомерКолонки = 1 <span class="vue-r">По</span> КоличествоКолонок <span class="vue-r">Цикл </span>
+                        Запись <span class="vue-r">=</span> НаборЗаписей<span class="vue-r">.</span>Добавить<span class="vue-r">();</span> 
+                        Запись<span class="vue-r">.</span>ИмяФайла <span class="vue-r">=</span> Сред<span class="vue-r">(</span>ПутьКФайлу<span class="vue-r">,</span> СтрНайти<span class="vue-r">(</span>ПутьКФайлу<span class="vue-r">,</span> <span class="vue-bl">"\"</span><span class="vue-r">,</span> НаправлениеПоиска<span class="vue-r">.</span>СКонца<span class="vue-r">) +</span> 1<span class="vue-r">);</span>
+                        Запись<span class="vue-r">.</span>НомерСтрокиФайла <span class="vue-r">=</span> НомерСтроки<span class="vue-r">;</span>
+                        Запись<span class="vue-r">.</span>НомерКолонкиФайла <span class="vue-r">=</span> НомерКолонки<span class="vue-r">;</span>
+                        Значение <span class="vue-r">=</span> ТабДок<span class="vue-r">.</span>ПолучитьОбласть<span class="vue-r">(</span><span class="vue-bl">"R"</span> <span class="vue-r">+</span> Формат<span class="vue-r">(</span>НомерСтроки<span class="vue-r">,</span> <span class="vue-bl">"ЧГ=0"</span><span class="vue-r">) +</span> <span class="vue-bl">"C"</span> <span class="vue-r">+</span> Формат<span class="vue-r">(</span>НомерКолонки<span class="vue-r">,</span> <span class="vue-bl">"ЧГ=0"</span><span class="vue-r">)).</span>ТекущаяОбласть<span class="vue-r">.</span>Текст<span class="vue-r">;</span> 
+
+                        <span class="vue-g">//преобразовываем данные файла в нужные типы</span>
+                        <span class="vue-r">Попытка</span>
+                            А <span class="vue-r">=</span> 0 <span class="vue-r">+</span> Значение<span class="vue-r">;</span>
+                            <span class="vue-g">//если исключение не сработало, значит преобразовалось в число</span>
+                            Запись<span class="vue-r">.</span>Значение <span class="vue-r">=</span>  А<span class="vue-r">;</span>
+                        <span class="vue-r">Исключение</span>
+                            Позиция <span class="vue-r">=</span> СтрНайти<span class="vue-r">(</span>Значение<span class="vue-r">,</span> <span class="vue-bl">"2023"</span><span class="vue-r">);</span>
+                            <span class="vue-r">Если</span> Позиция <span class="vue-r">Тогда</span>
+                                <span class="vue-g">//если заши сюда, значит значение дата</span>
+                                МассивСтрок <span class="vue-r">=</span> СтрРазделить<span class="vue-r">(</span>Значение<span class="vue-r">,</span> "."<span class="vue-r">);</span>
+                                                                            
+                                ПеревёрнутыйМассив <span class="vue-r">= Новый</span> Массив<span class="vue-r">;</span>
+                                Шаг <span class="vue-r">=</span> МассивСтрок<span class="vue-r">.</span>ВГраница<span class="vue-r">();</span>
+                                <span class="vue-r">Пока</span> Шаг <span class="vue-r">>=</span> 0 <span class="vue-r">Цикл</span>
+                                    ПеревёрнутыйМассив<span class="vue-r">.</span>Добавить<span class="vue-r">(</span>МассивСтрок<span class="vue-r">[</span>Шаг<span class="vue-r">]);</span>
+                                    Шаг <span class="vue-r">=</span> Шаг <span class="vue-r">-</span> 1<span class="vue-r">;
+                                КонецЦикла;</span>
+            
+                                СтрокаДаты <span class="vue-r">=</span> СтрСоединить<span class="vue-r">(</span>ПеревёрнутыйМассив<span class="vue-r">);</span>
+                                Запись<span class="vue-r">.</span>Значение <span class="vue-r">=</span>  Дата<span class="vue-r">(</span>СтрокаДаты<span class="vue-r">);</span>
+                            <span class="vue-r">Иначе</span>
+                                <span class="vue-g">//ну и если мы тут, значит значение строка</span>
+                                Запись<span class="vue-r">.</span>Значение <span class="vue-r">=</span>  Значение<span class="vue-r">;
+                            КонецЕсли;
+                        КонецПопытки;
+                    КонецЦикла;
+                КонецЦикла;</span> 
+
+                НаборЗаписей<span class="vue-r">.</span>Записать<span class="vue-r">();
+            КонецПроцедуры
+
+            &НаКлиенте
+            Процедура</span> ЗагрузитьДанныеИзФайла<span class="vue-r">(</span>Команда<span class="vue-r">)</span>
+                ЗагрузитьДанныеИзФайлаНаСервере<span class="vue-r">();
+            КонецПроцедуры</span></span>
+        </pre>
+    </div>
 
 
 
@@ -531,7 +615,7 @@
 
 
     <h2 class="header-style" id="dbf">Читаем файл DBF</h2>
-    <p>На чегодня работать с таким форматом файлов приходится не часто. Поэтому не буду описывать его. Если вдруг понадобится, то вот это видео - https://www.youtube.com/watch?v=bCA4KrLzHg8&list=PLnhTnXRFDQ7dJa-1DtA2bcKvK4pxV8GRP&index=7 , где описано как с ним работать.</p>
+    <p>На сегодня работать с таким форматом файлов приходится не часто. Поэтому не буду описывать его. Если вдруг понадобится, то вот это видео - https://www.youtube.com/watch?v=bCA4KrLzHg8&list=PLnhTnXRFDQ7dJa-1DtA2bcKvK4pxV8GRP&index=7 , где описано как с ним работать.</p>
 
 
 
