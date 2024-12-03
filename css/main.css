@@ -68,27 +68,33 @@ table td{
 .tag-style2{
     padding-left: 40px;
 }
-.vue-b{
+.светло_синий{
     color: #258BD3;
 }
-.vue-r{
+.светло_красный{
     color: #D24C15;
 }
-.vue-g{
+.зелёный{
     color: forestgreen;
 }
-.vue-or{
+.оранжевый{
     color: orange;
 }
-.vue-d-b{
+/* .vue-d-b{
     color: #00a59d;
     font-weight: 600;
-}
-.vue-lg{
+} */
+.светло_зелёный{
     color: #2ab119;
 }
-.vue-bl{
+.серый{
     color: #818181;
+}
+.тёмно_серый{
+    color: #3f3f3f;
+}
+.фиолетовый{
+    color: #4b08e7;
 }
 .code-style{
     width: 100%;
