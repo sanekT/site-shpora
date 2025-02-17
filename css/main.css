@@ -32,7 +32,7 @@ table td{
 }
 
 #container{
-    max-width: 1100px;
+    max-width: 1300px;
     min-height: 880px;
     margin: 0 auto;
     padding: 1%;
@@ -105,14 +105,18 @@ table td{
     border-radius: 6px;
     overflow: scroll;
     margin: 15px 0;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.7;
 }
 .code-style > pre{
     font-family: 'PT Mono' !important; 
     margin-left: -80px;
 }
-
+.i-h{
+    text-decoration: underline;
+    font-size: 13px;
+    margin-left: 20px;
+}
 
 
 
@@ -163,7 +167,7 @@ table td{
     background-color: #b0c8ff;
 }
 .sidebar__list2{
-    width: 250px;
+    width: 390px;
     list-style-type: none;
     background-color: rgba(222, 232, 251, 0.9);
     border-radius: 4px;
@@ -192,7 +196,7 @@ table td{
     background-image: url('../img/folder2__36x36.png');
 }
 .mainbar{
-    width: 68%;
+    width: 76%;
     margin-left: 2%;
     padding: 10px;
     /* font-family: 'Ubuntu', sans-serif; */
@@ -214,7 +218,7 @@ table td{
 .mainbar a{
     text-decoration: none;
     display: inline-block;
-    padding: 5px 10px;
+    padding: 0px 10px;
     background-color: #b0c8ff;
     color: black;
     border-radius: 4px;
